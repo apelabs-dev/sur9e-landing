@@ -37,7 +37,10 @@ const { title = 'Sur9e — Know which jobs are worth your time.' } = Astro.props
 </head>
 <body>
   <slot />
-  <script src="/scripts/app.js" is:inline></script>
+  <script>
+    import { initRevealOnScroll } from '../scripts/reveal-on-scroll.js';
+    initRevealOnScroll();
+  </script>
 </body>
 </html>
 
