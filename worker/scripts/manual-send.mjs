@@ -98,7 +98,7 @@ const res = await fetch('https://api.resend.com/emails', {
     'content-type': 'application/json',
   },
   body: JSON.stringify({
-    from: 'Sur9e <hello@send.sur9e.com>',
+    from: 'Sur9e <noreply@send.sur9e.com>',
     reply_to: 'hello@sur9e.com',
     to: [email],
     subject: 'Welcome to the sur9e waitlist',
