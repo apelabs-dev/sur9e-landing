@@ -7,6 +7,7 @@ import Features from '../components/Features.astro';
 import Compare from '../components/Compare.astro';
 import Backstory from '../components/Backstory.astro';
 import Faq from '../components/Faq.astro';
+import Waitlist from '../components/Waitlist.astro';
 ---
 <Base>
 <a class="skip-link" href="#top">Skip to content</a>
@@ -37,33 +38,7 @@ import Faq from '../components/Faq.astro';
 <Faq />
 
 <!-- ============== SECTION 5 · WAITLIST + FOOTER ============== -->
-<section class="waitlist" id="waitlist">
-  <div class="waitlist-inner reveal">
-    <h2>Your job search deserves better tools.<br /><span class="waitlist-sub">Be first when Sur9e ships.</span></h2>
-    <p>Evaluates jobs, finds the hiring manager, drafts the intro, preps the interview. Built from a real career profile, not a template.</p>
-    <label for="waitlist-email" class="email-label">Your email</label>
-    <form class="email-form" id="emailForm" novalidate>
-      <input
-        id="waitlist-email"
-        type="email"
-        name="email"
-        placeholder="you@example.com…"
-        required
-        autocomplete="email"
-        inputmode="email"
-        enterkeyhint="send"
-        spellcheck="false"
-      />
-      <button type="submit" data-label="Join the waitlist" data-busy="Joining…">Join the waitlist</button>
-    </form>
-    <p class="email-thanks" id="emailThanks" tabindex="-1" role="status" aria-live="polite">✓ You're on the list. We'll be in touch.</p>
-    <ul class="waitlist-pills" aria-label="Promise">
-      <li><span class="wp-check">✓</span> Free to start</li>
-      <li><span class="wp-check">✓</span> Launching Q4 2026</li>
-      <li><span class="wp-check">✓</span> No spam, ever</li>
-    </ul>
-  </div>
-</section>
+<Waitlist />
 
 </main>
 
