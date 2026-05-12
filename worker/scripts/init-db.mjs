@@ -41,8 +41,10 @@ try {
       source TEXT,
       created_at TIMESTAMP DEFAULT NOW(),
       confirmed_at TIMESTAMP,
-      notified_at TIMESTAMP
+      notified_at TIMESTAMP,
+      unsubscribed_at TIMESTAMP
     );
+    ALTER TABLE waitlist ADD COLUMN IF NOT EXISTS unsubscribed_at TIMESTAMP;
     CREATE INDEX IF NOT EXISTS waitlist_email_idx ON waitlist(email);
   `);
   console.log('DDL applied.');

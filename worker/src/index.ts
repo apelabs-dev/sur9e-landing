@@ -200,38 +200,50 @@ async function handleSignup(req: Request, env: Env): Promise<Response> {
     fetch_types: false,
   });
 
-  let isNew = false;
+  // Three outcomes:
+  //   'new'        — first-ever signup, send confirmation
+  //   'reenroll'   — previously unsubscribed, opted back in, send confirmation
+  //   'duplicate'  — already on the list and active, don't re-send
+  let action: 'new' | 'reenroll' | 'duplicate' = 'duplicate';
   try {
-    const rows = await sql<{ id: number }[]>`
+    const inserted = await sql<{ id: number }[]>`
       INSERT INTO waitlist (email, source)
       VALUES (${email}, ${source})
+      ON CONFLICT (email) DO NOTHING
       RETURNING id
     `;
-    isNew = rows.length > 0;
-  } catch (err) {
-    // Postgres unique_violation = 23505. Treat as success, don't re-send email.
-    const code = (err as { code?: string } | null)?.code;
-    if (code === '23505') {
-      await sql.end({ timeout: 5 });
-      return jsonResponse(req, { ok: true, duplicate: true });
+    if (inserted.length > 0) {
+      action = 'new';
+    } else {
+      // Email already exists. Re-enroll only if previously unsubscribed.
+      const reenrolled = await sql<{ id: number }[]>`
+        UPDATE waitlist
+        SET unsubscribed_at = NULL, source = ${source}
+        WHERE email = ${email} AND unsubscribed_at IS NOT NULL
+        RETURNING id
+      `;
+      if (reenrolled.length > 0) action = 'reenroll';
     }
-    console.error('DB insert failed', err);
+  } catch (err) {
+    console.error('DB upsert failed', err);
     await sql.end({ timeout: 5 });
     return jsonResponse(req, { error: 'Server error' }, 500);
   }
 
-  // Send email best-effort. If it fails, the row is still there — the user
-  // can re-submit (we'll detect duplicate) or we can backfill manually.
-  if (isNew) {
-    try {
-      await sendConfirmationEmail(env, email);
-    } catch (err) {
-      console.error('Resend send failed', err);
-    }
+  if (action === 'duplicate') {
+    await sql.end({ timeout: 5 });
+    return jsonResponse(req, { ok: true, duplicate: true });
+  }
+
+  // Send email best-effort. Failure here doesn't undo the DB write.
+  try {
+    await sendConfirmationEmail(env, email);
+  } catch (err) {
+    console.error('Resend send failed', err);
   }
 
   await sql.end({ timeout: 5 });
-  return jsonResponse(req, { ok: true });
+  return jsonResponse(req, { ok: true, reenrolled: action === 'reenroll' });
 }
 
 interface BrandedPageOpts {
@@ -407,9 +419,16 @@ async function handleUnsubscribe(req: Request, env: Env): Promise<Response> {
 
   const sql = postgres(env.WAITLIST_DB.connectionString, { max: 5, fetch_types: false });
   try {
-    await sql`DELETE FROM waitlist WHERE email = ${email}`;
+    // Soft-delete: keep the row, mark when they unsubscribed. handleSignup
+    // checks this column so a re-signup doesn't auto-re-send unless they
+    // explicitly resubmit the form (opt-in renewed).
+    await sql`
+      UPDATE waitlist
+      SET unsubscribed_at = NOW()
+      WHERE email = ${email} AND unsubscribed_at IS NULL
+    `;
   } catch (err) {
-    console.error('Unsubscribe DELETE failed', err);
+    console.error('Unsubscribe UPDATE failed', err);
     await sql.end({ timeout: 5 });
     if (isOneClickPost) return new Response('Server error', { status: 500 });
     return brandedPage({
