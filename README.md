@@ -6,8 +6,9 @@ Pre-launch marketing site for [sur9e.com](https://sur9e.com).
 
 - **Astro 6.x** — static output, no client framework
 - **Cloudflare Pages** — hosting
-- **Cloudflare Worker** + **Railway Postgres** + **Resend** — waitlist capture (see `HANDOFF.md` if not yet wired)
+- **Cloudflare Worker** (`worker/`) + **Railway Postgres** + **Resend** — waitlist capture
 - **Cloudflare Web Analytics** — visitor tracking
+- **Cloudflare Email Routing** — `hello@sur9e.com` forwarded to personal inbox
 
 ## Local dev
 
@@ -26,9 +27,15 @@ npm run build
 
 ## Deploy
 
-Push to `main` → Cloudflare Pages auto-builds + deploys → live on sur9e.com.
+Push to `main` → Cloudflare Pages auto-builds + deploys → live at https://sur9e.com.
 
-See `HANDOFF.md` for one-time service wiring (Worker, DB, Resend, Analytics).
+Worker deploys separately from `worker/`:
+
+```bash
+cd worker
+npx wrangler deploy
+```
+
 See `CLAUDE.md` for ongoing Claude-assisted edit conventions.
 
 License: All rights reserved. Private repo.
