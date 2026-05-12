@@ -209,4 +209,14 @@ import DemoFrame from './DemoFrame.astro';
     background-position: 16px 0;
   }
 }
+
+/* Stagger reveal delay for steps */
+.step.reveal.in { transition-delay: var(--rd, 0ms); }
 </style>
+
+<script>
+  // Stagger reveal delay for steps
+  document.querySelectorAll('.steps .step').forEach((el, i) => {
+    el.style.setProperty('--rd', (i * 140) + 'ms');
+  });
+</script>

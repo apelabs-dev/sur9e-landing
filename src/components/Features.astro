@@ -91,6 +91,403 @@ import FeatureShotPrep from './FeatureShotPrep.astro';
 
 <style is:global>
 /* =====================================================================
+   Shared feature-shot frame — used by all 4 FeatureShot* components
+===================================================================== */
+.shot {
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 24px 48px -24px rgba(31,29,26,0.18), 0 2px 4px rgba(31,29,26,0.03);
+  overflow: hidden;
+  font-family: var(--font-body);
+  color: var(--text);
+  position: relative;
+}
+.shot-chrome {
+  height: 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 12px;
+  min-width: 0;
+  overflow: hidden;
+}
+.shot-chrome .d {
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--border-strong);
+  box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.12);
+  flex-shrink: 0;
+}
+.shot-chrome .d:nth-child(1) { background: #c44a3f; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.2); }
+.shot-chrome .d:nth-child(2) { background: #c08a2a; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.2); }
+.shot-chrome .d:nth-child(3) { background: #2e8a44; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.2); }
+.shot-chrome .crumbs {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-muted);
+  margin-left: 12px;
+  min-width: 0;
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =====================================================================
+   Mobile-only feature shots
+   The desktop renders pack too much detail for a 375 px column. Below
+   720 px we hide them and show purpose-built mobile variants instead.
+===================================================================== */
+.shot-m { display: none; }
+/* Mobile demo also takes over at tablet widths — desktop demo only at ≥1025 px */
+/* Shared mobile shot styling — matches the desktop chrome + card system */
+.shot-m {
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: var(--font-body);
+  color: var(--text);
+  box-shadow: 0 18px 36px -22px rgba(31,29,26,0.18), 0 2px 4px rgba(31,29,26,0.03);
+}
+.shot-m .shot-chrome { height: 30px; }
+.shot-m-body { padding: 18px 16px 20px; }
+.shot-m-row { display: flex; align-items: center; gap: 12px; }
+.shot-m h4 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.shot-m .role,
+.shot-m .meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  margin: 2px 0 0;
+}
+.shot-m .mark {
+  width: 40px; height: 40px;
+  border-radius: 9px;
+  display: grid; place-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+.shot-m .mark::after {
+  content: "";
+  position: absolute; bottom: 0; right: 0;
+  width: 9px; height: 9px;
+  background: var(--accent);
+  border-top-left-radius: 5px;
+}
+.shot-m-score {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 2px;
+  margin-left: auto;
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--score-high);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+.shot-m-score .num { font-size: 36px; }
+.shot-m-score .denom { font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-top: 6px; letter-spacing: 0; }
+.shot-m-segbar {
+  display: flex; gap: 3px;
+  margin-top: 8px;
+}
+.shot-m-segbar .seg {
+  flex: 1; height: 3px; border-radius: 2px;
+  background: var(--surface-2);
+}
+.shot-m-segbar .seg.on { background: var(--score-high); }
+.shot-m-lede {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-2);
+  margin: 14px 0 0;
+}
+.shot-m-divider { border: 0; border-top: 1px solid var(--border); margin: 14px 0; }
+.shot-m-dims { display: grid; gap: 8px; }
+.shot-m-dim {
+  display: grid;
+  grid-template-columns: 80px 1fr 28px;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+.shot-m-dim .bar {
+  height: 4px;
+  background: var(--surface-2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.shot-m-dim .bar span {
+  display: block;
+  height: 100%;
+  background: var(--score-high);
+  border-radius: 2px;
+}
+.shot-m-dim.warn .bar span { background: var(--score-mid); }
+.shot-m-dim .v {
+  font-family: var(--font-mono);
+  text-align: right;
+  color: var(--text);
+  font-weight: 500;
+}
+.shot-m-dim.warn .v { color: var(--score-mid); }
+/* Funnel chips for pipeline shot */
+.shot-m-funnel {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 14px 12px;
+  background: color-mix(in srgb, var(--bg-paper) 96%, var(--text-muted) 4%);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.shot-m-fstep { text-align: center; }
+.shot-m-fstep .d {
+  /* Always render the dot as its own block above the label so all 4
+     funnel cells align identically. Inline-block wrapped inconsistently:
+     long labels (APPLIED, RESPONDED, INTERVIEW) pushed the dot to its
+     own row; short labels (OFFER) kept it inline. */
+  display: block;
+  width: 6px; height: 6px; border-radius: 50%;
+  margin: 0 auto 5px;
+}
+.shot-m-fstep .lbl {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+.shot-m-fstep .v {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--text);
+}
+.shot-m-fstep .c {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+/* Sample pipeline rows */
+.shot-m-pcards { display: grid; gap: 8px; margin-top: 12px; }
+.shot-m-pcard {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 12px;
+  padding: 10px 12px;
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  align-items: center;
+}
+.shot-m-pcard .co {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+}
+.shot-m-pcard .ro {
+  font-size: 12px;
+  color: var(--text-2);
+  grid-row: 2;
+}
+.shot-m-pcard .sc {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--score-high);
+}
+.shot-m-pcard .pmeta {
+  grid-column: 1 / -1;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+/* Prep metric tiles */
+.shot-m-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 14px;
+}
+.shot-m-stat {
+  background: color-mix(in srgb, var(--bg-paper) 96%, var(--text-muted) 4%);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 6px;
+  text-align: center;
+}
+.shot-m-stat .v {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--text);
+  line-height: 1.1;
+}
+.shot-m-stat .lbl {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.shot-m-rounds { display: grid; gap: 6px; margin-top: 14px; }
+.shot-m-round {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  align-items: center;
+}
+.shot-m-round .tag {
+  width: 26px; height: 26px;
+  display: grid; place-items: center;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--accent) 14%, var(--bg-paper));
+  color: var(--accent-text);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 12px;
+}
+.shot-m-round .label {
+  font-size: 12.5px;
+  color: var(--text);
+  line-height: 1.35;
+}
+.shot-m-round .ct {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  text-align: right;
+}
+.shot-m-star {
+  margin: 6px 0 0 14px;
+  padding: 10px 12px;
+  background: color-mix(in srgb, var(--bg-paper) 96%, var(--text-muted) 4%);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  border-radius: 6px;
+}
+.shot-m-star-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+.shot-m-star p {
+  margin: 6px 0 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+.shot-m-star b { color: var(--text); font-weight: 600; }
+/* Outreach-specific mobile bits */
+.shot-m-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, #3d5dab, #7a9fd4);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.shot-m-verified {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--score-high);
+  padding: 3px 8px 3px 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--score-high) 12%, transparent);
+  margin-left: auto;
+}
+.shot-m-verified::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--score-high);
+  display: inline-block;
+}
+.shot-m-tabs {
+  display: flex; gap: 14px;
+  padding: 12px 0 0;
+  font-size: 11.5px;
+  border-top: 1px solid var(--border);
+  margin-top: 12px;
+}
+.shot-m-tabs span { color: var(--text-muted); font-family: var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; font-size: 10px; }
+.shot-m-tabs .active {
+  color: var(--accent-text);
+  position: relative;
+  padding-bottom: 8px;
+  border-bottom: 1.5px solid var(--accent);
+  margin-bottom: -1px;
+}
+.shot-m-draft {
+  margin-top: 12px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+.shot-m-draft p { margin: 0 0 8px; }
+.shot-m-draft .hl { color: var(--text); font-weight: 600; }
+.shot-m-actions {
+  display: flex; gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.shot-m-actions .btn-send,
+.shot-m-actions .btn-ghost {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+.shot-m-actions .btn-send { background: var(--accent-cta); color: #fff; }
+.shot-m-actions .btn-ghost { background: transparent; color: var(--text-2); border: 1px solid var(--border); }
+
+/* Stagger reveal delay for feature cards */
+.feature.reveal.in { transition-delay: var(--rd, 0ms); }
+
+/* =====================================================================
    Section 3: Feature Teasers (light)
 ===================================================================== */
 .features {
@@ -383,4 +780,9 @@ import FeatureShotPrep from './FeatureShotPrep.astro';
     });
   }, { threshold: 0.25 });
   document.querySelectorAll('.feature-shot').forEach(shot => shotObserver.observe(shot));
+
+  // Stagger reveal delay for feature cards
+  document.querySelectorAll('.feature-list .feature').forEach((el, i) => {
+    el.style.setProperty('--rd', (i * 80) + 'ms');
+  });
 </script>
