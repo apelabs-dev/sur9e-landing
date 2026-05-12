@@ -8,6 +8,7 @@ import Compare from '../components/Compare.astro';
 import Backstory from '../components/Backstory.astro';
 import Faq from '../components/Faq.astro';
 import Waitlist from '../components/Waitlist.astro';
+import Footer from '../components/Footer.astro';
 ---
 <Base>
 <a class="skip-link" href="#top">Skip to content</a>
@@ -42,34 +43,5 @@ import Waitlist from '../components/Waitlist.astro';
 
 </main>
 
-<footer class="footer">
-  <div class="footer-inner">
-    <div class="footer-row">
-      <div class="footer-brand">
-        <img src="assets/sur9e-wordmark-white.svg" alt="Sur9e" width="120" height="26" translate="no" />
-        <span class="pronunciation"><span translate="no">Sur9e</span> (rhymes with surge)</span>
-        <span class="tag">Know which jobs are worth your time.</span>
-      </div>
-      <nav class="footer-nav" aria-label="Footer">
-        <a href="#how">How it works</a>
-        <a href="#features">Features</a>
-        <a href="#compare">Compare</a>
-        <a href="#backstory">Backstory</a>
-        <a href="#faq">FAQ</a>
-        <a href="mailto:hello@sur9e.com">Contact</a>
-      </nav>
-    </div>
-    <div class="footer-divider">
-      <div class="footer-bottom">
-        <span>© <span id="footer-year">2026</span> Sur9e. All rights reserved.</span>
-        <div class="footer-bottom-links">
-          <a href="mailto:hello@sur9e.com">hello@sur9e.com</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <a href="#top" class="to-top" id="toTop" aria-label="Back to top">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
-  </a>
-</footer>
+<Footer />
 </Base>

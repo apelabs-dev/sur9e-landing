@@ -1,24 +1,3 @@
-// ---- script block 2 ----
-(function(){var y=document.getElementById('footer-year');if(y)y.textContent=new Date().getFullYear();})();
-
-// ---- script block 3 ----
-
-(function(){
-  const btn = document.getElementById('toTop');
-  if (!btn) return;
-  const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const onScroll = () => {
-    btn.classList.toggle('show', window.scrollY > window.innerHeight);
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: motionQuery.matches ? 'auto' : 'smooth' });
-  });
-  onScroll();
-})();
-
-
 // ---- script block 4 ----
 
 /* Reveal on scroll */

@@ -1,0 +1,161 @@
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-row">
+      <div class="footer-brand">
+        <img src="assets/sur9e-wordmark-white.svg" alt="Sur9e" width="120" height="26" translate="no" />
+        <span class="pronunciation"><span translate="no">Sur9e</span> (rhymes with surge)</span>
+        <span class="tag">Know which jobs are worth your time.</span>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="#how">How it works</a>
+        <a href="#features">Features</a>
+        <a href="#compare">Compare</a>
+        <a href="#backstory">Backstory</a>
+        <a href="#faq">FAQ</a>
+        <a href="mailto:hello@sur9e.com">Contact</a>
+      </nav>
+    </div>
+    <div class="footer-divider">
+      <div class="footer-bottom">
+        <span>© <span id="footer-year">2026</span> Sur9e. All rights reserved.</span>
+        <div class="footer-bottom-links">
+          <a href="mailto:hello@sur9e.com">hello@sur9e.com</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="#top" class="to-top" id="toTop" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+  </a>
+</footer>
+
+<style is:global>
+/* ===== Footer ===== */
+.footer {
+  background: linear-gradient(180deg, #0a0a0b 0%, #0a0a0b 100%);
+  padding: 64px 24px 48px;
+  color: var(--text-dark-faint);
+  font-family: var(--font-body);
+  font-size: 12px;
+  border-top: 1px solid var(--border-dark-faint);
+}
+.footer-inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.footer-row {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 32px;
+  padding-bottom: 28px;
+}
+.footer-brand {
+  display: flex; flex-direction: column; gap: 10px;
+  align-items: flex-start;
+}
+.footer-brand img { height: 20px; width: auto; opacity: 0.9; display: block; }
+.footer-brand .tag {
+  font-size: 12px;
+  color: var(--text-dark-faint);
+  letter-spacing: -0.005em;
+}
+.footer-brand .pronunciation {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text-dark-muted);
+  font-style: italic;
+  letter-spacing: -0.005em;
+}
+.footer-nav {
+  display: flex; gap: 24px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: var(--text-dark-dim);
+}
+.footer-nav a:hover { color: var(--text-dark-2); }
+.footer-divider {
+  border-top: 1px solid var(--border-dark-faint);
+  padding-top: 20px;
+}
+.footer-bottom {
+  display: flex; justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-dark-faint);
+}
+.footer-bottom-links { display: flex; gap: 20px; }
+@media (max-width: 640px) {
+  .footer { padding: 48px 24px 36px; }
+  .footer-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+    padding-bottom: 24px;
+  }
+  .footer-brand { width: 100%; align-items: flex-start; }
+  .footer-brand img { height: 22px; align-self: flex-start; }
+  .footer-brand .tag { font-size: 13px; line-height: 1.45; color: var(--text-dark-dim); }
+  .footer-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 24px;
+    width: 100%;
+    font-size: 13px;
+  }
+  .footer-bottom {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .footer-bottom-links { flex-wrap: wrap; gap: 18px; }
+}
+
+/* Back-to-top floating button */
+.to-top {
+  position: fixed;
+  right: 22px; bottom: 22px;
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  z-index: 90;
+  background: rgba(18,18,20,0.8);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 50%;
+  color: var(--text-dark-2);
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.06) inset;
+  transition: opacity var(--dur-base) var(--ease-calm),
+              transform var(--dur-base) var(--ease-calm),
+              color var(--dur-quick), border-color var(--dur-quick);
+}
+.to-top svg { width: 18px; height: 18px; display: block; }
+.to-top.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.to-top:hover { color: var(--accent); border-color: rgba(255,90,31,0.35); }
+@media (max-width: 480px) {
+  .to-top { right: 14px; bottom: 14px; width: 44px; height: 44px; }
+}
+</style>
+
+<script>
+(function(){
+  var y = document.getElementById('footer-year');
+  if (y) y.textContent = String(new Date().getFullYear());
+})();
+
+(function(){
+  const btn = document.getElementById('toTop');
+  if (!btn) return;
+  const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const onScroll = () => {
+    btn.classList.toggle('show', window.scrollY > window.innerHeight);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: motionQuery.matches ? 'auto' : 'smooth' });
+  });
+  onScroll();
+})();
+</script>
