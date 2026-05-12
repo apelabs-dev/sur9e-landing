@@ -9,19 +9,26 @@ export function setupCardPhysics() {
   const reduceMotion = () => motionQuery.matches;
 
   // Soap-bubble tuning
-  const VELOCITY_SCALE = 7;     // softer flick (was 16)
-  const DECAY = 0.985;          // longer drift (was 0.965)
-  const WALL_BOUNCE = 0.55;     // gentler wall hit (was 0.72)
-  const STOP_EPS = 0.04;        // settle threshold (was 0.12)
+  const VELOCITY_SCALE = 7; // softer flick (was 16)
+  const DECAY = 0.985; // longer drift (was 0.965)
+  const WALL_BOUNCE = 0.55; // gentler wall hit (was 0.72)
+  const STOP_EPS = 0.04; // settle threshold (was 0.12)
 
   cards.forEach(card => {
-    let tx = 0, ty = 0;
-    let vx = 0, vy = 0;
+    let tx = 0,
+      ty = 0;
+    let vx = 0,
+      vy = 0;
     let isDragging = false;
     let raf = 0;
-    let lastX = 0, lastY = 0, lastT = 0;
+    let lastX = 0,
+      lastY = 0,
+      lastT = 0;
     let pointerId = null;
-    let baseLeft = 0, baseTop = 0, baseW = 0, baseH = 0;
+    let baseLeft = 0,
+      baseTop = 0,
+      baseW = 0,
+      baseH = 0;
 
     function captureBase() {
       const r = card.getBoundingClientRect();
@@ -42,10 +49,22 @@ export function setupCardPhysics() {
       const maxTx = heroR.width - baseLeft - baseW;
       const minTy = -baseTop;
       const maxTy = heroR.height - baseTop - baseH;
-      if (tx < minTx) { tx = minTx; vx = -vx * WALL_BOUNCE; }
-      if (tx > maxTx) { tx = maxTx; vx = -vx * WALL_BOUNCE; }
-      if (ty < minTy) { ty = minTy; vy = -vy * WALL_BOUNCE; }
-      if (ty > maxTy) { ty = maxTy; vy = -vy * WALL_BOUNCE; }
+      if (tx < minTx) {
+        tx = minTx;
+        vx = -vx * WALL_BOUNCE;
+      }
+      if (tx > maxTx) {
+        tx = maxTx;
+        vx = -vx * WALL_BOUNCE;
+      }
+      if (ty < minTy) {
+        ty = minTy;
+        vy = -vy * WALL_BOUNCE;
+      }
+      if (ty > maxTy) {
+        ty = maxTy;
+        vy = -vy * WALL_BOUNCE;
+      }
     }
 
     function bounceStep() {
@@ -57,7 +76,8 @@ export function setupCardPhysics() {
       vy *= DECAY;
       setOffset();
       if (Math.abs(vx) < STOP_EPS && Math.abs(vy) < STOP_EPS) {
-        vx = 0; vy = 0;
+        vx = 0;
+        vy = 0;
         raf = 0;
         return;
       }
@@ -69,14 +89,22 @@ export function setupCardPhysics() {
       e.preventDefault();
       isDragging = true;
       pointerId = e.pointerId;
-      try { card.setPointerCapture(pointerId); } catch (err) { /* ignore */ }
-      if (raf) { cancelAnimationFrame(raf); raf = 0; }
+      try {
+        card.setPointerCapture(pointerId);
+      } catch (err) {
+        /* ignore */
+      }
+      if (raf) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
       card.classList.add('is-dragging', 'has-physics');
       captureBase();
       lastX = e.clientX;
       lastY = e.clientY;
       lastT = performance.now();
-      vx = 0; vy = 0;
+      vx = 0;
+      vy = 0;
       card.style.zIndex = '5';
     });
 
@@ -103,7 +131,11 @@ export function setupCardPhysics() {
       if (!isDragging) return;
       isDragging = false;
       if (pointerId != null) {
-        try { card.releasePointerCapture(pointerId); } catch (err) { /* ignore */ }
+        try {
+          card.releasePointerCapture(pointerId);
+        } catch (err) {
+          /* ignore */
+        }
       }
       pointerId = null;
       card.classList.remove('is-dragging');
@@ -111,7 +143,8 @@ export function setupCardPhysics() {
       if (!reduceMotion() && v2 > 0.04) {
         raf = requestAnimationFrame(bounceStep);
       } else {
-        vx = 0; vy = 0;
+        vx = 0;
+        vy = 0;
       }
     }
 
@@ -122,26 +155,31 @@ export function setupCardPhysics() {
 
   // On resize, clamp any displaced card back into the hero bounds
   let resizeRaf = 0;
-  window.addEventListener('resize', () => {
-    if (resizeRaf) return;
-    resizeRaf = requestAnimationFrame(() => {
-      resizeRaf = 0;
-      const heroR = heroEl.getBoundingClientRect();
-      cards.forEach(card => {
-        if (!card.classList.contains('has-physics')) return;
-        const r = card.getBoundingClientRect();
-        let dx = 0, dy = 0;
-        if (r.left < heroR.left) dx = heroR.left - r.left;
-        if (r.right > heroR.right) dx = heroR.right - r.right;
-        if (r.top < heroR.top) dy = heroR.top - r.top;
-        if (r.bottom > heroR.bottom) dy = heroR.bottom - r.bottom;
-        if (dx || dy) {
-          const cur = card.style.getPropertyValue('--tx');
-          const cury = card.style.getPropertyValue('--ty');
-          card.style.setProperty('--tx', (parseFloat(cur) || 0) + dx + 'px');
-          card.style.setProperty('--ty', (parseFloat(cury) || 0) + dy + 'px');
-        }
+  window.addEventListener(
+    'resize',
+    () => {
+      if (resizeRaf) return;
+      resizeRaf = requestAnimationFrame(() => {
+        resizeRaf = 0;
+        const heroR = heroEl.getBoundingClientRect();
+        cards.forEach(card => {
+          if (!card.classList.contains('has-physics')) return;
+          const r = card.getBoundingClientRect();
+          let dx = 0,
+            dy = 0;
+          if (r.left < heroR.left) dx = heroR.left - r.left;
+          if (r.right > heroR.right) dx = heroR.right - r.right;
+          if (r.top < heroR.top) dy = heroR.top - r.top;
+          if (r.bottom > heroR.bottom) dy = heroR.bottom - r.bottom;
+          if (dx || dy) {
+            const cur = card.style.getPropertyValue('--tx');
+            const cury = card.style.getPropertyValue('--ty');
+            card.style.setProperty('--tx', (parseFloat(cur) || 0) + dx + 'px');
+            card.style.setProperty('--ty', (parseFloat(cury) || 0) + dy + 'px');
+          }
+        });
       });
-    });
-  }, { passive: true });
+    },
+    { passive: true },
+  );
 }

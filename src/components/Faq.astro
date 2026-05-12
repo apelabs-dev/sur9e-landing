@@ -2,119 +2,199 @@
   <div class="section-head reveal">
     <span class="eyebrow">FAQ · 5 questions</span>
     <h2>Common questions, answered.</h2>
-    <p>The objections that come up most. If something is missing, <a class="faq-contact-link" href="mailto:hello@sur9e.com">contacting us</a> is the easiest way to ask.</p>
+    <p>
+      The objections that come up most. If something is missing, <a
+        class="faq-contact-link"
+        href="mailto:hello@sur9e.com">contacting us</a
+      > is the easiest way to ask.
+    </p>
   </div>
   <div class="faq-list reveal">
     <details class="faq-item">
-      <summary>Is this just another AI resume optimizer? <span class="chev" aria-hidden="true"></span></summary>
-      <div class="faq-a">Resume optimizers run keyword matches on every posting and tell you what to bolt onto your CV. Sur9e leads with the job evaluation — does this role even deserve an application? For the ones that do, Sur9e will also tailor a CV for that specific posting, grounded in real experience and the role's actual signals. Score the job first, write to it second.</div>
+      <summary
+        >Is this just another AI resume optimizer? <span
+          class="chev"
+          aria-hidden="true"></span></summary
+      >
+      <div class="faq-a">
+        Resume optimizers run keyword matches on every posting and tell you what
+        to bolt onto your CV. Sur9e leads with the job evaluation — does this
+        role even deserve an application? For the ones that do, Sur9e will also
+        tailor a CV for that specific posting, grounded in real experience and
+        the role's actual signals. Score the job first, write to it second.
+      </div>
     </details>
     <details class="faq-item">
-      <summary>Does Sur9e auto-apply for me? <span class="chev" aria-hidden="true"></span></summary>
-      <div class="faq-a">Never. By design. Auto-application has a 2% callback rate and 53% of hiring managers reject obviously-AI applications. The Sur9e bet is the opposite direction: fewer applications, better fit, warmer paths.</div>
+      <summary
+        >Does Sur9e auto-apply for me? <span class="chev" aria-hidden="true"
+        ></span></summary
+      >
+      <div class="faq-a">
+        Never. By design. Auto-application has a 2% callback rate and 53% of
+        hiring managers reject obviously-AI applications. The Sur9e bet is the
+        opposite direction: fewer applications, better fit, warmer paths.
+      </div>
     </details>
     <details class="faq-item">
-      <summary>What data does Sur9e need? <span class="chev" aria-hidden="true"></span></summary>
-      <div class="faq-a">A CV, a short profile — goals, salary floor, dealbreakers, projects worth surfacing. Roughly 10 minutes to set up. Everything stays in the account.</div>
+      <summary
+        >What data does Sur9e need? <span class="chev" aria-hidden="true"
+        ></span></summary
+      >
+      <div class="faq-a">
+        A CV, a short profile — goals, salary floor, dealbreakers, projects
+        worth surfacing. Roughly 10 minutes to set up. Everything stays in the
+        account.
+      </div>
     </details>
     <details class="faq-item">
-      <summary>When does it launch? <span class="chev" aria-hidden="true"></span></summary>
-      <div class="faq-a">Q4 2026. Joining the waitlist gets the email the day it ships.</div>
+      <summary
+        >When does it launch? <span class="chev" aria-hidden="true"
+        ></span></summary
+      >
+      <div class="faq-a">
+        Q4 2026. Joining the waitlist gets the email the day it ships.
+      </div>
     </details>
     <details class="faq-item">
-      <summary>Is it really free? <span class="chev" aria-hidden="true"></span></summary>
-      <div class="faq-a">Yes, at launch. The free tier covers job evaluation. Paid tiers come later for power users — the free tier stays.</div>
+      <summary
+        >Is it really free? <span class="chev" aria-hidden="true"
+        ></span></summary
+      >
+      <div class="faq-a">
+        Yes, at launch. The free tier covers job evaluation. Paid tiers come
+        later for power users — the free tier stays.
+      </div>
     </details>
   </div>
 </section>
 
 <style is:global>
-/* ============== FAQ (dark, sits between Backstory and Waitlist) ============== */
-.faq {
-  background: linear-gradient(180deg, #0a0a0b 0%, #131110 60%, #1a1411 100%);
-  color: var(--text-dark);
-  padding: 96px 24px;
-  border-top: 1px solid var(--border-dark-faint);
-  position: relative;
-  overflow: hidden;
-}
-.faq::before {
-  content: "";
-  position: absolute; inset: 0;
-  background: radial-gradient(60% 50% at 50% 0%, rgba(255,106,51,0.07), transparent 70%);
-  pointer-events: none;
-}
-.faq .section-head { position: relative; z-index: 1; margin: 0 auto 48px; }
-.faq .section-head h2 { color: var(--text-dark); font-size: 36px; }
-.faq .section-head p { color: var(--text-dark-2); }
-.faq-contact-link {
-  color: var(--accent);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-  transition: color var(--dur-quick);
-}
-.faq-contact-link:hover { color: var(--accent-dark-t); }
-.faq-list {
-  position: relative; z-index: 1;
-  max-width: 720px;
-  margin: 0 auto;
-  border-top: 1px solid var(--border-dark-faint);
-}
-.faq-item {
-  border-bottom: 1px solid var(--border-dark-faint);
-}
-.faq-item summary {
-  list-style: none;
-  cursor: pointer;
-  padding: 22px 8px;
-  font-family: var(--font-display);
-  font-size: 17px;
-  font-weight: 500;
-  color: var(--text-dark);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  transition: color var(--dur-quick);
-}
-.faq-item summary::-webkit-details-marker { display: none; }
-.faq-item summary::marker { display: none; content: ''; }
-.faq-item summary:hover { color: var(--accent); }
-.faq-item .chev {
-  width: 12px; height: 12px;
-  flex-shrink: 0;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
-  transform: rotate(45deg);
-  transition: transform var(--dur-base) var(--ease-calm);
-  opacity: 0.5;
-  margin-bottom: 3px;
-}
-.faq-item[open] .chev {
-  transform: rotate(-135deg);
-  margin-top: 3px; margin-bottom: 0;
-}
-.faq-item .faq-a {
-  padding: 0 8px 24px;
-  font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.65;
-  color: var(--text-dark-muted);
-  max-width: 64ch;
-}
-@media (max-width: 720px) {
-  .faq { padding: 64px 16px; }
-  .faq .section-head h2 { font-size: 26px; }
-  .faq-item summary { font-size: 15.5px; padding: 18px 6px; }
-  .faq-item .faq-a { font-size: 14.5px; padding: 0 6px 20px; }
-}
+  /* ============== FAQ (dark, sits between Backstory and Waitlist) ============== */
+  .faq {
+    background: linear-gradient(180deg, #0a0a0b 0%, #131110 60%, #1a1411 100%);
+    color: var(--text-dark);
+    padding: 96px 24px;
+    border-top: 1px solid var(--border-dark-faint);
+    position: relative;
+    overflow: hidden;
+  }
+  .faq::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      60% 50% at 50% 0%,
+      rgba(255, 106, 51, 0.07),
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+  .faq .section-head {
+    position: relative;
+    z-index: 1;
+    margin: 0 auto 48px;
+  }
+  .faq .section-head h2 {
+    color: var(--text-dark);
+    font-size: 36px;
+  }
+  .faq .section-head p {
+    color: var(--text-dark-2);
+  }
+  .faq-contact-link {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color var(--dur-quick);
+  }
+  .faq-contact-link:hover {
+    color: var(--accent-dark-t);
+  }
+  .faq-list {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    border-top: 1px solid var(--border-dark-faint);
+  }
+  .faq-item {
+    border-bottom: 1px solid var(--border-dark-faint);
+  }
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 22px 8px;
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--text-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    transition: color var(--dur-quick);
+  }
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-item summary::marker {
+    display: none;
+    content: '';
+  }
+  .faq-item summary:hover {
+    color: var(--accent);
+  }
+  .faq-item .chev {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform var(--dur-base) var(--ease-calm);
+    opacity: 0.5;
+    margin-bottom: 3px;
+  }
+  .faq-item[open] .chev {
+    transform: rotate(-135deg);
+    margin-top: 3px;
+    margin-bottom: 0;
+  }
+  .faq-item .faq-a {
+    padding: 0 8px 24px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text-dark-muted);
+    max-width: 64ch;
+  }
+  @media (max-width: 720px) {
+    .faq {
+      padding: 64px 16px;
+    }
+    .faq .section-head h2 {
+      font-size: 26px;
+    }
+    .faq-item summary {
+      font-size: 15.5px;
+      padding: 18px 6px;
+    }
+    .faq-item .faq-a {
+      font-size: 14.5px;
+      padding: 0 6px 20px;
+    }
+  }
 
-/* FAQ section-head responsive scale (overrides shared .section-head h2 rule) */
-@media (max-width: 1024px) {
-  .faq .section-head h2 { font-size: 30px; }
-}
-@media (max-width: 720px) {
-  .faq .section-head h2 { font-size: 24px; }
-}
+  /* FAQ section-head responsive scale (overrides shared .section-head h2 rule) */
+  @media (max-width: 1024px) {
+    .faq .section-head h2 {
+      font-size: 30px;
+    }
+  }
+  @media (max-width: 720px) {
+    .faq .section-head h2 {
+      font-size: 24px;
+    }
+  }
 </style>

@@ -9,9 +9,17 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint": "biome check .",
+    "format": "biome format --write . && prettier --write '*.{html,md,yml}' '.github/**/*.yml' 'src/**/*.{astro,css}'",
+    "format:check": "biome format . && prettier --check '*.{html,md,yml}' '.github/**/*.yml' 'src/**/*.{astro,css}'"
   },
   "dependencies": {
     "astro": "^6.3.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.15",
+    "prettier": "^3.8.3",
+    "prettier-plugin-astro": "^0.14.1"
   }
 }

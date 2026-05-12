@@ -1,47 +1,44 @@
 ---
-import Base from '../layouts/Base.astro';
-import Nav from '../components/Nav.astro';
+import Backstory from '../components/Backstory.astro';
+import Compare from '../components/Compare.astro';
+import Faq from '../components/Faq.astro';
+import Features from '../components/Features.astro';
+import Footer from '../components/Footer.astro';
 import Hero from '../components/Hero.astro';
 import HowItWorks from '../components/HowItWorks.astro';
-import Features from '../components/Features.astro';
-import Compare from '../components/Compare.astro';
-import Backstory from '../components/Backstory.astro';
-import Faq from '../components/Faq.astro';
+import Nav from '../components/Nav.astro';
 import Waitlist from '../components/Waitlist.astro';
-import Footer from '../components/Footer.astro';
+import Base from '../layouts/Base.astro';
 ---
+
 <Base>
-<a class="skip-link" href="#top">Skip to content</a>
+  <a class="skip-link" href="#top">Skip to content</a>
 
-<!-- ============== NAV (merged from v2) ============== -->
-<Nav />
+  <!-- ============== NAV (merged from v2) ============== -->
+  <Nav />
 
+  <main id="main">
+    <!-- ============== SECTION 1 · HERO ============== -->
+    <Hero />
 
-<main id="main">
+    <!-- ============== SECTION 2 · HOW IT WORKS ============== -->
+    <HowItWorks />
 
-<!-- ============== SECTION 1 · HERO ============== -->
-<Hero />
+    <!-- ============== SECTION 3 · FEATURES ============== -->
+    <Features />
 
-<!-- ============== SECTION 2 · HOW IT WORKS ============== -->
-<HowItWorks />
+    <!-- ============== SECTION 4A · COMPARISON ============== -->
+    <Compare />
 
+    <!-- ============== SECTION 4B · VOC ============== -->
+    <Backstory />
 
-<!-- ============== SECTION 3 · FEATURES ============== -->
-<Features />
+    <!-- ============== SECTION 4C · FAQ ============== -->
+    <Faq />
 
-<!-- ============== SECTION 4A · COMPARISON ============== -->
-<Compare />
+    <!-- ============== SECTION 5 · WAITLIST + FOOTER ============== -->
+    <Waitlist />
+  </main>
 
-<!-- ============== SECTION 4B · VOC ============== -->
-<Backstory />
-
-<!-- ============== SECTION 4C · FAQ ============== -->
-<Faq />
-
-<!-- ============== SECTION 5 · WAITLIST + FOOTER ============== -->
-<Waitlist />
-
-</main>
-
-<Footer />
+  <Footer />
 </Base>

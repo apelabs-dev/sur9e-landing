@@ -48,11 +48,11 @@
   --accent-dark-soft: #2a1609;
   --accent-dark-t: #ff8551;
 
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 2px 8px rgba(0,0,0,0.05);
-  --shadow-lg: 0 14px 50px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.04);
-  --shadow-popover: 0 12px 28px -8px rgba(0,0,0,0.18);
-  --shadow-modal: 0 24px 48px -16px rgba(0,0,0,0.18);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 14px 50px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-popover: 0 12px 28px -8px rgba(0, 0, 0, 0.18);
+  --shadow-modal: 0 24px 48px -16px rgba(0, 0, 0, 0.18);
 
   --tier-low: #d68a7e;
   --tier-mid: #d8b97a;
@@ -73,11 +73,23 @@
   --dur-deliberate: 480ms;
 }
 
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-tap-highlight-color: rgba(255, 90, 31, 0.18); }
-a, button, summary, [role="button"] { touch-action: manipulation; }
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: rgba(255, 90, 31, 0.18);
+}
+a,
+button,
+summary,
+[role="button"] {
+  touch-action: manipulation;
+}
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 /* Focus-visible — keyboard users can always see where they are. */
@@ -125,15 +137,23 @@ a, button, summary, [role="button"] { touch-action: manipulation; }
   text-decoration: none;
   transition: top var(--dur-quick);
 }
-.skip-link:focus { top: 12px; outline: 2px solid #fff; outline-offset: 2px; }
+.skip-link:focus {
+  top: 12px;
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
 body {
   margin: 0;
   background: var(--bg);
   background-image:
-    radial-gradient(rgba(31,29,26,0.055) 1px, transparent 1.4px),
-    radial-gradient(rgba(31,29,26,0.035) 1px, transparent 1.2px);
-  background-size: 28px 28px, 9px 9px;
-  background-position: 0 0, 4px 4px;
+    radial-gradient(rgba(31, 29, 26, 0.055) 1px, transparent 1.4px),
+    radial-gradient(rgba(31, 29, 26, 0.035) 1px, transparent 1.2px);
+  background-size:
+    28px 28px,
+    9px 9px;
+  background-position:
+    0 0,
+    4px 4px;
   color: var(--text);
   font-family: var(--font-body);
   font-size: 15px;
@@ -141,10 +161,20 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-a { color: inherit; text-decoration: none; }
-img { display: block; max-width: 100%; }
+a {
+  color: inherit;
+  text-decoration: none;
+}
+img {
+  display: block;
+  max-width: 100%;
+}
 
-.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
 
 /* =====================================================================
    Buttons — primitives shared across components (Hero, HowItWorks, etc.)
@@ -160,7 +190,11 @@ img { display: block; max-width: 100%; }
   padding: 14px 24px;
   cursor: pointer;
   border: 1px solid transparent;
-  transition: background var(--dur-quick), border-color var(--dur-quick), color var(--dur-quick), box-shadow var(--dur-quick);
+  transition:
+    background var(--dur-quick),
+    border-color var(--dur-quick),
+    color var(--dur-quick),
+    box-shadow var(--dur-quick);
   white-space: nowrap;
 }
 .btn-primary {
@@ -187,132 +221,368 @@ img { display: block; max-width: 100%; }
    Keyframes — global names referenced from multiple components
 ===================================================================== */
 @keyframes segFill1 {
-  0%   { inset: 0 100% 0 0; }
-  30%  { inset: 0 0 0 0; }
-  100% { inset: 0 0 0 0; }
+  0% {
+    inset: 0 100% 0 0;
+  }
+  30% {
+    inset: 0 0 0 0;
+  }
+  100% {
+    inset: 0 0 0 0;
+  }
 }
 @keyframes segFill2 {
-  0%, 33% { inset: 0 100% 0 0; }
-  63%     { inset: 0 0 0 0; }
-  100%    { inset: 0 0 0 0; }
+  0%,
+  33% {
+    inset: 0 100% 0 0;
+  }
+  63% {
+    inset: 0 0 0 0;
+  }
+  100% {
+    inset: 0 0 0 0;
+  }
 }
 @keyframes segFill3 {
-  0%, 66% { inset: 0 100% 0 0; }
-  96%     { inset: 0 0 0 0; }
-  100%    { inset: 0 0 0 0; }
+  0%,
+  66% {
+    inset: 0 100% 0 0;
+  }
+  96% {
+    inset: 0 0 0 0;
+  }
+  100% {
+    inset: 0 0 0 0;
+  }
 }
 @keyframes cursorMove {
-  0%, 4%   { opacity: 0;   left: 32%; top: 72%; }
-  9%       { opacity: 1;   left: 34%; top: 60%; }
-  19%      { opacity: 1;   left: 80.5%; top: 55.2%; }
-  23%      { opacity: 1;   left: 80.5%; top: 55.2%; }
-  24%      { opacity: 0;   left: 80.5%; top: 55.2%; }
-  100%     { opacity: 0;   left: 80.5%; top: 55.2%; }
+  0%,
+  4% {
+    opacity: 0;
+    left: 32%;
+    top: 72%;
+  }
+  9% {
+    opacity: 1;
+    left: 34%;
+    top: 60%;
+  }
+  19% {
+    opacity: 1;
+    left: 80.5%;
+    top: 55.2%;
+  }
+  23% {
+    opacity: 1;
+    left: 80.5%;
+    top: 55.2%;
+  }
+  24% {
+    opacity: 0;
+    left: 80.5%;
+    top: 55.2%;
+  }
+  100% {
+    opacity: 0;
+    left: 80.5%;
+    top: 55.2%;
+  }
 }
 @keyframes cursorClickRing {
-  0%, 21%   { opacity: 0; transform: scale(0); }
-  23%       { opacity: 1; transform: scale(1); }
-  26%       { opacity: 0; transform: scale(4); }
-  100%      { opacity: 0; transform: scale(4); }
+  0%,
+  21% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  23% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  26% {
+    opacity: 0;
+    transform: scale(4);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(4);
+  }
 }
 @keyframes phase1 {
-  0%, 25% { opacity: 1; }
-  28%, 100% { opacity: 0; }
+  0%,
+  25% {
+    opacity: 1;
+  }
+  28%,
+  100% {
+    opacity: 0;
+  }
 }
 @keyframes phase2 {
-  0%, 24% { opacity: 0; }
-  28%, 60% { opacity: 1; }
-  64%, 100% { opacity: 0; }
+  0%,
+  24% {
+    opacity: 0;
+  }
+  28%,
+  60% {
+    opacity: 1;
+  }
+  64%,
+  100% {
+    opacity: 0;
+  }
 }
 @keyframes phase3 {
-  0%, 60% { opacity: 0; transform: translateY(8px); }
-  64%, 95% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(0); }
+  0%,
+  60% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  64%,
+  95% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
 }
 @keyframes radarReveal {
-  0%, 63% { opacity: 0; transform: scale(0.85); }
-  72%, 95% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(1); }
+  0%,
+  63% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  72%,
+  95% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
 }
 @keyframes typing8 {
-  0%, 3% { width: 0; }
-  22% { width: 100%; }
-  100% { width: 100%; }
+  0%,
+  3% {
+    width: 0;
+  }
+  22% {
+    width: 100%;
+  }
+  100% {
+    width: 100%;
+  }
 }
 @keyframes hidePlaceholder8 {
-  0%, 3% { opacity: 1; }
-  5%, 100% { opacity: 0; }
+  0%,
+  3% {
+    opacity: 1;
+  }
+  5%,
+  100% {
+    opacity: 0;
+  }
 }
 @keyframes blink {
-  50% { opacity: 0; }
+  50% {
+    opacity: 0;
+  }
 }
 @keyframes pulse8 {
-  0%, 20% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,90,31,0.45); }
-  23% { transform: scale(1.06); box-shadow: 0 0 0 10px rgba(255,90,31,0); }
-  26%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,90,31,0); }
+  0%,
+  20% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 90, 31, 0.45);
+  }
+  23% {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 10px rgba(255, 90, 31, 0);
+  }
+  26%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 90, 31, 0);
+  }
 }
 @keyframes focusGlow {
-  0%, 18% { box-shadow: 0 0 0 0 rgba(255,90,31,0); border-color: var(--border-dark); }
-  22%, 28% { box-shadow: 0 0 0 3px rgba(255,90,31,0.18); border-color: var(--accent); }
-  32%, 100% { box-shadow: 0 0 0 0 rgba(255,90,31,0); border-color: var(--border-dark); }
+  0%,
+  18% {
+    box-shadow: 0 0 0 0 rgba(255, 90, 31, 0);
+    border-color: var(--border-dark);
+  }
+  22%,
+  28% {
+    box-shadow: 0 0 0 3px rgba(255, 90, 31, 0.18);
+    border-color: var(--accent);
+  }
+  32%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 90, 31, 0);
+    border-color: var(--border-dark);
+  }
 }
 @keyframes loaderFill8 {
-  0%, 25% { width: 0%; }
-  60% { width: 100%; }
-  100% { width: 100%; }
+  0%,
+  25% {
+    width: 0%;
+  }
+  60% {
+    width: 100%;
+  }
+  100% {
+    width: 100%;
+  }
 }
 @keyframes pulseDot {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.1); }
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 }
 @keyframes phaseProgress {
-  0%, 24% { color: var(--text-dark-muted); opacity: 0.35; }
-  25%, 39% { color: var(--text-dark); opacity: 1; }
-  40%, 100% { color: var(--tier-high); opacity: 0.5; }
+  0%,
+  24% {
+    color: var(--text-dark-muted);
+    opacity: 0.35;
+  }
+  25%,
+  39% {
+    color: var(--text-dark);
+    opacity: 1;
+  }
+  40%,
+  100% {
+    color: var(--tier-high);
+    opacity: 0.5;
+  }
 }
 @keyframes phaseProgress2 {
-  0%, 39% { color: var(--text-dark-muted); opacity: 0.35; }
-  40%, 54% { color: var(--text-dark); opacity: 1; }
-  55%, 100% { color: var(--tier-high); opacity: 0.5; }
+  0%,
+  39% {
+    color: var(--text-dark-muted);
+    opacity: 0.35;
+  }
+  40%,
+  54% {
+    color: var(--text-dark);
+    opacity: 1;
+  }
+  55%,
+  100% {
+    color: var(--tier-high);
+    opacity: 0.5;
+  }
 }
 @keyframes phaseProgress3 {
-  0%, 54% { color: var(--text-dark-muted); opacity: 0.35; }
-  55%, 69% { color: var(--text-dark); opacity: 1; }
-  70%, 100% { color: var(--tier-high); opacity: 0.5; }
+  0%,
+  54% {
+    color: var(--text-dark-muted);
+    opacity: 0.35;
+  }
+  55%,
+  69% {
+    color: var(--text-dark);
+    opacity: 1;
+  }
+  70%,
+  100% {
+    color: var(--tier-high);
+    opacity: 0.5;
+  }
 }
 @keyframes phaseProgress4 {
-  0%, 69% { color: var(--text-dark-muted); opacity: 0.35; }
-  70%, 90% { color: var(--text-dark); opacity: 1; }
-  91%, 100% { color: var(--tier-high); opacity: 0.5; }
+  0%,
+  69% {
+    color: var(--text-dark-muted);
+    opacity: 0.35;
+  }
+  70%,
+  90% {
+    color: var(--text-dark);
+    opacity: 1;
+  }
+  91%,
+  100% {
+    color: var(--tier-high);
+    opacity: 0.5;
+  }
 }
 @keyframes float-orb {
-  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.55; }
-  50% { transform: translate(20px, -30px) scale(1.08); opacity: 0.8; }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate(20px, -30px) scale(1.08);
+    opacity: 0.8;
+  }
 }
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 @keyframes drift {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 @keyframes ringPulse {
-  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--tier) 35%, transparent); }
-  50%      { box-shadow: 0 0 0 8px transparent; }
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--tier) 35%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 8px transparent;
+  }
 }
 @keyframes countUpFade {
-  from { opacity: 0; transform: translateY(8px) scale(0.96); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 @keyframes orbitDot {
-  from { transform: rotate(0deg) translateX(56px) rotate(0deg); }
-  to { transform: rotate(360deg) translateX(56px) rotate(-360deg); }
+  from {
+    transform: rotate(0deg) translateX(56px) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(56px) rotate(-360deg);
+  }
 }
-@keyframes fcardIn { to { opacity: 0.7; transform: translateY(0) rotate(var(--rot, 0deg)); } }
+@keyframes fcardIn {
+  to {
+    opacity: 0.7;
+    transform: translateY(0) rotate(var(--rot, 0deg));
+  }
+}
 @keyframes fdrift {
-  0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
-  50% { transform: translateY(-10px) rotate(var(--rot, 0deg)); }
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--rot, 0deg));
+  }
+  50% {
+    transform: translateY(-10px) rotate(var(--rot, 0deg));
+  }
 }
 
 /* =====================================================================
@@ -323,7 +593,10 @@ img { display: block; max-width: 100%; }
   margin: 0 auto 64px;
   text-align: center;
 }
-.section-head .eyebrow { margin-bottom: 20px; display: inline-block; }
+.section-head .eyebrow {
+  margin-bottom: 20px;
+  display: inline-block;
+}
 .section-head h2 {
   font-family: var(--font-display);
   font-size: 44px;
@@ -344,11 +617,16 @@ img { display: block; max-width: 100%; }
 }
 
 .features-head h2 .accent,
-.section-head h2 .accent { color: var(--accent); }
+.section-head h2 .accent {
+  color: var(--accent);
+}
 /* Generic body highlight — use on words/phrases inside <p>, <li>, etc. */
 .feature-copy p .accent,
 .compare-wrap p .accent,
-.section p .accent { color: var(--accent); font-weight: 500; }
+.section p .accent {
+  color: var(--accent);
+  font-weight: 500;
+}
 
 /* =====================================================================
    Brand-book §02 override · mono is for code/URLs/file paths only.
@@ -403,7 +681,9 @@ img { display: block; max-width: 100%; }
 .reveal {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 600ms var(--ease-calm), transform 600ms var(--ease-calm);
+  transition:
+    opacity 600ms var(--ease-calm),
+    transform 600ms var(--ease-calm);
 }
 .reveal.in {
   opacity: 1;
@@ -411,7 +691,9 @@ img { display: block; max-width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
