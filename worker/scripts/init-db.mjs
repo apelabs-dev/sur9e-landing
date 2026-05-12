@@ -2,8 +2,8 @@
 // sur9e-mvp/docs/strategy.md §18 to the Railway Postgres.
 // Run once: `node scripts/init-db.mjs`
 import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import postgres from 'postgres';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -13,8 +13,8 @@ const envText = readFileSync(join(__dirname, '..', '.dev.vars'), 'utf8');
 const env = Object.fromEntries(
   envText
     .split('\n')
-    .filter((l) => l.trim() && !l.trim().startsWith('#'))
-    .map((l) => {
+    .filter(l => l.trim() && !l.trim().startsWith('#'))
+    .map(l => {
       const i = l.indexOf('=');
       return [l.slice(0, i).trim(), l.slice(i + 1).trim()];
     }),
@@ -58,7 +58,9 @@ try {
   `;
   console.log('Schema:');
   for (const c of cols) {
-    console.log(`  ${c.column_name.padEnd(14)} ${c.data_type.padEnd(28)} ${c.is_nullable === 'NO' ? 'NOT NULL' : ''}`);
+    console.log(
+      `  ${c.column_name.padEnd(14)} ${c.data_type.padEnd(28)} ${c.is_nullable === 'NO' ? 'NOT NULL' : ''}`,
+    );
   }
 } catch (err) {
   console.error('Failed:', err.message);
