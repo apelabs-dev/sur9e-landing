@@ -154,48 +154,4 @@
   }, { threshold: 0.4 });
   document.querySelectorAll('.voc-stat .num').forEach(el => vocObserver.observe(el));
 
-  // Feature shots: count-up for report score + pipeline funnel counts
-  function countUpTextNode(textNode, target, dur, decimals) {
-    const start = performance.now();
-    function tick(now) {
-      const t = Math.min(1, (now - start) / dur);
-      const eased = 1 - Math.pow(1 - t, 3);
-      const v = target * eased;
-      textNode.nodeValue = decimals ? v.toFixed(decimals) : String(Math.round(v));
-      if (t < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }
-  const shotObserver = new IntersectionObserver(entries => {
-    entries.forEach(en => {
-      if (!en.isIntersecting) return;
-      const shot = en.target;
-      // F1: report score — first text node holds the number (e.g. "4.4"), denom span follows
-      const reportScore = shot.querySelector('.shot-report .score-num');
-      if (reportScore && !reportScore.dataset.animated) {
-        const node = reportScore.firstChild;
-        if (node && node.nodeType === Node.TEXT_NODE) {
-          const target = parseFloat(node.nodeValue);
-          if (!isNaN(target)) {
-            reportScore.dataset.animated = '1';
-            countUpTextNode(node, target, 1400, 1);
-          }
-        }
-      }
-      // F3: funnel counts (whole numbers)
-      shot.querySelectorAll('.shot-pipeline .fstep .v').forEach((el, i) => {
-        if (el.dataset.animated) return;
-        const target = parseInt(el.textContent.trim(), 10);
-        const node = el.firstChild;
-        if (!isNaN(target) && node && node.nodeType === Node.TEXT_NODE) {
-          el.dataset.animated = '1';
-          const dur = 900 + i * 180;
-          setTimeout(() => countUpTextNode(node, target, dur, 0), 320 + i * 120);
-        }
-      });
-      shotObserver.unobserve(shot);
-    });
-  }, { threshold: 0.25 });
-  document.querySelectorAll('.feature-shot').forEach(shot => shotObserver.observe(shot));
-
 })();

@@ -1,0 +1,386 @@
+---
+import FeatureShotReport from './FeatureShotReport.astro';
+import FeatureShotOutreach from './FeatureShotOutreach.astro';
+import FeatureShotPipeline from './FeatureShotPipeline.astro';
+import FeatureShotPrep from './FeatureShotPrep.astro';
+---
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="section-head features-head reveal">
+      <span class="eyebrow">Not another job search tool</span>
+      <h2>Other tools fix resumes.<br /><span class="accent">Sur9e scores the job.</span></h2>
+      <p>Keyword matchers check if a resume fits a JD. Sur9e checks if the role is worth the time — against career history, goals, and dealbreakers.</p>
+    </div>
+
+    <div class="feature-list">
+
+      <!-- F1: Evaluate -->
+      <article class="feature reveal tier-low">
+        <div class="feature-copy">
+          <div class="feature-icon g1" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14 16 10"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></div>
+          <h3>Reasoning you can read, <em>not a match percentage</em></h3>
+          <p>Every role scored across <span class="accent">10 weighted dimensions</span> against the CV, projects, and career signals. Full reasoning for why it fits — or doesn't. Not "78% match."</p>
+          <div class="tag-row">
+            <span class="pill">10 dimensions</span>
+            <span class="pill">Comp analysis</span>
+            <span class="pill">Dealbreaker flags</span>
+            <span class="pill">Archetype detection</span>
+          </div>
+        </div>
+        <div class="feature-shot">
+          <FeatureShotReport />
+        </div>
+      </article>
+
+      <!-- F2: Connect -->
+      <article class="feature flip reveal tier-mid">
+        <div class="feature-copy">
+          <div class="feature-icon g2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7" r="4"/><path d="M10.3 15H7a4 4 0 0 0-4 4v2"/><circle cx="17" cy="17" r="3"/><path d="m21 21-1.9-1.9"/></svg></div>
+          <h3>Find <em>the person</em> behind the posting</h3>
+          <p>Every open role gets buried under <span style="color: var(--score-low)">400+</span> resumes nobody reads. Sur9e skips the pile — finds the hiring manager and drafts the warm intro, grounded in real experience, not a template.</p>
+          <div class="tag-row">
+            <span class="pill">HM discovery</span>
+            <span class="pill">LinkedIn outreach</span>
+            <span class="pill">Warm-path messaging</span>
+          </div>
+        </div>
+        <div class="feature-shot">
+          <FeatureShotOutreach />
+        </div>
+      </article>
+
+      <!-- F3: Track -->
+      <article class="feature reveal tier-high">
+        <div class="feature-copy">
+          <div class="feature-icon g3" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 7v7"/><path d="M12 7v4"/><path d="M16 7v9"/></svg></div>
+          <h3>Score from <em>any job page</em>. Track everything.</h3>
+          <p>Chrome extension scores roles on LinkedIn, Greenhouse, Lever, Indeed. Every score flows into the pipeline. Kanban tracker, follow-up alerts, rejection-pattern detection. <span class="accent">No spreadsheets.</span></p>
+          <div class="tag-row">
+            <span class="pill">Chrome extension</span>
+            <span class="pill">Pipeline inbox</span>
+            <span class="pill">Kanban tracker</span>
+            <span class="pill">Follow-ups</span>
+          </div>
+        </div>
+        <div class="feature-shot">
+          <FeatureShotPipeline />
+        </div>
+      </article>
+
+      <!-- F4: Prep -->
+      <article class="feature flip reveal tier-accent">
+        <div class="feature-copy">
+          <div class="feature-icon g4" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V7"/><path d="m16 12 2 2 4-4"/><path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"/></svg></div>
+          <h3>Walk in <em>ready</em>, not nervous</h3>
+          <p>Custom cheat sheets for every interview round — technical, behavioral, hiring manager. Built against real projects, the company's interview loop, and a personal story bank. <span class="accent">The competitors don't go this deep.</span></p>
+          <div class="tag-row">
+            <span class="pill">Interview prep</span>
+            <span class="pill">STAR stories</span>
+            <span class="pill">Company research</span>
+            <span class="pill">Rejection patterns</span>
+          </div>
+        </div>
+        <div class="feature-shot">
+          <FeatureShotPrep />
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<style is:global>
+/* =====================================================================
+   Section 3: Feature Teasers (light)
+===================================================================== */
+.features {
+  padding: 96px 24px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.features::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(to right, rgba(31, 29, 26, 0.045) 1px, transparent 1px);
+  background-size: 64px 100%;
+  background-position: 24px 0;
+  opacity: 1;
+  z-index: 0;
+}
+.features-head h2 {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin: 0 0 14px;
+  text-wrap: balance;
+}
+.features-head h2 .accent { color: var(--accent); }
+.features-head p {
+  font-size: 17px;
+  color: var(--text-3);
+  line-height: 1.55;
+  max-width: 620px;
+  margin: 0 auto;
+  text-wrap: pretty;
+}
+.features-head { text-align: center; margin-bottom: 24px; padding-bottom: 64px; }
+.features-head h2 { margin-left: auto; margin-right: auto; max-width: 880px; }
+.features-head p { margin-left: auto; margin-right: auto; max-width: 620px; }
+
+/* === Features — editorial numbered slabs === */
+.feature-list {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  counter-reset: feat;
+  border-top: 1px solid var(--border);
+}
+.feature {
+  counter-increment: feat;
+  position: relative;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 0.82fr) minmax(0, 1.18fr);
+  column-gap: 48px;
+  row-gap: 28px;
+  align-items: start;
+  padding: 88px 0 96px;
+  border-bottom: 1px solid var(--border);
+}
+.feature::before {
+  content: "0" counter(feat);
+  grid-column: 1;
+  grid-row: 1 / span 3;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  padding-top: 14px;
+  position: relative;
+}
+.feature::after { display: none; }
+.feature.flip { grid-template-columns: 96px minmax(0, 0.82fr) minmax(0, 1.18fr); }
+.feature.flip .feature-copy { order: 0; }
+.feature.flip .feature-shot { order: 0; }
+.feature-copy { grid-column: 2; grid-row: 1; padding-top: 4px; }
+.feature-shot { grid-column: 3; grid-row: 1 / span 3; align-self: center; position: relative; }
+.feature-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-bottom: 22px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  transition:
+    color 520ms var(--ease-calm),
+    border-color 520ms var(--ease-calm),
+    transform 520ms var(--ease-calm),
+    box-shadow 520ms var(--ease-calm);
+  will-change: transform;
+  position: relative;
+}
+.feature-icon svg { width: 22px; height: 22px; display: block; }
+.feature-icon svg .acc { stroke: currentColor; }
+.feature.tier-low    .feature-icon { border-color: color-mix(in srgb, var(--tier-low)  55%, var(--border)); }
+.feature.tier-mid    .feature-icon { border-color: color-mix(in srgb, var(--tier-mid)  55%, var(--border)); }
+.feature.tier-high   .feature-icon { border-color: color-mix(in srgb, var(--tier-high) 55%, var(--border)); }
+.feature.tier-accent .feature-icon { border-color: color-mix(in srgb, var(--accent)    55%, var(--border)); }
+.feature:hover .feature-icon {
+  border-color: color-mix(in srgb, var(--hover-tier) 60%, var(--border));
+  transform: translateY(-2px);
+}
+.feature h3 {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 500;
+  letter-spacing: -0.022em;
+  line-height: 1.08;
+  margin: 0 0 18px;
+  color: var(--text);
+  text-wrap: balance;
+}
+.feature h3 em {
+  font-style: normal;
+  color: var(--hover-tier, var(--accent));
+  transition: color 320ms var(--ease-calm);
+}
+.feature {
+  --hover-tier: var(--accent);
+}
+.feature.tier-low  { --hover-tier: var(--tier-low); }
+.feature.tier-mid  { --hover-tier: var(--tier-mid); }
+.feature.tier-high { --hover-tier: var(--tier-high); }
+.feature.tier-accent { --hover-tier: var(--accent); }
+.feature.tier-low    h3 em { color: color-mix(in srgb, var(--tier-low)  78%, var(--text)); }
+.feature.tier-mid    h3 em { color: color-mix(in srgb, var(--tier-mid)  72%, var(--text)); }
+.feature.tier-high   h3 em { color: color-mix(in srgb, var(--tier-high) 62%, var(--text)); }
+.feature.tier-accent h3 em { color: var(--accent); }
+.feature-copy p {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-2);
+  margin: 0 0 24px;
+  text-wrap: pretty;
+}
+.feature-copy p .accent { color: var(--accent); font-weight: 500; }
+.tag-row {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.tag-row .pill {
+  transition: transform 160ms, background 160ms, color 160ms;
+}
+.tag-row .pill:hover { transform: translateY(-1px); }
+.pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  padding: 5px 12px 4px 9px;
+  border-radius: 999px;
+  background: transparent;
+  color: color-mix(in srgb, var(--hover-tier, var(--accent)) 75%, var(--text-2));
+  border: 1px solid color-mix(in srgb, var(--hover-tier, var(--accent)) 50%, var(--border-strong));
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.pill::before {
+  content: "";
+  display: inline-block;
+  width: 7px; height: 7px;
+  min-width: 7px; min-height: 7px;
+  border-radius: 50%;
+  background: var(--hover-tier, var(--accent));
+  flex-shrink: 0;
+  box-shadow: 0 0 0 0 var(--hover-tier, var(--accent));
+}
+
+/* Feature shot — quiet in-view entry */
+.feature-shot .shot {
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 720ms var(--ease-calm) 120ms,
+    transform 720ms var(--ease-calm) 120ms,
+    border-color 520ms var(--ease-calm),
+    box-shadow 520ms var(--ease-calm);
+}
+.feature.reveal.in .shot { opacity: 1; transform: translateY(0); }
+.feature:hover .feature-shot .shot {
+  border-color: color-mix(in srgb, var(--hover-tier) 45%, var(--border));
+}
+
+/* Reveal stagger */
+.feature.reveal.in { transition-delay: var(--rd, 0ms); }
+
+@media (max-width: 860px) {
+  .feature, .feature.flip {
+    /* minmax(0, 1fr) — default 1fr has auto min, which makes the column
+       grow to the widest unbreakable child (e.g. font-mono URL tokens),
+       overflowing the page on phones. min: 0 lets the column shrink. */
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 0;
+    row-gap: 24px;
+    padding: 56px 0 64px;
+    min-width: 0;
+  }
+  .feature::before {
+    grid-column: 1; grid-row: 1;
+    padding-top: 0;
+    margin-bottom: -8px;
+  }
+  .feature::after { display: none; }
+  .feature-copy { grid-column: 1; grid-row: 2; }
+  .feature-shot {
+    grid-column: 1; grid-row: 3;
+    align-self: stretch;
+    margin: 8px -4px 0;
+  }
+  .feature-shot .shot { max-width: 100%; }
+  .feature h3 { font-size: 28px; }
+  .feature-list { gap: 0; }
+}
+@media (max-width: 480px) {
+  .feature-shot { margin-left: 0; margin-right: 0; }
+  .feature h3 { font-size: 24px; }
+}
+
+/* Mobile/feature-shot visibility breakpoint — show .shot-m on phones, hide desktop shots */
+@media (max-width: 720px) {
+  .shot-report,
+  .shot-outreach,
+  .shot-pipeline,
+  .shot-prep { display: none; }
+  .feature-shot .shot-m { display: block; }
+}
+
+/* Responsive grid background — features variant */
+@media (max-width: 1024px) {
+  .features::before {
+    background-size: 48px 100%;
+  }
+}
+@media (max-width: 720px) {
+  .features::before {
+    background-size: 40px 100%;
+    background-position: 16px 0;
+  }
+}
+</style>
+
+<script>
+  // Feature shots: count-up for report score + pipeline funnel counts
+  function countUpTextNode(textNode, target, dur, decimals) {
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min(1, (now - start) / dur);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const v = target * eased;
+      textNode.nodeValue = decimals ? v.toFixed(decimals) : String(Math.round(v));
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  const shotObserver = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      const shot = en.target;
+      // F1: report score — first text node holds the number (e.g. "4.4"), denom span follows
+      const reportScore = shot.querySelector('.shot-report .score-num');
+      if (reportScore && !reportScore.dataset.animated) {
+        const node = reportScore.firstChild;
+        if (node && node.nodeType === Node.TEXT_NODE) {
+          const target = parseFloat(node.nodeValue);
+          if (!isNaN(target)) {
+            reportScore.dataset.animated = '1';
+            countUpTextNode(node, target, 1400, 1);
+          }
+        }
+      }
+      // F3: funnel counts (whole numbers)
+      shot.querySelectorAll('.shot-pipeline .fstep .v').forEach((el, i) => {
+        if (el.dataset.animated) return;
+        const target = parseInt(el.textContent.trim(), 10);
+        const node = el.firstChild;
+        if (!isNaN(target) && node && node.nodeType === Node.TEXT_NODE) {
+          el.dataset.animated = '1';
+          const dur = 900 + i * 180;
+          setTimeout(() => countUpTextNode(node, target, dur, 0), 320 + i * 120);
+        }
+      });
+      shotObserver.unobserve(shot);
+    });
+  }, { threshold: 0.25 });
+  document.querySelectorAll('.feature-shot').forEach(shot => shotObserver.observe(shot));
+</script>
