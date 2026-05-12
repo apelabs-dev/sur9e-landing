@@ -236,6 +236,11 @@
     .email-form button {
       width: 100%;
     }
+    /* Drop the pill outer-radius when the form stacks vertically — a tall
+       container at 999px clips the input into a stretched oval. */
+    .waitlist .email-form {
+      border-radius: var(--radius-lg);
+    }
   }
 
   /* Waitlist input focus glow */
