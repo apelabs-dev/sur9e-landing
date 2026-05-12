@@ -22,6 +22,12 @@
      Use for: button backgrounds with white text, pill badges with white text. */
   --accent-cta: #c9430f;
   --accent-cta-hover: #a83609;
+  /* Beauty-pass tokens (used by Hero aura + Waitlist glass treatments) */
+  --beauty-ember: #ff6a2a;
+  --beauty-ember-2: #ff9a62;
+  --beauty-olive: #99b884;
+  --beauty-graphite: #0d0c0b;
+  --beauty-card: rgba(255, 255, 255, 0.78);
   --score-high: #3d5d3a;
   --score-mid: #7a5f1c;
   --score-low: #8b3a30;
@@ -401,5 +407,20 @@ img { display: block; max-width: 100%; }
     font-size: 26px;
     line-height: 1.15;
     letter-spacing: -0.02em;
+  }
+}
+
+/* Beauty-pass keyframes (used by Hero aura) */
+@keyframes aura-breathe {
+  50% {
+    transform: scale(1.035);
+    border-color: rgba(255, 106, 42, 0.42);
+  }
+}
+@keyframes aura-node {
+  50% {
+    transform: translateY(-8px);
+    border-color: rgba(255, 106, 42, 0.38);
+    color: #fff8ef;
   }
 }

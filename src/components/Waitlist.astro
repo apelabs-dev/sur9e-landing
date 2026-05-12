@@ -191,6 +191,39 @@
   box-shadow: 0 0 0 3px rgba(255,90,31,0.18);
   border-color: var(--accent) !important;
 }
+
+/* ====================================================================
+   Beauty pass — radial-orb section bg + glass card container
+==================================================================== */
+.waitlist {
+  padding-top: 112px;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 106, 42, 0.18), transparent 22rem),
+    radial-gradient(circle at 84% 58%, rgba(153, 184, 132, 0.13), transparent 24rem),
+    linear-gradient(180deg, #0a0a0b 0%, #12100e 100%);
+}
+
+.waitlist-inner {
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 26px;
+  padding: clamp(34px, 6vw, 64px);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 106, 42, 0.18), transparent 20rem),
+    rgba(255, 255, 255, 0.045);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 34px 100px -48px rgba(0, 0, 0, 0.86);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Pill-shaped form elements inside the glass card */
+.waitlist .email-form {
+  border-radius: 999px;
+}
+.waitlist .email-form button {
+  border-radius: 999px;
+}
 </style>
 
 <script>
