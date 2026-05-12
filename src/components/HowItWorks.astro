@@ -41,7 +41,10 @@ import DemoFrame from './DemoFrame.astro';
 <style>
 .section {
   padding: 96px 24px;
-  background: var(--bg);
+  background:
+    radial-gradient(circle at 8% 10%, rgba(255, 90, 31, 0.08), transparent 18rem),
+    radial-gradient(circle at 90% 24%, rgba(153, 184, 132, 0.12), transparent 20rem),
+    var(--bg);
   position: relative;
   overflow: hidden;
 }

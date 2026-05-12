@@ -31,7 +31,7 @@
 <style is:global>
 /* ============== FAQ (dark, sits between Backstory and Waitlist) ============== */
 .faq {
-  background: var(--bg-dark);
+  background: linear-gradient(180deg, #0a0a0b 0%, #131110 60%, #1a1411 100%);
   color: var(--text-dark);
   padding: 96px 24px;
   border-top: 1px solid var(--border-dark-faint);
@@ -41,7 +41,7 @@
 .faq::before {
   content: "";
   position: absolute; inset: 0;
-  background: radial-gradient(60% 50% at 50% 0%, rgba(255,106,51,0.04), transparent 70%);
+  background: radial-gradient(60% 50% at 50% 0%, rgba(255,106,51,0.07), transparent 70%);
   pointer-events: none;
 }
 .faq .section-head { position: relative; z-index: 1; margin: 0 auto 48px; }
