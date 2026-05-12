@@ -334,7 +334,7 @@
       }
     };
     input.addEventListener('input', clearError);
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
       const email = input.value.trim();
       if (!email) {
@@ -349,15 +349,31 @@
       }
       clearError();
       setBusy(true);
-      // No backend wired yet — simulate latency so the busy state is visible,
-      // then show the thanks message and keep the form available for the
-      // (extremely rare) case the user wants to amend it.
-      window.setTimeout(() => {
+      try {
+        const res = await fetch('/api/waitlist', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ email, source: 'landing' }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) {
+          showError(
+            data.error || 'Something went wrong. Try again in a moment.',
+          );
+          setBusy(false);
+          return;
+        }
         setBusy(false);
         form.style.display = 'none';
         thanks.classList.add('show');
+        if (data.duplicate) {
+          thanks.textContent = "✓ You're already on the list.";
+        }
         thanks.focus && thanks.focus();
-      }, 600);
+      } catch (err) {
+        showError('Network error. Check your connection and try again.');
+        setBusy(false);
+      }
     });
   })();
 </script>
