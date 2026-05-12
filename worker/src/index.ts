@@ -76,7 +76,7 @@ function welcomeEmailHtml({ confirmUrl, unsubscribeUrl }: EmailUrls): string {
     <tr><td align="center" style="padding:40px 16px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:520px;background:#131110;border:1px solid rgba(255,255,255,0.08);border-radius:18px;">
         <tr><td style="padding:32px 32px 0;">
-          <img src="https://sur9e.com/assets/sur9e-wordmark-white.png" width="160" height="35" alt="sur9e" style="display:block;border:0;outline:none;text-decoration:none;color:#ff5a1f;font-size:26px;font-weight:700;letter-spacing:-0.025em;line-height:1;">
+          <img src="https://sur9e.com/assets/sur9e-wordmark-white.svg" width="160" height="35" alt="sur9e" style="display:block;border:0;outline:none;text-decoration:none;color:#ff5a1f;font-size:26px;font-weight:700;letter-spacing:-0.025em;line-height:1;">
           <div style="margin-top:10px;font-family:'IBM Plex Mono',Menlo,Consolas,monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#888;">Know which jobs are worth your time.</div>
         </td></tr>
         <tr><td style="padding:30px 32px 4px;">
@@ -101,7 +101,7 @@ function welcomeEmailHtml({ confirmUrl, unsubscribeUrl }: EmailUrls): string {
       </table>
       <p style="margin:18px 0 0;font-size:11px;line-height:1.6;color:#555;">
         You're getting this because you joined the waitlist at sur9e.com.<br>
-        <a href="${unsubscribeUrl}" style="color:#888;text-decoration:underline;">Unsubscribe</a> &middot; <a href="mailto:hello@send.sur9e.com" style="color:#555;text-decoration:none;">hello@send.sur9e.com</a> &middot; &copy; 2026 Sur9e
+        <a href="${unsubscribeUrl}" style="color:#888;text-decoration:underline;">Unsubscribe</a> &middot; <a href="mailto:hello@sur9e.com" style="color:#555;text-decoration:none;">hello@sur9e.com</a> &middot; &copy; 2026 Sur9e
       </p>
     </td></tr>
   </table>
@@ -153,7 +153,7 @@ async function sendConfirmationEmail(env: Env, email: string): Promise<void> {
     },
     body: JSON.stringify({
       from: 'Sur9e <hello@send.sur9e.com>',
-      reply_to: 'hello@send.sur9e.com',
+      reply_to: 'hello@sur9e.com',
       to: [email],
       subject: 'Welcome to the sur9e waitlist',
       text: welcomeEmailText(urls),
@@ -302,7 +302,7 @@ p { margin: 0 0 22px; font-size: 15px; line-height: 1.65; color: #cccccc; }
 </style>
 </head><body>
 <main>
-  <img class="wordmark" src="https://sur9e.com/assets/sur9e-wordmark-white.png" alt="sur9e" width="180" height="40">
+  <img class="wordmark" src="https://sur9e.com/assets/sur9e-wordmark-white.svg" alt="sur9e" width="180" height="40">
   <div class="eyebrow">Know which jobs are worth your time.</div>
   <section class="card">
     <div class="icon" aria-hidden="true">${opts.icon}</div>
