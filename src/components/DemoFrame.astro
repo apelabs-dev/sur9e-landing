@@ -276,12 +276,12 @@
 .demo-frame {
   max-width: 1100px;
   margin: 0 auto;
-  /* Dot-grid texture overlay (mirrors body's dotted pattern but on dark)
-     layered on top of the dark gradient. Two scales of dots create the
-     same dual-tile feel as the body bg. */
+  /* Crossed-line grid texture (matches the hero's grid) layered on top
+     of the dark gradient. Horizontal + vertical lines every 58px at very
+     low alpha. Masked to fade at the edges of the frame. */
   background:
-    radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1.4px) 0 0 / 28px 28px,
-    radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1.2px) 4px 4px / 9px 9px,
+    linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px) 0 0 / 58px 58px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.024) 1px, transparent 1px) 0 0 / 58px 58px,
     linear-gradient(180deg, #0e0d0e 0%, #151210 100%);
   border: 1px solid var(--border-dark);
   border-radius: 14px;

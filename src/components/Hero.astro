@@ -56,14 +56,34 @@
 
 <style>
 .hero {
-  background: linear-gradient(180deg, #0a0a0b 0%, #151210 100%);
+  /* Beauty-pass background: 3 radial orbs over a deeper dark gradient */
+  background:
+    radial-gradient(circle at 50% 26%, rgba(255, 106, 42, 0.22), transparent 18rem),
+    radial-gradient(circle at 18% 65%, rgba(153, 184, 132, 0.15), transparent 18rem),
+    radial-gradient(circle at 82% 68%, rgba(255, 154, 98, 0.13), transparent 17rem),
+    linear-gradient(180deg, #080808 0%, #12100e 52%, #201610 100%);
   color: var(--text-dark);
-  padding: 80px 24px 64px;
+  padding: 112px 24px 92px;
+  min-height: 100vh;
   position: relative;
   overflow: hidden;
   --mx: 50%;
   --my: 50%;
   --ha: 0;
+}
+/* Crossed-line grid texture, masked to fade at edges */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.024) 1px, transparent 1px);
+  background-size: 58px 58px;
+  -webkit-mask-image: radial-gradient(circle at 50% 44%, #000 0 38%, transparent 74%);
+          mask-image: radial-gradient(circle at 50% 44%, #000 0 38%, transparent 74%);
 }
 .hero-bridge {
   height: 80px;
