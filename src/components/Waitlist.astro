@@ -33,7 +33,10 @@
       role="status"
       aria-live="polite"
     >
-      ✓ You're on the list. We'll be in touch.
+      <span class="email-thanks-check" aria-hidden="true">✓</span>
+      <span class="email-thanks-text"
+        >You're on the list. We'll be in touch.</span
+      >
     </p>
     <ul class="waitlist-pills" aria-label="Promise">
       <li><span class="wp-check">✓</span> Free to start</li>
@@ -210,8 +213,12 @@
     display: none;
     font-family: var(--font-display);
     font-size: 14px;
-    color: var(--tier-high);
+    color: var(--accent);
     margin: 0 auto 16px;
+  }
+  .email-thanks .email-thanks-check {
+    color: var(--tier-high);
+    margin-right: 6px;
   }
   .email-thanks.show {
     display: block;
@@ -367,7 +374,8 @@
         form.style.display = 'none';
         thanks.classList.add('show');
         if (data.duplicate) {
-          thanks.textContent = "✓ You're already on the list.";
+          const textEl = thanks.querySelector('.email-thanks-text');
+          if (textEl) textEl.textContent = "You're already on the list.";
         }
         thanks.focus && thanks.focus();
       } catch (err) {
