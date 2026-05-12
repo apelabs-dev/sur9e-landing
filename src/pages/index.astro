@@ -4,6 +4,7 @@ import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
 import HowItWorks from '../components/HowItWorks.astro';
 import Features from '../components/Features.astro';
+import Compare from '../components/Compare.astro';
 ---
 <Base>
 <a class="skip-link" href="#top">Skip to content</a>
@@ -25,100 +26,7 @@ import Features from '../components/Features.astro';
 <Features />
 
 <!-- ============== SECTION 4A · COMPARISON ============== -->
-<section class="compare" id="compare">
-  <div class="compare-wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">How Sur9e compares</span>
-      <h2>Others fix one piece.<br /><span class="accent">Sur9e</span> covers everything.</h2>
-      <p>Most tools fix the resume or spam applications. <span class="accent">Sur9e</span> judges the job, finds the hiring manager, and preps for the interview.</p>
-    </div>
-
-    <div class="compare-table-wrap reveal">
-      <table class="cmp">
-        <colgroup>
-          <col class="cmp-c-feat" />
-          <col class="cmp-c-other" />
-          <col class="cmp-c-other" />
-          <col class="cmp-c-other" />
-          <col class="cmp-c-sur9e" />
-        </colgroup>
-        <thead>
-          <tr>
-            <th scope="col" class="cmp-h-capability">Capability <span class="cmp-arrow" aria-hidden="true">→</span></th>
-            <th>
-              <span class="cmp-h-cat">Auto-apply tools</span>
-              <span class="cmp-h-ex">LoopCV, LazyApply</span>
-            </th>
-            <th>
-              <span class="cmp-h-cat">Resume optimizers</span>
-              <span class="cmp-h-ex">Jobscan, Teal</span>
-            </th>
-            <th>
-              <span class="cmp-h-cat">Trackers &amp; CRMs</span>
-              <span class="cmp-h-ex">Huntr, Simplify, Careerflow</span>
-            </th>
-            <th class="cmp-h-sur9e">
-              <span class="cmp-h-cat">Sur9e</span>
-              <span class="cmp-h-ex">One workflow</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="cmp-feat">Is the role worth pursuing?</td>
-            <td><span class="cmp-cell no"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></span></td>
-            <td><span class="cmp-cell partial"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2 A10 10 0 0 1 12 22 Z" fill="currentColor" stroke="none"/></svg></span> Keyword match %</span></td>
-            <td><span class="cmp-cell no"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></span></td>
-            <td class="cmp-yes"><span class="cmp-cell win"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span> Full reasoning across 10 factors</span></td>
-          </tr>
-          <tr>
-            <td class="cmp-feat">Knows YOU — goals, salary, dealbreakers</td>
-            <td><span class="cmp-cell no"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></span></td>
-            <td><span class="cmp-cell partial"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2 A10 10 0 0 1 12 22 Z" fill="currentColor" stroke="none"/></svg></span> Resume only</span></td>
-            <td><span class="cmp-cell partial"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2 A10 10 0 0 1 12 22 Z" fill="currentColor" stroke="none"/></svg></span> Resume + profile</span></td>
-            <td class="cmp-yes"><span class="cmp-cell win"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span> Full career profile</span></td>
-          </tr>
-          <tr>
-            <td class="cmp-feat">Finds the hiring manager</td>
-            <td><span class="cmp-cell no"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></span></td>
-            <td><span class="cmp-cell no"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></span></td>
-            <td><span class="cmp-cell partial"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2 A10 10 0 0 1 12 22 Z" fill="currentColor" stroke="none"/></svg></span> Manual lookup</span></td>
-            <td class="cmp-yes"><span class="cmp-cell win"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span> Found and verified</span></td>
-          </tr>
-          <tr>
-            <td class="cmp-feat">Drafts the warm intro</td>
-            <td><span class="cmp-cell partial"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2 A10 10 0 0 1 12 22 Z" fill="currentColor" stroke="none"/></svg></span> Template spam</span></td>
-            <td><span class="cmp-cell no"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></span></td>
-            <td><span class="cmp-cell partial"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2 A10 10 0 0 1 12 22 Z" fill="currentColor" stroke="none"/></svg></span> LinkedIn templates</span></td>
-            <td class="cmp-yes"><span class="cmp-cell win"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span> From real experience and the role</span></td>
-          </tr>
-          <tr>
-            <td class="cmp-feat">Preps for every interview round</td>
-            <td><span class="cmp-cell no"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></span></td>
-            <td><span class="cmp-cell no"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></span></td>
-            <td><span class="cmp-cell partial"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2 A10 10 0 0 1 12 22 Z" fill="currentColor" stroke="none"/></svg></span> Notes tracker</span></td>
-            <td class="cmp-yes"><span class="cmp-cell win"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span> Custom cheat sheets and STAR stories</span></td>
-          </tr>
-          <tr>
-            <td class="cmp-feat">Tracks the pipeline</td>
-            <td><span class="cmp-cell no"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></span></td>
-            <td><span class="cmp-cell no"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></span></span></td>
-            <td><span class="cmp-cell partial"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2 A10 10 0 0 1 12 22 Z" fill="currentColor" stroke="none"/></svg></span> Kanban only</span></td>
-            <td class="cmp-yes"><span class="cmp-cell win"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span> Kanban with follow-ups and patterns</span></td>
-          </tr>
-          <tr>
-            <td class="cmp-feat">Free to start</td>
-            <td><span class="cmp-cell partial"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2 A10 10 0 0 1 12 22 Z" fill="currentColor" stroke="none"/></svg></span> Limited trial</span></td>
-            <td><span class="cmp-cell partial"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2 A10 10 0 0 1 12 22 Z" fill="currentColor" stroke="none"/></svg></span> Limited</span></td>
-            <td><span class="cmp-cell partial"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2 A10 10 0 0 1 12 22 Z" fill="currentColor" stroke="none"/></svg></span> Free tier</span></td>
-            <td class="cmp-yes"><span class="cmp-cell win"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span> Free to start</span></td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="compare-mobile-note">View on tablet or desktop for the full competitor breakdown</p>
-    </div>
-  </div>
-</section>
+<Compare />
 
 <!-- ============== SECTION 4B · VOC ============== -->
 <section class="voc" id="backstory">
