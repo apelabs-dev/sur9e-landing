@@ -198,26 +198,4 @@
   }, { threshold: 0.25 });
   document.querySelectorAll('.feature-shot').forEach(shot => shotObserver.observe(shot));
 
-  // Parallax on demo frame — skip for reduced motion
-  const demo = document.querySelector('.demo-frame');
-  if (demo && !reduceMotion()) {
-    window.addEventListener('scroll', () => {
-      const r = demo.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const t = Math.max(-1, Math.min(1, (r.top + r.height/2 - vh/2) / vh));
-      demo.style.transform = `translateY(${t * -8}px)`;
-    }, { passive: true });
-  }
-
-  // Demo pause toggle
-  const demoFrame = document.getElementById('demoFrame');
-  const demoPauseBtn = document.getElementById('demoPause');
-  if (demoFrame && demoPauseBtn) {
-    demoPauseBtn.addEventListener('click', () => {
-      const willPause = !demoFrame.classList.contains('paused');
-      demoFrame.classList.toggle('paused', willPause);
-      demoPauseBtn.setAttribute('aria-pressed', willPause ? 'true' : 'false');
-      demoPauseBtn.setAttribute('aria-label', willPause ? 'Play demo animation' : 'Pause demo animation');
-    });
-  }
 })();
