@@ -128,12 +128,15 @@ a, button, summary, [role="button"] { touch-action: manipulation; }
 .skip-link:focus { top: 12px; outline: 2px solid #fff; outline-offset: 2px; }
 body {
   margin: 0;
-  background: var(--bg);
-  background-image:
-    radial-gradient(rgba(31,29,26,0.055) 1px, transparent 1.4px),
-    radial-gradient(rgba(31,29,26,0.035) 1px, transparent 1.2px);
-  background-size: 28px 28px, 9px 9px;
-  background-position: 0 0, 4px 4px;
+  /* Beauty-pass body: 2 radial orbs (warm orange top-left + sage right-middle)
+     layered over a 3-stop linear gradient (cream → warm cream → cream).
+     Dotted pattern kept on top for texture. */
+  background:
+    radial-gradient(rgba(31,29,26,0.055) 1px, transparent 1.4px) 0 0 / 28px 28px,
+    radial-gradient(rgba(31,29,26,0.035) 1px, transparent 1.2px) 4px 4px / 9px 9px,
+    radial-gradient(circle at 12% 8%, rgba(255, 90, 31, 0.08), transparent 24rem),
+    radial-gradient(circle at 86% 36%, rgba(153, 184, 132, 0.10), transparent 24rem),
+    linear-gradient(180deg, #fbfaf8 0%, #f3f0e9 48%, #fbfaf8 100%);
   color: var(--text);
   font-family: var(--font-body);
   font-size: 15px;
