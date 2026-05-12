@@ -3,20 +3,15 @@ main = "src/index.ts"
 compatibility_date = "2026-05-12"
 compatibility_flags = ["nodejs_compat"]
 
-# Routes are configured in the Cloudflare dashboard:
-# Workers & Pages → sur9e-waitlist → Settings → Triggers → Routes
-#   sur9e.com/api/*  (zone: sur9e.com)
-#
-# Or uncomment to declare here (requires `wrangler deploy` to have zone perms):
-# routes = [
-#   { pattern = "sur9e.com/api/*", zone_name = "sur9e.com" }
-# ]
+routes = [
+  { pattern = "sur9e.com/api/*", zone_name = "sur9e.com" }
+]
 
 # Hyperdrive binding for Railway Postgres. Create the Hyperdrive config in
 # the CF dashboard with the Railway connection string, then paste the ID below.
 [[hyperdrive]]
 binding = "WAITLIST_DB"
-id = "REPLACE_WITH_HYPERDRIVE_ID"
+id = "7f7ee25dee9f495a8cc3ab327e4625ce"
 
 [vars]
 CONFIRM_BASE_URL = "https://sur9e.com"
