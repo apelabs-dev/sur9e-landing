@@ -115,43 +115,6 @@
   document.querySelectorAll('.feature-list .feature').forEach((el, i) => {
     el.style.setProperty('--rd', (i * 80) + 'ms');
   });
-  document.querySelectorAll('.voc-stat').forEach((el, i) => el.style.setProperty('--rd', (i * 70) + 'ms'));
-  document.querySelectorAll('.review-card').forEach((el, i) => el.style.setProperty('--rd', (i * 60) + 'ms'));
-  document.querySelectorAll('.review-grid .review').forEach((el, i) => {
-    const isHope = el.classList.contains('hope');
-    const delay = isHope ? (i * 80 + 240) : (i * 80);
-    el.style.setProperty('--rd', delay + 'ms');
-  });
   document.querySelectorAll('.steps .step').forEach((el, i) => el.style.setProperty('--rd', (i * 140) + 'ms'));
-
-  // Count-up for VOC stat numerals
-  function countUp(el, target, suffix, dur){
-    const start = performance.now();
-    const isFloat = target % 1 !== 0;
-    function tick(now){
-      const t = Math.min(1, (now - start) / dur);
-      const eased = 1 - Math.pow(1 - t, 3);
-      const v = target * eased;
-      el.textContent = (isFloat ? v.toFixed(1) : Math.round(v)) + (suffix || '');
-      if (t < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }
-  const vocObserver = new IntersectionObserver(entries => {
-    entries.forEach(en => {
-      if (en.isIntersecting) {
-        const el = en.target;
-        const raw = el.dataset.target || el.textContent.trim();
-        const m = raw.match(/(\d+\.?\d*)(\D*)$/);
-        if (m) {
-          el.dataset.target = m[1];
-          el.dataset.suffix = m[2];
-          countUp(el, parseFloat(m[1]), m[2], 1400);
-        }
-        vocObserver.unobserve(el);
-      }
-    });
-  }, { threshold: 0.4 });
-  document.querySelectorAll('.voc-stat .num').forEach(el => vocObserver.observe(el));
 
 })();

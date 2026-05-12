@@ -310,7 +310,6 @@ img { display: block; max-width: 100%; }
 /* Generic body highlight — use on words/phrases inside <p>, <li>, etc. */
 .feature-copy p .accent,
 .compare-wrap p .accent,
-.voc p .accent,
 .section p .accent { color: var(--accent); font-weight: 500; }
 
 /* Feature screenshot frame */
@@ -761,210 +760,6 @@ img { display: block; max-width: 100%; }
 
 
 /* =====================================================================
-   Section 4B: VOC reviews + stats (dark) — v2 port, warm tone
-===================================================================== */
-.voc {
-  padding: clamp(96px, 12vw, 160px) 24px;
-  background: linear-gradient(180deg, #0a0a0b 0%, #131110 60%, #1a1411 100%);
-  color: var(--text-dark);
-  position: relative;
-  overflow: hidden;
-}
-.voc::before {
-  content: "";
-  position: absolute; inset: 0;
-  background: radial-gradient(60% 50% at 50% 0%, rgba(255,106,51,0.07), transparent 70%);
-  pointer-events: none;
-}
-.voc .section-head { position: relative; z-index: 1; }
-.voc .section-head h2 { color: var(--text-dark); font-size: 36px; }
-.voc .section-head p { color: var(--text-dark-2); }
-
-.review-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  max-width: 1180px;
-  margin: 0 auto 72px;
-  position: relative; z-index: 1;
-}
-.review {
-  background: linear-gradient(180deg, rgba(28,28,31,0.85) 0%, rgba(19,16,14,0.85) 100%);
-  border: 1px solid var(--border-dark);
-  border-radius: 16px;
-  padding: 28px;
-  display: flex; flex-direction: column;
-  transition: transform 240ms var(--ease-calm), border-color 160ms, box-shadow 240ms;
-}
-.review:hover {
-  transform: translateY(-4px);
-  border-color: var(--border-dark-strong);
-  box-shadow: 0 24px 48px -20px rgba(0,0,0,0.7);
-}
-.review .q-mark {
-  font-family: var(--font-display);
-  font-size: 56px;
-  font-weight: 700;
-  line-height: 0.6;
-  margin-bottom: 18px;
-  color: var(--tier-low);
-  opacity: 0.85;
-}
-.review.hope .q-mark { color: var(--tier-high); }
-.review p {
-  font-family: var(--font-display);
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 1.45;
-  letter-spacing: -0.01em;
-  color: var(--text-dark);
-  margin: 0 0 24px;
-  flex: 1;
-  text-wrap: pretty;
-}
-.review p em {
-  font-style: normal;
-  color: var(--accent);
-}
-.review .q-attr {
-  display: flex; align-items: center; gap: 12px;
-  margin-top: auto;
-  padding-top: 18px;
-  border-top: 1px solid rgba(255,255,255,0.06);
-}
-.review .q-avatar {
-  width: 38px; height: 38px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #3a3a3f, #1c1c1f);
-  display: grid; place-items: center;
-  font-family: var(--font-display);
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--text-dark);
-  flex-shrink: 0;
-  letter-spacing: 0.02em;
-  border: 1.5px solid transparent;
-}
-.review.pain .q-avatar { border-color: color-mix(in srgb, var(--tier-low) 35%, transparent); }
-.review.hope .q-avatar { border-color: color-mix(in srgb, var(--tier-high) 55%, transparent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--tier-high) 12%, transparent); }
-.review .q-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.review .q-role {
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-dark);
-  letter-spacing: -0.005em;
-}
-.review .q-detail {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  color: var(--text-dark-2);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-.review .q-avatar.q-avatar-src {
-  background: transparent;
-  padding: 0;
-  overflow: hidden;
-}
-.review .q-avatar.q-avatar-src img {
-  width: 100%; height: 100%;
-  object-fit: contain;
-  display: block;
-  border-radius: 50%;
-}
-.review.hope {
-  border-color: color-mix(in srgb, var(--tier-high) 45%, var(--border-dark));
-  background: linear-gradient(180deg, rgba(30,38,30,0.92) 0%, rgba(20,28,20,0.92) 100%);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--tier-high) 18%, transparent), 0 24px 56px -28px color-mix(in srgb, var(--tier-high) 35%, transparent);
-  position: relative;
-}
-.review.hope::before {
-  content: "↳ Hired";
-  position: absolute;
-  top: 14px; right: 14px;
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--tier-high) 20%, transparent);
-  color: var(--tier-high);
-  border: 1px solid color-mix(in srgb, var(--tier-high) 35%, transparent);
-}
-.review.hope p em { color: var(--tier-high); }
-.review.pain { border-color: rgba(214,138,126,0.22); }
-
-@media (max-width: 960px) {
-  .review-grid { grid-template-columns: 1fr 1fr; }
-  .review p { font-size: 16.5px; }
-}
-@media (max-width: 640px) {
-  .review-grid { grid-template-columns: 1fr; }
-}
-
-.stat-row-intro {
-  max-width: 1180px;
-  margin: 0 auto 18px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-dark-muted);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  position: relative; z-index: 1;
-}
-.stat-row-intro::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--border-dark);
-}
-.stat-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  max-width: 1180px;
-  margin: 0 auto;
-  padding-top: 0;
-  position: relative; z-index: 1;
-}
-.stat {
-  text-align: left;
-  padding: 24px 26px;
-  border-radius: 14px;
-  border: 1px solid var(--border-dark);
-  background: linear-gradient(180deg, rgba(28,28,31,0.6), rgba(19,19,21,0.6));
-}
-.stat .num {
-  font-family: var(--font-display);
-  font-size: 64px;
-  font-weight: 600;
-  letter-spacing: -0.045em;
-  line-height: 1;
-  margin-bottom: 14px;
-}
-.stat .lbl {
-  font-family: var(--font-body);
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--text-dark-muted);
-}
-.stat.red .num { color: var(--tier-low); }
-.stat.amb .num { color: var(--tier-mid); }
-.stat.grn .num { color: var(--tier-high); }
-.stat.acc { border-color: rgba(255,90,31,0.35); }
-.stat.acc .num { color: var(--accent); }
-@media (max-width: 900px) {
-  .stat-row { grid-template-columns: 1fr 1fr; gap: 12px; }
-  .stat .num { font-size: 52px; }
-}
-
-/* =====================================================================
    Section 5: Waitlist + Footer (dark)
 ===================================================================== */
 .waitlist {
@@ -1290,15 +1085,6 @@ img { display: block; max-width: 100%; }
 .radar-poly { transition: filter 400ms; }
 .cd-radar:hover .radar-poly { filter: drop-shadow(0 0 6px rgba(255,90,31,0.6)); }
 
-/* VOC stat cards — count animate */
-.voc-stat .num { display: inline-block; }
-.voc-stat { transition: transform 320ms var(--ease-calm), border-color 320ms; }
-.voc-stat:hover { transform: translateY(-3px); border-color: rgba(255,90,31,0.4); }
-
-/* Review cards lift */
-.review-card { transition: transform 320ms var(--ease-calm), border-color 320ms; }
-.review-card:hover { transform: translateY(-3px); }
-
 /* Waitlist input focus glow */
 .waitlist-form input:focus {
   outline: none;
@@ -1308,7 +1094,6 @@ img { display: block; max-width: 100%; }
 
 /* Section reveal stagger for cards */
 .feature.reveal.in { transition-delay: var(--rd, 0ms); }
-.voc-stat.reveal.in, .review-card.reveal.in, .review.reveal.in { transition-delay: var(--rd, 0ms); }
 .step.reveal.in { transition-delay: var(--rd, 0ms); }
 
 
@@ -1404,7 +1189,6 @@ img { display: block; max-width: 100%; }
     letter-spacing: -0.022em;
     line-height: 1.12;
   }
-  .voc .section-head h2 { font-size: 28px; }
   .faq .section-head h2 { font-size: 30px; }
 }
 @media (max-width: 720px) {
@@ -1414,7 +1198,6 @@ img { display: block; max-width: 100%; }
     line-height: 1.15;
     letter-spacing: -0.02em;
   }
-  .voc .section-head h2 { font-size: 22px; line-height: 1.18; }
   .faq .section-head h2 { font-size: 24px; }
 }
 

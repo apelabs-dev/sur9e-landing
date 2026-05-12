@@ -5,6 +5,7 @@ import Hero from '../components/Hero.astro';
 import HowItWorks from '../components/HowItWorks.astro';
 import Features from '../components/Features.astro';
 import Compare from '../components/Compare.astro';
+import Backstory from '../components/Backstory.astro';
 ---
 <Base>
 <a class="skip-link" href="#top">Skip to content</a>
@@ -29,102 +30,7 @@ import Compare from '../components/Compare.astro';
 <Compare />
 
 <!-- ============== SECTION 4B · VOC ============== -->
-<section class="voc" id="backstory">
-  <div class="section-head reveal">
-    <span class="eyebrow" style="color:#ff7a44;">Backstory</span>
-    <h2><span style="color: var(--tier-low)">250</span> applications is normal now.<br /><span style="color: var(--text-dark-muted)">The <span class="accent">stories</span> below say why.</span></h2>
-    <p>The reviews below are real complaints pulled from <span class="accent">G2, Trustpilot, and Reddit</span> — about <em>other</em> job-search tools. Sur9e was built because of them, not in spite of them.</p>
-  </div>
-
-  <div class="review-grid">
-    <div class="review pain reveal">
-      <div class="q-mark">&ldquo;</div>
-      <p>Applied to 100+ jobs using a Jobscan-optimized resume with high match rates. <em>Zero responses.</em></p>
-      <div class="q-attr">
-        <div class="q-avatar q-avatar-src"><img src="https://www.google.com/s2/favicons?domain=g2.com&sz=64" alt="G2" loading="lazy" width="32" height="32" /></div>
-        <div class="q-info">
-          <div class="q-role">Product Manager · 4 yrs exp</div>
-          <div class="q-detail">G2 · 6 months in</div>
-        </div>
-      </div>
-    </div>
-    <div class="review pain reveal">
-      <div class="q-mark">&ldquo;</div>
-      <p>One screening call from <em>~700 auto-applications.</em> Three from 200 I sent manually.</p>
-      <div class="q-attr">
-        <div class="q-avatar q-avatar-src"><img src="https://www.google.com/s2/favicons?domain=trustpilot.com&sz=64" alt="Trustpilot" loading="lazy" width="32" height="32" /></div>
-        <div class="q-info">
-          <div class="q-role">Data Engineer · Senior</div>
-          <div class="q-detail">Trustpilot · 3 months in</div>
-        </div>
-      </div>
-    </div>
-    <div class="review pain reveal">
-      <div class="q-mark">&ldquo;</div>
-      <p>It auto-applied me to 300 jobs. <em>Half were Senior Director roles. I'm a Junior.</em></p>
-      <div class="q-attr">
-        <div class="q-avatar q-avatar-src"><img src="https://www.google.com/s2/favicons?domain=trustpilot.com&sz=64" alt="Trustpilot" loading="lazy" width="32" height="32" /></div>
-        <div class="q-info">
-          <div class="q-role">Software Engineer · Jr</div>
-          <div class="q-detail">Trustpilot · 5 weeks in</div>
-        </div>
-      </div>
-    </div>
-    <div class="review pain reveal">
-      <div class="q-mark">&ldquo;</div>
-      <p>Half my cover letters had <em>my last name misspelled</em> despite the right info on my profile.</p>
-      <div class="q-attr">
-        <div class="q-avatar q-avatar-src"><img src="https://www.google.com/s2/favicons?domain=trustpilot.com&sz=64" alt="Trustpilot" loading="lazy" width="32" height="32" /></div>
-        <div class="q-info">
-          <div class="q-role">UX Designer · 6 yrs exp</div>
-          <div class="q-detail">Trustpilot · 2 months in</div>
-        </div>
-      </div>
-    </div>
-    <div class="review pain reveal">
-      <div class="q-mark">&ldquo;</div>
-      <p>They published my personal info publicly on their forum — <em>disguised as a support ticket.</em></p>
-      <div class="q-attr">
-        <div class="q-avatar q-avatar-src"><img src="https://www.google.com/s2/favicons?domain=trustpilot.com&sz=64" alt="Trustpilot" loading="lazy" width="32" height="32" /></div>
-        <div class="q-info">
-          <div class="q-role">Marketing · Mid</div>
-          <div class="q-detail">Trustpilot · 1 month in</div>
-        </div>
-      </div>
-    </div>
-    <div class="review hope reveal">
-      <div class="q-mark">&ldquo;</div>
-      <p>Direct outreach to <em>20 hiring managers beats 100 cold applications.</em> The tools are optimizing the wrong thing.</p>
-      <div class="q-attr">
-        <div class="q-avatar q-avatar-src"><img src="https://www.google.com/s2/favicons?domain=reddit.com&sz=64" alt="Reddit" loading="lazy" width="32" height="32" /></div>
-        <div class="q-info">
-          <div class="q-role">Software Engineer · Sr</div>
-          <div class="q-detail">r/cscareerquestions · hired</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="stat-row-intro reveal">And here's the data behind the noise</div>
-  <div class="stat-row reveal">
-    <div class="stat red">
-      <div class="num">2%</div>
-      <div class="lbl">Interview rate from auto-apply tools</div>
-    </div>
-    <div class="stat amb">
-      <div class="num">53%</div>
-      <div class="lbl">Of hiring managers reject obvious AI applications</div>
-    </div>
-    <div class="stat grn">
-      <div class="num">70%</div>
-      <div class="lbl">Of jobs filled through networking &amp; outreach</div>
-    </div>
-    <div class="stat acc">
-      <div class="num">1</div>
-      <div class="lbl">Tool that finds the HM and helps you connect</div>
-    </div>
-  </div>
-</section>
+<Backstory />
 
 <!-- ============== SECTION 4C · FAQ ============== -->
 <section class="faq" id="faq">
