@@ -230,16 +230,34 @@
     .waitlist h2 {
       font-size: 28px;
     }
-    .email-form {
+    /* On mobile the form decomposes: the outer "card" chrome goes away and
+       the input + button each get their own pill. This avoids the
+       stretched-oval clip the 999px outer radius produced when stacked. */
+    .waitlist .email-form {
       flex-direction: column;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+      overflow: visible;
+      gap: 10px;
+    }
+    .waitlist .email-form:focus-within {
+      box-shadow: none;
+    }
+    .email-form input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-dark);
+      border-radius: 999px;
+      padding: 14px 22px;
+    }
+    .email-form input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(255, 90, 31, 0.12);
     }
     .email-form button {
       width: 100%;
-    }
-    /* Drop the pill outer-radius when the form stacks vertically — a tall
-       container at 999px clips the input into a stretched oval. */
-    .waitlist .email-form {
-      border-radius: var(--radius-lg);
     }
   }
 
