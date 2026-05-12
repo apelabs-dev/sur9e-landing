@@ -1098,87 +1098,6 @@ img { display: block; max-width: 100%; }
 
 
 
-/* ============== FAQ (dark, sits between Backstory and Waitlist) ============== */
-.faq {
-  background: var(--bg-dark);
-  color: var(--text-dark);
-  padding: 96px 24px;
-  border-top: 1px solid var(--border-dark-faint);
-  position: relative;
-  overflow: hidden;
-}
-.faq::before {
-  content: "";
-  position: absolute; inset: 0;
-  background: radial-gradient(60% 50% at 50% 0%, rgba(255,106,51,0.04), transparent 70%);
-  pointer-events: none;
-}
-.faq .section-head { position: relative; z-index: 1; margin: 0 auto 48px; }
-.faq .section-head h2 { color: var(--text-dark); font-size: 36px; }
-.faq .section-head p { color: var(--text-dark-2); }
-.faq-contact-link {
-  color: var(--accent);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-  transition: color var(--dur-quick);
-}
-.faq-contact-link:hover { color: var(--accent-dark-t); }
-.faq-list {
-  position: relative; z-index: 1;
-  max-width: 720px;
-  margin: 0 auto;
-  border-top: 1px solid var(--border-dark-faint);
-}
-.faq-item {
-  border-bottom: 1px solid var(--border-dark-faint);
-}
-.faq-item summary {
-  list-style: none;
-  cursor: pointer;
-  padding: 22px 8px;
-  font-family: var(--font-display);
-  font-size: 17px;
-  font-weight: 500;
-  color: var(--text-dark);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  transition: color var(--dur-quick);
-}
-.faq-item summary::-webkit-details-marker { display: none; }
-.faq-item summary::marker { display: none; content: ''; }
-.faq-item summary:hover { color: var(--accent); }
-.faq-item .chev {
-  width: 12px; height: 12px;
-  flex-shrink: 0;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
-  transform: rotate(45deg);
-  transition: transform var(--dur-base) var(--ease-calm);
-  opacity: 0.5;
-  margin-bottom: 3px;
-}
-.faq-item[open] .chev {
-  transform: rotate(-135deg);
-  margin-top: 3px; margin-bottom: 0;
-}
-.faq-item .faq-a {
-  padding: 0 8px 24px;
-  font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.65;
-  color: var(--text-dark-muted);
-  max-width: 64ch;
-}
-@media (max-width: 720px) {
-  .faq { padding: 64px 16px; }
-  .faq .section-head h2 { font-size: 26px; }
-  .faq-item summary { font-size: 15.5px; padding: 18px 6px; }
-  .faq-item .faq-a { font-size: 14.5px; padding: 0 6px 20px; }
-}
-
 /* ===== Section heading responsive scale ============================
    Placed at the end so it overrides earlier unqueried `.section-head h2`
    and `.features-head h2` rules. Desktop default stays at 44/700. */
@@ -1189,7 +1108,6 @@ img { display: block; max-width: 100%; }
     letter-spacing: -0.022em;
     line-height: 1.12;
   }
-  .faq .section-head h2 { font-size: 30px; }
 }
 @media (max-width: 720px) {
   .section-head h2,
@@ -1198,7 +1116,6 @@ img { display: block; max-width: 100%; }
     line-height: 1.15;
     letter-spacing: -0.02em;
   }
-  .faq .section-head h2 { font-size: 24px; }
 }
 
 /* B1 texture responsive cascade — section::before/features::before/compare::before

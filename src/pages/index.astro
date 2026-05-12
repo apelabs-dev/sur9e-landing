@@ -6,6 +6,7 @@ import HowItWorks from '../components/HowItWorks.astro';
 import Features from '../components/Features.astro';
 import Compare from '../components/Compare.astro';
 import Backstory from '../components/Backstory.astro';
+import Faq from '../components/Faq.astro';
 ---
 <Base>
 <a class="skip-link" href="#top">Skip to content</a>
@@ -33,35 +34,7 @@ import Backstory from '../components/Backstory.astro';
 <Backstory />
 
 <!-- ============== SECTION 4C · FAQ ============== -->
-<section class="faq" id="faq">
-  <div class="section-head reveal">
-    <span class="eyebrow">FAQ · 5 questions</span>
-    <h2>Common questions, answered.</h2>
-    <p>The objections that come up most. If something is missing, <a class="faq-contact-link" href="mailto:hello@sur9e.com">contacting us</a> is the easiest way to ask.</p>
-  </div>
-  <div class="faq-list reveal">
-    <details class="faq-item">
-      <summary>Is this just another AI resume optimizer? <span class="chev" aria-hidden="true"></span></summary>
-      <div class="faq-a">Resume optimizers run keyword matches on every posting and tell you what to bolt onto your CV. Sur9e leads with the job evaluation — does this role even deserve an application? For the ones that do, Sur9e will also tailor a CV for that specific posting, grounded in real experience and the role's actual signals. Score the job first, write to it second.</div>
-    </details>
-    <details class="faq-item">
-      <summary>Does Sur9e auto-apply for me? <span class="chev" aria-hidden="true"></span></summary>
-      <div class="faq-a">Never. By design. Auto-application has a 2% callback rate and 53% of hiring managers reject obviously-AI applications. The Sur9e bet is the opposite direction: fewer applications, better fit, warmer paths.</div>
-    </details>
-    <details class="faq-item">
-      <summary>What data does Sur9e need? <span class="chev" aria-hidden="true"></span></summary>
-      <div class="faq-a">A CV, a short profile — goals, salary floor, dealbreakers, projects worth surfacing. Roughly 10 minutes to set up. Everything stays in the account.</div>
-    </details>
-    <details class="faq-item">
-      <summary>When does it launch? <span class="chev" aria-hidden="true"></span></summary>
-      <div class="faq-a">Q4 2026. Joining the waitlist gets the email the day it ships.</div>
-    </details>
-    <details class="faq-item">
-      <summary>Is it really free? <span class="chev" aria-hidden="true"></span></summary>
-      <div class="faq-a">Yes, at launch. The free tier covers job evaluation. Paid tiers come later for power users — the free tier stays.</div>
-    </details>
-  </div>
-</section>
+<Faq />
 
 <!-- ============== SECTION 5 · WAITLIST + FOOTER ============== -->
 <section class="waitlist" id="waitlist">
