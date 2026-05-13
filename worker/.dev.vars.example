@@ -20,3 +20,9 @@ RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 # Treat as a secret — rotating it invalidates all outstanding confirmation
 # links, so only rotate when you're OK with that.
 CONFIRM_SECRET=replace_with_64_hex_chars_from_openssl_rand_hex_32
+
+# Where to send "new signup" admin ping emails. Optional — if unset, the
+# Worker logs the signup but skips sending the notification. Useful for
+# getting an inbox ping every time someone joins the waitlist (or
+# re-enrolls after a previous unsubscribe).
+ADMIN_NOTIFY_EMAIL=you@example.com

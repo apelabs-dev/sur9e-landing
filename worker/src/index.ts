@@ -5,6 +5,8 @@ export interface Env {
   RESEND_API_KEY: string;
   CONFIRM_BASE_URL: string;
   CONFIRM_SECRET: string;
+  // Where to send "new signup" admin pings. Optional — if unset, pings are skipped.
+  ADMIN_NOTIFY_EMAIL?: string;
 }
 
 const ALLOWED_ORIGINS = new Set(['https://sur9e.com', 'https://www.sur9e.com']);
@@ -174,12 +176,55 @@ async function sendConfirmationEmail(env: Env, email: string): Promise<void> {
   }
 }
 
+async function sendSignupNotification(
+  env: Env,
+  email: string,
+  source: string,
+  action: 'new' | 'reenroll',
+): Promise<void> {
+  if (!env.ADMIN_NOTIFY_EMAIL) return;
+
+  const label = action === 'new' ? 'New waitlist signup' : 'Re-enrollment (was unsubscribed)';
+  const text = [
+    label,
+    '',
+    `Email:  ${email}`,
+    `Source: ${source}`,
+    `Time:   ${new Date().toISOString()}`,
+    '',
+    'Sent automatically by sur9e-waitlist Worker.',
+  ].join('\n');
+
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      authorization: `Bearer ${env.RESEND_API_KEY}`,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: 'Sur9e Waitlist <noreply@send.sur9e.com>',
+      to: [env.ADMIN_NOTIFY_EMAIL],
+      subject: `${label}: ${email}`,
+      text,
+    }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => '<unreadable>');
+    throw new Error(`Resend admin-notify ${res.status}: ${body}`);
+  }
+}
+
 interface SignupBody {
   email?: unknown;
   source?: unknown;
 }
 
-async function handleSignup(req: Request, env: Env): Promise<Response> {
+async function handleSignup(
+  req: Request,
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<Response> {
   let body: SignupBody;
   try {
     body = (await req.json()) as SignupBody;
@@ -230,19 +275,27 @@ async function handleSignup(req: Request, env: Env): Promise<Response> {
     return jsonResponse(req, { error: 'Server error' }, 500);
   }
 
+  await sql.end({ timeout: 5 });
+
   if (action === 'duplicate') {
-    await sql.end({ timeout: 5 });
     return jsonResponse(req, { ok: true, duplicate: true });
   }
 
-  // Send email best-effort. Failure here doesn't undo the DB write.
-  try {
-    await sendConfirmationEmail(env, email);
-  } catch (err) {
-    console.error('Resend send failed', err);
-  }
+  // Run both email sends in the background so the API response returns fast.
+  // ctx.waitUntil keeps the Worker alive until the work finishes; failures
+  // are logged and don't affect the user-facing response.
+  ctx.waitUntil(
+    (async () => {
+      const settled = await Promise.allSettled([
+        sendConfirmationEmail(env, email),
+        sendSignupNotification(env, email, source, action as 'new' | 'reenroll'),
+      ]);
+      for (const r of settled) {
+        if (r.status === 'rejected') console.error('Background email failed', r.reason);
+      }
+    })(),
+  );
 
-  await sql.end({ timeout: 5 });
   return jsonResponse(req, { ok: true, reenrolled: action === 'reenroll' });
 }
 
@@ -461,7 +514,7 @@ async function handleUnsubscribe(req: Request, env: Env): Promise<Response> {
 }
 
 export default {
-  async fetch(req: Request, env: Env): Promise<Response> {
+  async fetch(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(req.url);
 
     if (req.method === 'OPTIONS') {
@@ -469,7 +522,7 @@ export default {
     }
 
     if (url.pathname === '/api/waitlist' && req.method === 'POST') {
-      return handleSignup(req, env);
+      return handleSignup(req, env, ctx);
     }
 
     if (url.pathname === '/api/waitlist/confirm' && req.method === 'GET') {
