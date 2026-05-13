@@ -72,7 +72,7 @@ function welcomeEmailHtml({ confirmUrl, unsubscribeUrl }: EmailUrls): string {
   // Inline styles only — email clients strip <style> blocks. Layout uses
   // <table> for Outlook compat; modern clients render the same.
   return `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Welcome to the sur9e waitlist</title></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark"><title>Welcome to the sur9e waitlist</title></head>
 <body style="margin:0;padding:0;background:#0a0a0b;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#fff8ef;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0a0a0b;">
     <tr><td align="center" style="padding:40px 16px;">
