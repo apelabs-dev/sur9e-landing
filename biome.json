@@ -20,7 +20,8 @@
       "!public/vendor/**",
       "!templates/**",
       "!**/*.bak",
-      "!**/*.tmp"
+      "!**/*.tmp",
+      "!wrangler.jsonc"
     ]
   },
   "formatter": {

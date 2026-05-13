@@ -220,11 +220,7 @@ interface SignupBody {
   source?: unknown;
 }
 
-async function handleSignup(
-  req: Request,
-  env: Env,
-  ctx: ExecutionContext,
-): Promise<Response> {
+async function handleSignup(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   let body: SignupBody;
   try {
     body = (await req.json()) as SignupBody;
