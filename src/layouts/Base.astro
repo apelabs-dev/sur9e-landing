@@ -1,5 +1,6 @@
 ---
-const { title = 'Sur9e — Know which jobs are worth your time.' } = Astro.props;
+const defaultTitle = 'AI job evaluation — score every role in 30s · Sur9e';
+const { title = defaultTitle } = Astro.props;
 ---
 
 <!doctype html>
@@ -17,15 +18,15 @@ const { title = 'Sur9e — Know which jobs are worth your time.' } = Astro.props
     <title translate="no">{title}</title>
     <meta
       name="description"
-      content="AI-powered job evaluation. Score any role against your CV in 30 seconds. Deep reasoning, not keyword matching. Find hiring managers. Prep for interviews. Free to start."
+      content="AI job evaluation that scores every role against your CV, goals, and dealbreakers in 30 seconds. Deep reasoning — not keyword matching. Free to start."
     />
     <meta
       property="og:title"
-      content="Sur9e — Know which jobs are worth your time."
+      content="AI job evaluation — score every role in 30s · Sur9e"
     />
     <meta
       property="og:description"
-      content="Stop applying blindly. Sur9e evaluates every job against your experience, goals, and dealbreakers in 30 seconds."
+      content="AI scores every job against your experience, goals, and dealbreakers in 30 seconds. Deep reasoning — not keyword matching."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://sur9e.com/" />
@@ -36,11 +37,11 @@ const { title = 'Sur9e — Know which jobs are worth your time.' } = Astro.props
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Sur9e — Know which jobs are worth your time."
+      content="AI job evaluation — score every role in 30s · Sur9e"
     />
     <meta
       name="twitter:description"
-      content="Score any role against your CV, goals, and dealbreakers in 30 seconds. Deep reasoning, not keyword matching."
+      content="AI scores every role against your CV, goals, and dealbreakers in 30 seconds. Deep reasoning — not keyword matching."
     />
     <meta
       name="twitter:image"
