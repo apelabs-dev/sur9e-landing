@@ -1,183 +1,271 @@
-// Hero floating cards — drag to send them drifting around like soap bubbles.
+// Hero floating cards — drag to send them drifting; cards collide with each
+// other and bounce on contact. Single shared tick loop handles motion,
+// pairwise AABB collisions, and wall clamping.
 export function setupCardPhysics() {
   const heroEl = document.querySelector('.hero');
   if (!heroEl) return;
-  const cards = heroEl.querySelectorAll('.hero-cards .float-card');
+  const cards = Array.from(heroEl.querySelectorAll('.hero-cards .float-card'));
   if (!cards.length) return;
 
   const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const reduceMotion = () => motionQuery.matches;
 
   // Soap-bubble tuning
-  const VELOCITY_SCALE = 7; // softer flick (was 16)
-  const DECAY = 0.985; // longer drift (was 0.965)
-  const WALL_BOUNCE = 0.55; // gentler wall hit (was 0.72)
-  const STOP_EPS = 0.04; // settle threshold (was 0.12)
+  const VELOCITY_SCALE = 7;
+  const DECAY = 0.985;
+  const WALL_BOUNCE = 0.55;
+  const STOP_EPS = 0.04;
+  const CARD_BOUNCE = 0.75; // elastic-ish; 0 = inelastic, 1 = perfectly elastic
 
-  cards.forEach(card => {
-    let tx = 0,
-      ty = 0;
-    let vx = 0,
-      vy = 0;
-    let isDragging = false;
-    let raf = 0;
-    let lastX = 0,
-      lastY = 0,
-      lastT = 0;
-    let pointerId = null;
-    let baseLeft = 0,
-      baseTop = 0,
-      baseW = 0,
-      baseH = 0;
+  // Per-card state. Cards drift via CSS keyframes until the first
+  // pointerdown — that's when we capture bases + switch them to JS physics.
+  const states = cards.map(el => ({
+    el,
+    tx: 0,
+    ty: 0,
+    vx: 0,
+    vy: 0,
+    baseLeft: 0,
+    baseTop: 0,
+    baseW: 0,
+    baseH: 0,
+    isDragging: false,
+    pointerId: null,
+    lastX: 0,
+    lastY: 0,
+    lastT: 0,
+  }));
 
-    function captureBase() {
-      const r = card.getBoundingClientRect();
-      const h = heroEl.getBoundingClientRect();
-      baseLeft = r.left - h.left - tx;
-      baseTop = r.top - h.top - ty;
-      baseW = r.width;
-      baseH = r.height;
+  let raf = 0;
+  let physicsActivated = false;
+
+  function activatePhysicsForAll() {
+    if (physicsActivated) return;
+    physicsActivated = true;
+    const heroR = heroEl.getBoundingClientRect();
+    for (const s of states) {
+      const r = s.el.getBoundingClientRect();
+      s.baseLeft = r.left - heroR.left;
+      s.baseTop = r.top - heroR.top;
+      s.baseW = r.width;
+      s.baseH = r.height;
+      s.tx = 0;
+      s.ty = 0;
+      s.el.classList.add('has-physics');
     }
+  }
 
-    function setOffset() {
-      card.style.setProperty('--tx', tx + 'px');
-      card.style.setProperty('--ty', ty + 'px');
+  function clampToWalls(s, heroR) {
+    const minTx = -s.baseLeft;
+    const maxTx = heroR.width - s.baseLeft - s.baseW;
+    const minTy = -s.baseTop;
+    const maxTy = heroR.height - s.baseTop - s.baseH;
+    if (s.tx < minTx) {
+      s.tx = minTx;
+      if (!s.isDragging) s.vx = -s.vx * WALL_BOUNCE;
     }
+    if (s.tx > maxTx) {
+      s.tx = maxTx;
+      if (!s.isDragging) s.vx = -s.vx * WALL_BOUNCE;
+    }
+    if (s.ty < minTy) {
+      s.ty = minTy;
+      if (!s.isDragging) s.vy = -s.vy * WALL_BOUNCE;
+    }
+    if (s.ty > maxTy) {
+      s.ty = maxTy;
+      if (!s.isDragging) s.vy = -s.vy * WALL_BOUNCE;
+    }
+  }
 
-    function clampToWalls(heroR) {
-      const minTx = -baseLeft;
-      const maxTx = heroR.width - baseLeft - baseW;
-      const minTy = -baseTop;
-      const maxTy = heroR.height - baseTop - baseH;
-      if (tx < minTx) {
-        tx = minTx;
-        vx = -vx * WALL_BOUNCE;
+  function resolveCardCollision(a, b) {
+    // AABB on (baseLeft + tx, baseTop + ty, baseW, baseH).
+    // Ignores rotation — cards are tilted a few degrees via CSS --rot but the
+    // AABB approximation is plenty for the bounce-on-contact feel.
+    const ax = a.baseLeft + a.baseW / 2 + a.tx;
+    const ay = a.baseTop + a.baseH / 2 + a.ty;
+    const bx = b.baseLeft + b.baseW / 2 + b.tx;
+    const by = b.baseTop + b.baseH / 2 + b.ty;
+    const dx = bx - ax;
+    const dy = by - ay;
+    const overlapX = (a.baseW + b.baseW) / 2 - Math.abs(dx);
+    const overlapY = (a.baseH + b.baseH) / 2 - Math.abs(dy);
+    if (overlapX <= 0 || overlapY <= 0) return;
+
+    // Resolve along the axis with smaller penetration — that's the side
+    // they're actually hitting on.
+    if (overlapX < overlapY) {
+      const sign = dx >= 0 ? 1 : -1;
+      // Dragged card stays put (user is steering it); non-dragged absorbs
+      // the full separation. If neither is dragged, split 50/50.
+      if (a.isDragging && !b.isDragging) {
+        b.tx += sign * overlapX;
+      } else if (b.isDragging && !a.isDragging) {
+        a.tx -= sign * overlapX;
+      } else if (!a.isDragging && !b.isDragging) {
+        a.tx -= (sign * overlapX) / 2;
+        b.tx += (sign * overlapX) / 2;
       }
-      if (tx > maxTx) {
-        tx = maxTx;
-        vx = -vx * WALL_BOUNCE;
+      // Equal-mass elastic exchange on the collision axis, scaled by
+      // CARD_BOUNCE. Dragged cards keep their mouse-driven velocity.
+      const av = a.vx;
+      const bv = b.vx;
+      if (!a.isDragging) a.vx = bv * CARD_BOUNCE;
+      if (!b.isDragging) b.vx = av * CARD_BOUNCE;
+    } else {
+      const sign = dy >= 0 ? 1 : -1;
+      if (a.isDragging && !b.isDragging) {
+        b.ty += sign * overlapY;
+      } else if (b.isDragging && !a.isDragging) {
+        a.ty -= sign * overlapY;
+      } else if (!a.isDragging && !b.isDragging) {
+        a.ty -= (sign * overlapY) / 2;
+        b.ty += (sign * overlapY) / 2;
       }
-      if (ty < minTy) {
-        ty = minTy;
-        vy = -vy * WALL_BOUNCE;
-      }
-      if (ty > maxTy) {
-        ty = maxTy;
-        vy = -vy * WALL_BOUNCE;
+      const av = a.vy;
+      const bv = b.vy;
+      if (!a.isDragging) a.vy = bv * CARD_BOUNCE;
+      if (!b.isDragging) b.vy = av * CARD_BOUNCE;
+    }
+  }
+
+  function applyTransform(s) {
+    s.el.style.setProperty('--tx', s.tx + 'px');
+    s.el.style.setProperty('--ty', s.ty + 'px');
+  }
+
+  function tick() {
+    const heroR = heroEl.getBoundingClientRect();
+    // Integrate position for free cards
+    for (const s of states) {
+      if (s.isDragging) continue;
+      s.tx += s.vx;
+      s.ty += s.vy;
+      s.vx *= DECAY;
+      s.vy *= DECAY;
+    }
+    // Pairwise collisions
+    for (let i = 0; i < states.length; i++) {
+      for (let j = i + 1; j < states.length; j++) {
+        resolveCardCollision(states[i], states[j]);
       }
     }
+    // Walls
+    for (const s of states) clampToWalls(s, heroR);
+    // Commit transforms
+    for (const s of states) applyTransform(s);
 
-    function bounceStep() {
-      const heroR = heroEl.getBoundingClientRect();
-      tx += vx;
-      ty += vy;
-      clampToWalls(heroR);
-      vx *= DECAY;
-      vy *= DECAY;
-      setOffset();
-      if (Math.abs(vx) < STOP_EPS && Math.abs(vy) < STOP_EPS) {
-        vx = 0;
-        vy = 0;
-        raf = 0;
-        return;
+    // Continue while anything is moving or being dragged
+    const active = states.some(
+      s => s.isDragging || Math.abs(s.vx) > STOP_EPS || Math.abs(s.vy) > STOP_EPS,
+    );
+    if (active) {
+      raf = requestAnimationFrame(tick);
+    } else {
+      for (const s of states) {
+        s.vx = 0;
+        s.vy = 0;
       }
-      raf = requestAnimationFrame(bounceStep);
+      raf = 0;
     }
+  }
 
-    card.addEventListener('pointerdown', e => {
+  function ensureLoop() {
+    if (!raf) raf = requestAnimationFrame(tick);
+  }
+
+  // Wire pointer handlers
+  states.forEach(s => {
+    s.el.addEventListener('pointerdown', e => {
       if (e.button !== undefined && e.button !== 0) return;
       e.preventDefault();
-      isDragging = true;
-      pointerId = e.pointerId;
+      activatePhysicsForAll();
+      s.isDragging = true;
+      s.pointerId = e.pointerId;
       try {
-        card.setPointerCapture(pointerId);
-      } catch (err) {
+        s.el.setPointerCapture(s.pointerId);
+      } catch (_err) {
         /* ignore */
       }
-      if (raf) {
-        cancelAnimationFrame(raf);
-        raf = 0;
-      }
-      card.classList.add('is-dragging', 'has-physics');
-      captureBase();
-      lastX = e.clientX;
-      lastY = e.clientY;
-      lastT = performance.now();
-      vx = 0;
-      vy = 0;
-      card.style.zIndex = '5';
+      s.el.classList.add('is-dragging');
+      s.lastX = e.clientX;
+      s.lastY = e.clientY;
+      s.lastT = performance.now();
+      s.vx = 0;
+      s.vy = 0;
+      s.el.style.zIndex = '5';
+      ensureLoop();
     });
 
-    card.addEventListener('pointermove', e => {
-      if (!isDragging) return;
+    s.el.addEventListener('pointermove', e => {
+      if (!s.isDragging) return;
       const now = performance.now();
-      const dx = e.clientX - lastX;
-      const dy = e.clientY - lastY;
-      const dt = Math.max(1, now - lastT);
-      tx += dx;
-      ty += dy;
-      // Soap-bubble velocity (much gentler than 16x/frame)
-      vx = (dx / dt) * VELOCITY_SCALE;
-      vy = (dy / dt) * VELOCITY_SCALE;
-      lastX = e.clientX;
-      lastY = e.clientY;
-      lastT = now;
-      const heroR = heroEl.getBoundingClientRect();
-      clampToWalls(heroR);
-      setOffset();
+      const dx = e.clientX - s.lastX;
+      const dy = e.clientY - s.lastY;
+      const dt = Math.max(1, now - s.lastT);
+      s.tx += dx;
+      s.ty += dy;
+      // Velocity for after-release drift
+      s.vx = (dx / dt) * VELOCITY_SCALE;
+      s.vy = (dy / dt) * VELOCITY_SCALE;
+      s.lastX = e.clientX;
+      s.lastY = e.clientY;
+      s.lastT = now;
+      ensureLoop();
     });
 
     function endDrag() {
-      if (!isDragging) return;
-      isDragging = false;
-      if (pointerId != null) {
+      if (!s.isDragging) return;
+      s.isDragging = false;
+      if (s.pointerId != null) {
         try {
-          card.releasePointerCapture(pointerId);
-        } catch (err) {
+          s.el.releasePointerCapture(s.pointerId);
+        } catch (_err) {
           /* ignore */
         }
       }
-      pointerId = null;
-      card.classList.remove('is-dragging');
-      const v2 = vx * vx + vy * vy;
-      if (!reduceMotion() && v2 > 0.04) {
-        raf = requestAnimationFrame(bounceStep);
-      } else {
-        vx = 0;
-        vy = 0;
+      s.pointerId = null;
+      s.el.classList.remove('is-dragging');
+      if (reduceMotion()) {
+        s.vx = 0;
+        s.vy = 0;
       }
+      ensureLoop();
     }
 
-    card.addEventListener('pointerup', endDrag);
-    card.addEventListener('pointercancel', endDrag);
-    card.addEventListener('lostpointercapture', endDrag);
+    s.el.addEventListener('pointerup', endDrag);
+    s.el.addEventListener('pointercancel', endDrag);
+    s.el.addEventListener('lostpointercapture', endDrag);
   });
 
-  // On resize, clamp any displaced card back into the hero bounds
+  // On resize, re-capture base positions so wall clamping uses fresh layout
+  // bounds. We preserve each card's current on-screen position by adjusting
+  // tx/ty against the new baseLeft/baseTop.
   let resizeRaf = 0;
   window.addEventListener(
     'resize',
     () => {
+      if (!physicsActivated) return;
       if (resizeRaf) return;
       resizeRaf = requestAnimationFrame(() => {
         resizeRaf = 0;
         const heroR = heroEl.getBoundingClientRect();
-        cards.forEach(card => {
-          if (!card.classList.contains('has-physics')) return;
-          const r = card.getBoundingClientRect();
-          let dx = 0,
-            dy = 0;
-          if (r.left < heroR.left) dx = heroR.left - r.left;
-          if (r.right > heroR.right) dx = heroR.right - r.right;
-          if (r.top < heroR.top) dy = heroR.top - r.top;
-          if (r.bottom > heroR.bottom) dy = heroR.bottom - r.bottom;
-          if (dx || dy) {
-            const cur = card.style.getPropertyValue('--tx');
-            const cury = card.style.getPropertyValue('--ty');
-            card.style.setProperty('--tx', (parseFloat(cur) || 0) + dx + 'px');
-            card.style.setProperty('--ty', (parseFloat(cury) || 0) + dy + 'px');
-          }
-        });
+        for (const s of states) {
+          const screenX = s.baseLeft + s.tx;
+          const screenY = s.baseTop + s.ty;
+          // Measure new base without the transform
+          s.el.style.setProperty('--tx', '0px');
+          s.el.style.setProperty('--ty', '0px');
+          const r = s.el.getBoundingClientRect();
+          s.baseLeft = r.left - heroR.left;
+          s.baseTop = r.top - heroR.top;
+          s.baseW = r.width;
+          s.baseH = r.height;
+          s.tx = screenX - s.baseLeft;
+          s.ty = screenY - s.baseTop;
+          clampToWalls(s, heroR);
+          applyTransform(s);
+        }
       });
     },
     { passive: true },
