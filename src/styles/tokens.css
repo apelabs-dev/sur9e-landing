@@ -117,16 +117,14 @@
   --accent-dark-soft: #2a1609;
   --accent-dark-t: #ff8551;
 
-  /* ─── Tier (dark-theme saturated score palette) ─── Always rendered on
-     the dark theme (FeatureShot mockups + DemoFrame backgrounds use
-     --bg-dark / --bg-dark-warm). Saturation bumped from the app's lifted
-     dark-theme values (#d68a7e/#d8b97a/#8eba89) — those read as faded
-     against the landing's dark surfaces. These richer hues keep the
-     hue family but push chroma so the score numerals, hero funnel stats,
-     status pill dots, and sev badges have proper signal weight. */
-  --tier-low: #e85a4f; /* coral red */
-  --tier-mid: #e6b339; /* rich amber */
-  --tier-high: #5db85c; /* apple green */
+  /* ─── Tier (dark-theme lifted score palette) ─── Always rendered on the
+     dark theme (FeatureShot mockups + DemoFrame backgrounds use
+     --bg-dark / --bg-dark-warm). Lifted variants from the app's dark
+     score palette so numerals + pills read at correct weight on dark
+     surfaces (not the muted light-theme --score-* values). */
+  --tier-low: #d68a7e;
+  --tier-mid: #d8b97a;
+  --tier-high: #8eba89;
 
   /* ─── Radius (sharp geometry, matches app) ─── */
   --radius-xs: 3px;
