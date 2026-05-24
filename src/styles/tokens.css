@@ -1,37 +1,106 @@
 /* ===================================================================
    Sur9e — Landing page
-   Brand tokens lifted from chrome-v2.css.
+   Tokens mirror the app's design system (sur9e-mvp src/app/styles/tokens.css)
+   post-Intercom adoption + post-WCAG fixes. Landing-only extras (--beauty-*,
+   --bg-dark-warm, --tier-*) preserved so existing FeatureShot mockups +
+   Hero aura + Waitlist glass treatments keep working.
 =================================================================== */
+
+/* General Sans loaded locally — matches the app's display font. */
+@font-face {
+  font-family: "General Sans";
+  src: url("/fonts/general-sans/GeneralSans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "General Sans";
+  src: url("/fonts/general-sans/GeneralSans-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "General Sans";
+  src: url("/fonts/general-sans/GeneralSans-Semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "General Sans";
+  src: url("/fonts/general-sans/GeneralSans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --bg: #fbfaf8;
-  --surface: #f5f3ef;
-  --surface-2: #efece6;
+  /* ─── Surface (warm cream canvas, white paper-tier elevation) ─── */
+  --bg: #faf9f6; /* Warm cream — primary editorial canvas */
+  --surface: #ffffff; /* Lifted-card pattern: pure white above warm canvas */
+  --surface-2: #faf9f6; /* Secondary lifted tier (warm) */
+  --surface-warm: var(--surface-2);
   --bg-paper: #ffffff;
-  --text: #1f1d1a;
-  --text-2: #4a4742;
-  --text-3: #5b5854;
-  --text-muted: #65615a;
-  --border: #e8e5df;
-  --border-strong: #d6d2cb;
-  --rule: #ece9e3;
-  --accent: #ff5a1f;
-  --accent-hover: #e64a10;
-  --accent-soft: #fdeae0;
-  --accent-text: #c9430f;
-  /* CTA orange — darker than --accent so white text passes WCAG AA (4.93:1).
-     Use for: button backgrounds with white text, pill badges with white text. */
+
+  /* ─── Foreground ─── */
+  --text: #111111;
+  --text-2: #313130;
+  --text-3: #626260;
+  --text-muted: #6e6e6b;
+  --meta: #696969; /* Captions, metadata — ≈4.6:1 on --bg */
+
+  /* ─── Border ─── */
+  --border: #dedbd6;
+  --border-strong: #c4c0b8;
+  --border-form: #8e8c85; /* Form-control border — ≈3.1:1 on --bg (WCAG 1.4.11) */
+  --rule: #ebe9e4;
+
+  /* ─── Accent (warm orange, matches app's #ff5600) ─── */
+  --accent: #ff5600;
+  --accent-on: #ffffff;
+  --accent-hover: color-mix(in oklab, var(--accent), black 8%);
+  --accent-active: color-mix(in oklab, var(--accent), black 14%);
+  --accent-soft: color-mix(in oklab, var(--accent), white 90%);
+  --accent-text: color-mix(in oklab, var(--accent), black 14%);
+  --accent-border: var(--accent-soft);
   --accent-cta: #c9430f;
   --accent-cta-hover: #a83609;
-  /* Beauty-pass tokens (used by Hero aura + Waitlist glass treatments) */
+
+  /* ─── Status (8-hue hybrid palette, all ≥4.5:1 on --bg per WCAG) ─── */
+  --s-screened: #426591;
+  --s-evaluated: #24378e;
+  --s-applied: #757f34;
+  --s-responded: #3a6e7a;
+  --s-interview: #6f56a0;
+  --s-offer: #2d7a3c;
+  --s-rejected: #a23838;
+  --s-discarded: #636669;
+
+  /* ─── State (semantic UI) ─── */
+  --st-success: var(--s-offer);
+  --st-success-soft: color-mix(in oklab, var(--st-success), white 88%);
+  --st-warn: #8a5c1c;
+  --st-warn-soft: color-mix(in oklab, var(--st-warn), white 88%);
+  --st-danger: var(--s-rejected);
+  --st-danger-soft: color-mix(in oklab, var(--st-danger), white 88%);
+  --st-info: var(--s-screened);
+  --st-info-soft: color-mix(in oklab, var(--st-info), white 88%);
+
+  /* ─── Score (decoupled from status; muted editorial palette) ─── */
+  --score-high: #3d5d3a;
+  --score-mid: #7a5f1c;
+  --score-low: #8b3a30;
+
+  /* ─── Beauty-pass extras (landing-only — used by Hero aura + Waitlist glass) ─── */
   --beauty-ember: #ff6a2a;
   --beauty-ember-2: #ff9a62;
   --beauty-olive: #99b884;
   --beauty-graphite: #0d0c0b;
   --beauty-card: rgba(255, 255, 255, 0.78);
-  --score-high: #3d5d3a;
-  --score-mid: #7a5f1c;
-  --score-low: #8b3a30;
 
+  /* ─── Dark-theme palette (landing-only; used by dark FeatureShot mockups) ─── */
   --bg-dark: #0a0a0b;
   --bg-dark-warm: #151210;
   --surface-dark: #131315;
@@ -48,29 +117,55 @@
   --accent-dark-soft: #2a1609;
   --accent-dark-t: #ff8551;
 
+  /* ─── Tier aliases — kept for FeatureShot mockups that reference them ─── */
+  --tier-low: var(--score-low);
+  --tier-mid: var(--score-mid);
+  --tier-high: var(--score-high);
+
+  /* ─── Radius (sharp geometry, matches app) ─── */
+  --radius-xs: 3px;
+  --radius-sm: 4px;
+  --radius: 6px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-pill: 999px;
+
+  /* ─── Spacing (4px grid, matches app) ─── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+
+  /* ─── Shadows ─── */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow: 0 2px 8px color-mix(in oklab, var(--text), transparent 94%);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 14px 50px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
   --shadow-popover: 0 12px 28px -8px rgba(0, 0, 0, 0.18);
   --shadow-modal: 0 24px 48px -16px rgba(0, 0, 0, 0.18);
 
-  --tier-low: #d68a7e;
-  --tier-mid: #d8b97a;
-  --tier-high: #8eba89;
+  /* ─── Focus ring (matches app — orange-tinted) ─── */
+  --focus-ring: 0 0 0 3px color-mix(in oklab, var(--accent), transparent 70%);
 
-  --radius-sm: 6px;
-  --radius: 8px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-
-  --font-display: "Inter", system-ui, sans-serif;
-  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+  /* ─── Type stack (General Sans display + Inter body + IBM Plex Mono, matches app) ─── */
+  --font-display: "General Sans", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
+  /* ─── Motion (matches app) ─── */
   --ease-calm: cubic-bezier(0.2, 0, 0, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-firm: cubic-bezier(0.4, 0, 0.2, 1);
   --dur-quick: 160ms;
   --dur-base: 240ms;
   --dur-deliberate: 480ms;
+  --dur-slow: 800ms;
 }
 
 * {
@@ -78,7 +173,7 @@
 }
 html {
   scroll-behavior: smooth;
-  -webkit-tap-highlight-color: rgba(255, 90, 31, 0.18);
+  -webkit-tap-highlight-color: rgba(255, 86, 0, 0.18);
 }
 a,
 button,
@@ -202,7 +297,7 @@ img {
   color: #fff;
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.28) inset,
-    0 18px 42px -18px rgba(255, 90, 31, 0.82);
+    0 18px 42px -18px rgba(255, 86, 0, 0.82);
 }
 .btn-primary:hover {
   background: var(--accent-cta-hover);
@@ -394,32 +489,32 @@ img {
   0%,
   20% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(255, 90, 31, 0.45);
+    box-shadow: 0 0 0 0 rgba(255, 86, 0, 0.45);
   }
   23% {
     transform: scale(1.06);
-    box-shadow: 0 0 0 10px rgba(255, 90, 31, 0);
+    box-shadow: 0 0 0 10px rgba(255, 86, 0, 0);
   }
   26%,
   100% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(255, 90, 31, 0);
+    box-shadow: 0 0 0 0 rgba(255, 86, 0, 0);
   }
 }
 @keyframes focusGlow {
   0%,
   18% {
-    box-shadow: 0 0 0 0 rgba(255, 90, 31, 0);
+    box-shadow: 0 0 0 0 rgba(255, 86, 0, 0);
     border-color: var(--border-dark);
   }
   22%,
   28% {
-    box-shadow: 0 0 0 3px rgba(255, 90, 31, 0.18);
+    box-shadow: 0 0 0 3px rgba(255, 86, 0, 0.18);
     border-color: var(--accent);
   }
   32%,
   100% {
-    box-shadow: 0 0 0 0 rgba(255, 90, 31, 0);
+    box-shadow: 0 0 0 0 rgba(255, 86, 0, 0);
     border-color: var(--border-dark);
   }
 }
