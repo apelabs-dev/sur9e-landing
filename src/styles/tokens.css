@@ -117,14 +117,14 @@
   --accent-dark-soft: #2a1609;
   --accent-dark-t: #ff8551;
 
-  /* ─── Tier (dark-theme lifted score palette) ─── Always rendered on the
-     dark theme (FeatureShot mockups + DemoFrame backgrounds use
-     --bg-dark / --bg-dark-warm). Lifted variants from the app's dark
-     score palette so numerals + pills read at correct weight on dark
-     surfaces (not the muted light-theme --score-* values). */
-  --tier-low: #d68a7e;
-  --tier-mid: #d8b97a;
-  --tier-high: #8eba89;
+  /* ─── Tier — exact match to the app's canonical score palette ─── These
+     are the same hex values defined in sur9e-mvp/src/app/styles/tokens.css
+     for --score-low / --score-mid / --score-high. The renderers
+     (FeatureShot* + DemoFrame) consume these so the score colors on the
+     landing match what users actually see in the app. */
+  --tier-low: #8b3a30;
+  --tier-mid: #7a5f1c;
+  --tier-high: #3d5d3a;
 
   /* ─── Radius (sharp geometry, matches app) ─── */
   --radius-xs: 3px;

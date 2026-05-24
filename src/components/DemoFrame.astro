@@ -214,7 +214,7 @@
       <div class="loader-head">
         <div class="loader-dot"></div>
         <div class="loader-title">
-          Evaluating <span style="color:var(--text-dark-muted);font-weight:400;"
+          Evaluating <span style="color:var(--text-muted);font-weight:400;"
             >— Anthropic · FDE, Applied AI</span
           >
         </div>
@@ -406,33 +406,27 @@
     max-width: 1100px;
     margin: 0 auto;
     /* Crossed-line grid texture (matches the hero's grid) layered on top
-     of the dark gradient. Horizontal + vertical lines every 58px at very
-     low alpha. Masked to fade at the edges of the frame. */
+     of the warm cream canvas. Horizontal + vertical lines every 58px at
+     very low alpha, dark-on-light so they read on the cream surface. */
     background:
-      linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px) 0 0 /
+      linear-gradient(rgba(17, 17, 17, 0.04) 1px, transparent 1px) 0 0 / 58px
+        58px,
+      linear-gradient(90deg, rgba(17, 17, 17, 0.03) 1px, transparent 1px) 0 0 /
         58px 58px,
-      linear-gradient(90deg, rgba(255, 255, 255, 0.024) 1px, transparent 1px) 0
-        0 / 58px 58px,
-      linear-gradient(180deg, #0e0d0e 0%, #151210 100%);
-    border: 1px solid var(--border-dark);
+      var(--bg);
+    border: 1px solid var(--border);
     border-radius: 14px;
     overflow: hidden;
-    /* Presentational shadow stack — reads as an elevated "screen" rather
-     than a flat panel. Layers (inside → out):
-       1. inset top sheen   — suggests glass/screen highlight
-       2. contact shadow    — tight, anchors the frame
-       3. mid-lift          — soft drop, the main "elevation"
-       4. deep ambient      — long-distance halo, gives premium weight
-       5. accent halo       — branded glow, separates from the page bg */
+    /* Presentational shadow stack — reads as an elevated "screen". */
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.08),
-      0 1px 2px rgba(0, 0, 0, 0.18),
-      0 14px 32px -8px rgba(0, 0, 0, 0.42),
-      0 52px 100px -28px rgba(0, 0, 0, 0.55),
-      0 0 80px -20px rgba(255, 86, 0, 0.22);
+      inset 0 1px 0 rgba(255, 255, 255, 0.6),
+      0 1px 2px rgba(0, 0, 0, 0.06),
+      0 14px 32px -8px rgba(0, 0, 0, 0.12),
+      0 52px 100px -28px rgba(0, 0, 0, 0.18),
+      0 0 80px -20px rgba(255, 86, 0, 0.16);
     position: relative;
     aspect-ratio: 16 / 12;
-    color: var(--text-dark);
+    color: var(--text);
     font-family: var(--font-body);
   }
   /* Branded halo behind the screen — polish layer */
@@ -462,7 +456,7 @@
     align-items: center;
     gap: 6px;
     padding: 0 14px;
-    border-bottom: 1px solid var(--border-dark-faint);
+    border-bottom: 1px solid var(--rule);
     background: rgba(255, 255, 255, 0.02);
     z-index: 4;
     min-width: 0;
@@ -472,7 +466,7 @@
     width: 11px;
     height: 11px;
     border-radius: 50%;
-    background: var(--border-dark);
+    background: var(--border);
     border: 1px solid rgba(0, 0, 0, 0.3);
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
     flex-shrink: 0;
@@ -493,7 +487,7 @@
     margin-left: 12px;
     font-family: var(--font-mono);
     font-size: 12px;
-    color: var(--text-dark-2);
+    color: var(--text-2);
     flex: 1 1 auto;
     min-width: 0;
     white-space: nowrap;
@@ -504,7 +498,7 @@
   .demo-chrome .meta {
     font-family: var(--font-mono);
     font-size: 10px;
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -634,7 +628,7 @@
   .phase-1 .label {
     font-family: var(--font-mono);
     font-size: 14px;
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     margin-bottom: 28px;
@@ -645,7 +639,7 @@
     align-items: center;
     gap: 14px;
     background: #1a1a1d;
-    border: 1px solid var(--border-dark);
+    border: 1px solid var(--border);
     border-radius: 14px;
     padding: 10px 10px 10px 22px;
     width: min(94%, 760px);
@@ -656,7 +650,7 @@
     flex: 1;
     font-family: var(--font-mono);
     font-size: 17px;
-    color: var(--text-dark);
+    color: var(--text);
     white-space: nowrap;
     overflow: hidden;
     text-align: left;
@@ -675,7 +669,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    color: var(--text-dark-faint);
+    color: var(--text-3);
     pointer-events: none;
     animation: hidePlaceholder8 8s linear infinite;
   }
@@ -745,7 +739,7 @@
   .loader-card {
     width: min(94%, 560px);
     background: #18171a;
-    border: 1px solid var(--border-dark);
+    border: 1px solid var(--border);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 24px 50px -20px rgba(0, 0, 0, 0.7);
@@ -754,7 +748,7 @@
     position: relative;
     height: 2px;
     width: 100%;
-    background: var(--border-dark);
+    background: var(--border);
   }
   .loader-fill {
     position: absolute;
@@ -780,12 +774,12 @@
     font-family: var(--font-display);
     font-size: 16px;
     font-weight: 500;
-    color: var(--text-dark);
+    color: var(--text);
   }
   .loader-sub {
     font-family: var(--font-mono);
     font-size: 13px;
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
     margin-left: auto;
   }
   .loader-phases {
@@ -795,7 +789,7 @@
     gap: 9px;
     font-family: var(--font-body);
     font-size: 15px;
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
   }
   .loader-phases li {
     display: flex;
@@ -823,7 +817,7 @@
   }
   .loader-phases li.active {
     opacity: 1;
-    color: var(--text-dark);
+    color: var(--text);
   }
   .loader-phases li.active::before {
     background: var(--accent);
@@ -861,7 +855,7 @@
     gap: 28px;
     align-items: end;
     padding-bottom: 14px;
-    border-bottom: 1px solid var(--border-dark);
+    border-bottom: 1px solid var(--border);
   }
   .rpt-eyebrow {
     display: inline-flex;
@@ -870,13 +864,13 @@
     font-family: var(--font-display);
     font-size: 13px;
     font-weight: 500;
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
     margin-bottom: 14px;
   }
   .rpt-eyebrow .e-dot {
     width: 3px;
     height: 3px;
-    background: var(--text-dark-faint);
+    background: var(--text-3);
     border-radius: 50%;
   }
   .rpt-pill {
@@ -909,7 +903,7 @@
     height: 54px;
     border-radius: 12px;
     background: #1f1d20;
-    border: 1px solid var(--border-dark);
+    border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -917,7 +911,7 @@
     font-weight: 700;
     font-size: 24px;
     letter-spacing: -0.02em;
-    color: var(--text-dark);
+    color: var(--text);
     position: relative;
     overflow: hidden;
     flex-shrink: 0;
@@ -935,7 +929,7 @@
   .company-mark svg {
     width: 28px;
     height: 28px;
-    color: var(--text-dark);
+    color: var(--text);
     display: block;
   }
   .rpt-id-row h3 {
@@ -945,27 +939,27 @@
     letter-spacing: -0.03em;
     line-height: 1.02;
     margin: 0;
-    color: var(--text-dark);
+    color: var(--text);
   }
   .rpt-role {
     font-size: 15px;
-    color: var(--text-dark-2);
+    color: var(--text-2);
     margin: 4px 0 0;
   }
   .rpt-meta-strip {
     margin-top: 14px;
     padding-top: 12px;
-    border-top: 1px solid var(--border-dark);
+    border-top: 1px solid var(--border);
     font-family: var(--font-display);
     font-size: 13.5px;
-    color: var(--text-dark-2);
+    color: var(--text-2);
     display: flex;
     flex-wrap: wrap;
     column-gap: 8px;
     row-gap: 4px;
   }
   .rpt-meta-strip .sep {
-    color: var(--text-dark-faint);
+    color: var(--text-3);
   }
   .rpt-hero-right {
     display: flex;
@@ -991,7 +985,7 @@
     font-family: var(--font-mono);
     font-weight: 500;
     font-size: 16px;
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
     margin-top: 14px;
     align-self: flex-start;
   }
@@ -1004,7 +998,7 @@
     flex: 1;
     height: 5px;
     border-radius: 2px;
-    background: var(--border-dark);
+    background: var(--border);
   }
   .score-bar .seg.on {
     background: var(--tier-high);
@@ -1032,7 +1026,7 @@
   .archetype-tag {
     font-family: var(--font-mono);
     font-size: 11.5px;
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
     letter-spacing: 0.02em;
   }
   .rpt-block-head {
@@ -1041,35 +1035,35 @@
     justify-content: space-between;
     margin: 16px 0 0;
     padding-bottom: 8px;
-    border-bottom: 1px solid var(--border-dark);
+    border-bottom: 1px solid var(--border);
   }
   .rpt-block-title {
     font-family: var(--font-display);
     font-size: 19px;
     font-weight: 600;
     letter-spacing: -0.02em;
-    color: var(--text-dark);
+    color: var(--text);
     margin: 0;
   }
   .rpt-block-meta {
     font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
   .rpt-lede {
     margin: 10px 0 0;
     padding: 14px 16px;
-    border-top: 1px solid var(--border-dark);
-    border-bottom: 1px solid var(--border-dark);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
     background: rgba(255, 255, 255, 0.03);
     font-family: var(--font-display);
     font-size: 15.5px;
     font-weight: 500;
     line-height: 1.55;
     letter-spacing: -0.012em;
-    color: var(--text-dark);
+    color: var(--text);
     text-wrap: pretty;
   }
   .snapshot-merged {
@@ -1079,7 +1073,7 @@
     row-gap: 6px;
     margin-top: 12px;
     padding: 11px 14px 12px;
-    border: 1px solid var(--border-dark);
+    border: 1px solid var(--border);
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.015);
     align-items: center;
@@ -1089,7 +1083,7 @@
     font-family: var(--font-display);
     font-size: 12.5px;
     font-weight: 500;
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
     margin-bottom: -2px;
   }
   .verdict-stack {
@@ -1102,7 +1096,7 @@
     grid-template-columns: auto 1fr auto;
     gap: 11px;
     padding: 10px 12px;
-    border: 1px solid var(--border-dark);
+    border: 1px solid var(--border);
     border-radius: 8px;
     align-items: center;
     background: rgba(10, 10, 11, 0.5);
@@ -1120,17 +1114,17 @@
     font-family: var(--font-display);
     font-size: 13px;
     font-weight: 600;
-    color: var(--text-dark);
+    color: var(--text);
     margin-bottom: 3px;
     letter-spacing: -0.005em;
   }
   .gap-mit {
     font-size: 12.5px;
-    color: var(--text-dark-2);
+    color: var(--text-2);
     line-height: 1.45;
   }
   .gap-mit strong {
-    color: var(--text-dark);
+    color: var(--text);
     font-weight: 600;
   }
   .sev {
@@ -1175,7 +1169,7 @@
     display: flex;
     justify-content: space-between;
     padding: 5px 0;
-    border-bottom: 1px dashed var(--border-dark);
+    border-bottom: 1px dashed var(--border);
     align-items: baseline;
   }
   .cd-radar-list .row:nth-last-child(-n + 2) {
@@ -1183,13 +1177,13 @@
   }
   .cd-radar-list .k {
     font-family: var(--font-display);
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
     font-size: 12.5px;
   }
   .cd-radar-list .v {
     font-family: var(--font-display);
     font-weight: 500;
-    color: var(--text-dark);
+    color: var(--text);
     font-variant-numeric: tabular-nums;
     font-size: 13.5px;
   }
@@ -1267,7 +1261,7 @@
     position: relative;
     margin: 60px 14px 22px;
     min-height: 620px;
-    color: var(--text-dark);
+    color: var(--text);
     font-family: var(--font-body);
   }
   .demo-mobile .m-phase {
@@ -1299,7 +1293,7 @@
     font-size: 12px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
     font-weight: 500;
     margin-bottom: 22px;
   }
@@ -1308,7 +1302,7 @@
     align-items: center;
     gap: 8px;
     background: #1a1a1d;
-    border: 1px solid var(--border-dark);
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 8px 8px 8px 14px;
     width: 100%;
@@ -1319,7 +1313,7 @@
     flex: 1;
     font-family: var(--font-mono);
     font-size: 12px;
-    color: var(--text-dark);
+    color: var(--text);
     white-space: nowrap;
     overflow: hidden;
     text-align: left;
@@ -1330,7 +1324,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    color: var(--text-dark-faint);
+    color: var(--text-3);
     pointer-events: none;
     animation: hidePlaceholder8 8s linear infinite;
   }
@@ -1407,7 +1401,7 @@
   .m-phase-2 .m-loader-card {
     width: 100%;
     background: #18171a;
-    border: 1px solid var(--border-dark);
+    border: 1px solid var(--border);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 18px 36px -16px rgba(0, 0, 0, 0.6);
@@ -1416,7 +1410,7 @@
     position: relative;
     height: 2px;
     width: 100%;
-    background: var(--border-dark);
+    background: var(--border);
   }
   .m-phase-2 .m-loader-fill {
     position: absolute;
@@ -1443,18 +1437,18 @@
     font-family: var(--font-display);
     font-size: 13px;
     font-weight: 500;
-    color: var(--text-dark);
+    color: var(--text);
     flex: 1;
     min-width: 0;
   }
   .m-phase-2 .m-loader-target {
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
     font-weight: 400;
   }
   .m-phase-2 .m-loader-sub {
     font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
     flex-shrink: 0;
   }
   .m-phase-2 .m-loader-phases {
@@ -1464,7 +1458,7 @@
     gap: 8px;
     font-family: var(--font-body);
     font-size: 12.5px;
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
     list-style: none;
     margin: 0;
   }
@@ -1509,7 +1503,7 @@
     font-family: var(--font-display);
     font-size: 12px;
     font-weight: 500;
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
     margin-bottom: 10px;
   }
   .m-phase-3 .m-rpt-pill {
@@ -1534,7 +1528,7 @@
   .m-phase-3 .m-e-dot {
     width: 3px;
     height: 3px;
-    background: var(--text-dark-faint);
+    background: var(--text-3);
     border-radius: 50%;
   }
   .m-phase-3 .m-rpt-id-row {
@@ -1542,7 +1536,7 @@
     align-items: center;
     gap: 10px;
     padding-bottom: 12px;
-    border-bottom: 1px solid var(--border-dark);
+    border-bottom: 1px solid var(--border);
     margin-bottom: 10px;
   }
   .m-phase-3 .m-company-mark {
@@ -1550,13 +1544,13 @@
     height: 40px;
     border-radius: 9px;
     background: #1f1d20;
-    border: 1px solid var(--border-dark);
+    border: 1px solid var(--border);
     display: grid;
     place-items: center;
     position: relative;
     overflow: hidden;
     flex-shrink: 0;
-    color: var(--text-dark);
+    color: var(--text);
   }
   .m-phase-3 .m-company-mark::after {
     content: '';
@@ -1580,17 +1574,17 @@
     letter-spacing: -0.02em;
     line-height: 1.02;
     margin: 0;
-    color: var(--text-dark);
+    color: var(--text);
   }
   .m-phase-3 .m-rpt-role {
     font-size: 12px;
-    color: var(--text-dark-2);
+    color: var(--text-2);
     margin: 3px 0 0;
   }
   .m-phase-3 .m-rpt-meta-strip {
     font-family: var(--font-display);
     font-size: 11.5px;
-    color: var(--text-dark-2);
+    color: var(--text-2);
     display: flex;
     flex-wrap: wrap;
     column-gap: 6px;
@@ -1598,7 +1592,7 @@
     margin-bottom: 12px;
   }
   .m-phase-3 .m-rpt-meta-strip .m-sep {
-    color: var(--text-dark-faint);
+    color: var(--text-3);
   }
   .m-phase-3 .m-rpt-score-row {
     display: grid;
@@ -1606,7 +1600,7 @@
     gap: 12px;
     align-items: center;
     padding: 10px 0 14px;
-    border-bottom: 1px solid var(--border-dark);
+    border-bottom: 1px solid var(--border);
     margin-bottom: 10px;
   }
   .m-phase-3 .m-score-block {
@@ -1629,7 +1623,7 @@
     font-family: var(--font-mono);
     font-weight: 500;
     font-size: 11px;
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
     margin-top: 6px;
     letter-spacing: 0.04em;
   }
@@ -1642,7 +1636,7 @@
     flex: 1;
     height: 3px;
     border-radius: 2px;
-    background: var(--border-dark);
+    background: var(--border);
   }
   .m-phase-3 .m-score-bar .seg.on {
     background: var(--tier-high);
@@ -1676,7 +1670,7 @@
   .m-phase-3 .m-archetype-tag {
     font-family: var(--font-mono);
     font-size: 9px;
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
     letter-spacing: 0.02em;
     white-space: nowrap;
   }
@@ -1686,40 +1680,40 @@
     justify-content: space-between;
     margin: 4px 0 0;
     padding-bottom: 6px;
-    border-bottom: 1px solid var(--border-dark);
+    border-bottom: 1px solid var(--border);
   }
   .m-phase-3 .m-rpt-block-title {
     font-family: var(--font-display);
     font-size: 14.5px;
     font-weight: 600;
     letter-spacing: -0.02em;
-    color: var(--text-dark);
+    color: var(--text);
     margin: 0;
   }
   .m-phase-3 .m-rpt-block-meta {
     font-family: var(--font-mono);
     font-size: 9px;
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
   .m-phase-3 .m-rpt-lede {
     margin: 8px 0 0;
     padding: 10px 12px;
-    border-top: 1px solid var(--border-dark);
-    border-bottom: 1px solid var(--border-dark);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
     background: rgba(255, 255, 255, 0.03);
     font-family: var(--font-display);
     font-size: 12.5px;
     font-weight: 500;
     line-height: 1.45;
     letter-spacing: -0.012em;
-    color: var(--text-dark);
+    color: var(--text);
   }
   .m-phase-3 .m-snapshot {
     margin-top: 10px;
     padding: 10px 12px;
-    border: 1px solid var(--border-dark);
+    border: 1px solid var(--border);
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.015);
     display: flex;
@@ -1730,14 +1724,14 @@
     font-family: var(--font-display);
     font-size: 11.5px;
     font-weight: 500;
-    color: var(--text-dark-muted);
+    color: var(--text-muted);
   }
   .m-phase-3 .m-gap-card {
     display: grid;
     grid-template-columns: auto 1fr auto;
     gap: 9px;
     padding: 8px 10px;
-    border: 1px solid var(--border-dark);
+    border: 1px solid var(--border);
     border-radius: 8px;
     align-items: center;
     background: rgba(10, 10, 11, 0.5);
@@ -1755,17 +1749,17 @@
     font-family: var(--font-display);
     font-size: 12px;
     font-weight: 600;
-    color: var(--text-dark);
+    color: var(--text);
     letter-spacing: -0.005em;
     margin-bottom: 2px;
   }
   .m-phase-3 .m-gap-mit {
     font-size: 11.5px;
-    color: var(--text-dark-2);
+    color: var(--text-2);
     line-height: 1.4;
   }
   .m-phase-3 .m-gap-mit strong {
-    color: var(--text-dark);
+    color: var(--text);
     font-weight: 600;
   }
   .m-phase-3 .m-sev {
@@ -1831,7 +1825,7 @@
     padding: 0;
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.14);
-    color: var(--text-dark-2);
+    color: var(--text-2);
     border-radius: 999px;
     cursor: pointer;
     transition:
@@ -1842,7 +1836,7 @@
   .demo-pause:hover {
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.22);
-    color: var(--text-dark);
+    color: var(--text);
   }
   .demo-pause svg {
     width: 14px;
