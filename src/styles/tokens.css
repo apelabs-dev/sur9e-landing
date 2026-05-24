@@ -117,14 +117,16 @@
   --accent-dark-soft: #2a1609;
   --accent-dark-t: #ff8551;
 
-  /* ─── Tier — exact match to the app's canonical score palette ─── These
-     are the same hex values defined in sur9e-mvp/src/app/styles/tokens.css
-     for --score-low / --score-mid / --score-high. The renderers
-     (FeatureShot* + DemoFrame) consume these so the score colors on the
-     landing match what users actually see in the app. */
-  --tier-low: #8b3a30;
-  --tier-mid: #7a5f1c;
-  --tier-high: #3d5d3a;
+  /* ─── Tier (dark-theme lifted score palette) ─── For elements on dark
+     surfaces: hero funnel stats, hero floating cards, Backstory stats,
+     DemoFrame score numerals + segments. These are the app's DARK theme
+     score values (sur9e-mvp tokens.css [data-theme="dark"] block), lifted
+     ~30% in oklab from the muted light values. The FeatureShot mockups,
+     which render on white/cream surfaces, consume --score-* directly
+     (the unlifted editorial palette) — keep these two sets distinct. */
+  --tier-low: #d68a7e;
+  --tier-mid: #d8b97a;
+  --tier-high: #8eba89;
 
   /* ─── Radius (sharp geometry, matches app) ─── */
   --radius-xs: 3px;
