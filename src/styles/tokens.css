@@ -117,10 +117,15 @@
   --accent-dark-soft: #2a1609;
   --accent-dark-t: #ff8551;
 
-  /* ─── Tier aliases — kept for FeatureShot mockups that reference them ─── */
-  --tier-low: var(--score-low);
-  --tier-mid: var(--score-mid);
-  --tier-high: var(--score-high);
+  /* ─── Tier (dark-theme lifted score palette) ─── These ALWAYS use the
+     lifted variants because every FeatureShot mockup + DemoFrame renders
+     on the dark theme regardless of system preference (backgrounds are
+     --bg-dark / --bg-dark-warm). Using the light-theme muted score values
+     here (e.g. --score-high #3d5d3a) makes numerals + pills look faded
+     on the dark surface. */
+  --tier-low: #d68a7e;
+  --tier-mid: #d8b97a;
+  --tier-high: #8eba89;
 
   /* ─── Radius (sharp geometry, matches app) ─── */
   --radius-xs: 3px;
