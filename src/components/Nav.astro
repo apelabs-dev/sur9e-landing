@@ -281,15 +281,18 @@
     }
     .nav-links {
       display: flex;
-      position: fixed;
-      top: 64px;
-      left: 16px;
-      right: 16px;
+      /* Anchor to the nav pill (position:fixed parent) so the dropdown stays
+         attached directly below it — same width, small gap — instead of
+         floating as a detached full-width panel. */
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
       flex-direction: column;
       align-items: stretch;
       gap: 4px;
       padding: 12px;
-      background: rgba(10, 10, 11, 0.85);
+      background: rgba(10, 10, 11, 0.96);
       border: 1px solid rgba(255, 255, 255, 0.09);
       border-radius: 16px;
       backdrop-filter: blur(28px) saturate(160%);
