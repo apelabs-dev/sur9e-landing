@@ -84,7 +84,7 @@ function welcomeEmailHtml({ confirmUrl, unsubscribeUrl }: EmailUrls): string {
         </td></tr>
         <tr><td style="padding:30px 32px 4px;">
           <h1 style="margin:0 0 14px;font-size:24px;line-height:1.18;font-weight:700;letter-spacing:-0.025em;color:#0a0a0b;">You're on the list.</h1>
-          <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Thanks for joining. Sur9e ships at <a href="https://sur9e.com" style="color:#ff5a1f;text-decoration:none;">sur9e.com</a> in <strong style="color:#0a0a0b;">Q4 2026</strong> &mdash; we'll email you the moment it's live.</p>
+          <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Thanks for joining. We'll send release notes occasionally. No spam, no gates.</p>
           <p style="margin:0 0 26px;font-size:14px;line-height:1.6;color:#7a7a82;">One last step: confirm your email so we know it's you.</p>
         </td></tr>
         <tr><td align="center" style="padding:0 32px 30px;">
@@ -115,7 +115,7 @@ function welcomeEmailText({ confirmUrl, unsubscribeUrl }: EmailUrls): string {
   return [
     "You're on the list.",
     '',
-    "Thanks for joining. Sur9e ships at sur9e.com in Q4 2026 — we'll email you the moment it's live.",
+    "Thanks for joining. We'll send release notes occasionally. No spam, no gates.",
     '',
     "One last step: confirm your email so we know it's you.",
     '',
@@ -411,7 +411,10 @@ async function handleConfirm(req: Request, env: Env): Promise<Response> {
     });
   }
 
-  const sql = postgres(env.WAITLIST_DB.connectionString, { max: 5, fetch_types: false });
+  const sql = postgres(env.WAITLIST_DB.connectionString, {
+    max: 5,
+    fetch_types: false,
+  });
   try {
     await sql`
       UPDATE waitlist
@@ -438,7 +441,7 @@ async function handleConfirm(req: Request, env: Env): Promise<Response> {
     icon: '&#10003;',
     iconColor: 'linear-gradient(135deg,#c9430f,#ff6a2a)',
     heading: "You're confirmed.",
-    body: "Welcome to the sur9e waitlist. We'll email you the moment we ship at sur9e.com in Q4 2026.",
+    body: "Welcome to the sur9e release-notes list. We'll email occasionally. No spam, no gates.",
     cta: { text: 'Back to sur9e.com', href: 'https://sur9e.com' },
   });
 }
@@ -467,7 +470,10 @@ async function handleUnsubscribe(req: Request, env: Env): Promise<Response> {
   const expected = await hmacHex(env.CONFIRM_SECRET, `unsub:${email}`);
   if (!constantTimeEqual(token, expected)) return invalid();
 
-  const sql = postgres(env.WAITLIST_DB.connectionString, { max: 5, fetch_types: false });
+  const sql = postgres(env.WAITLIST_DB.connectionString, {
+    max: 5,
+    fetch_types: false,
+  });
   try {
     // Soft-delete: keep the row, mark when they unsubscribed. handleSignup
     // checks this column so a re-signup doesn't auto-re-send unless they
@@ -533,6 +539,9 @@ export default {
       return handleUnsubscribe(req, env);
     }
 
-    return new Response('Not found', { status: 404, headers: corsHeaders(req) });
+    return new Response('Not found', {
+      status: 404,
+      headers: corsHeaders(req),
+    });
   },
 } satisfies ExportedHandler<Env>;

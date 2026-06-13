@@ -13,6 +13,13 @@
           ><span translate="no">Sur9e</span> (rhymes with surge)</span
         >
         <span class="tag">Know which jobs are worth your time.</span>
+        <span class="credit"
+          >Inspired by <a
+            href="https://github.com/santifer/career-ops"
+            target="_blank"
+            rel="noopener noreferrer">career-ops</a
+          >.</span
+        >
       </div>
       <nav class="footer-nav" aria-label="Footer">
         <a
@@ -88,6 +95,19 @@
     font-size: 12px;
     color: var(--text-muted);
     letter-spacing: -0.005em;
+  }
+  .footer-brand .credit {
+    font-size: 12px;
+    color: var(--text-3);
+    letter-spacing: -0.005em;
+  }
+  .footer-brand .credit a {
+    color: var(--text);
+    text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    text-underline-offset: 3px;
+  }
+  .footer-brand .credit a:hover {
+    color: var(--accent);
   }
   .footer-brand .pronunciation {
     font-family: var(--font-body);

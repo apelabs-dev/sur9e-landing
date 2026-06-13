@@ -51,7 +51,7 @@ const html = `<!doctype html>
         </td></tr>
         <tr><td style="padding:30px 32px 4px;">
           <h1 style="margin:0 0 14px;font-size:24px;line-height:1.18;font-weight:700;letter-spacing:-0.025em;color:#0a0a0b;">You're on the list.</h1>
-          <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Thanks for joining. Sur9e ships at <a href="https://sur9e.com" style="color:#ff5a1f;text-decoration:none;">sur9e.com</a> in <strong style="color:#0a0a0b;">Q4 2026</strong> &mdash; we'll email you the moment it's live.</p>
+          <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Thanks for joining. We'll send release notes occasionally. No spam, no gates.</p>
           <p style="margin:0 0 26px;font-size:14px;line-height:1.6;color:#7a7a82;">One last step: confirm your email so we know it's you.</p>
         </td></tr>
         <tr><td align="center" style="padding:0 32px 30px;">
@@ -80,7 +80,7 @@ const html = `<!doctype html>
 const text = [
   "You're on the list.",
   '',
-  "Thanks for joining. Sur9e ships at sur9e.com in Q4 2026 — we'll email you the moment it's live.",
+  "Thanks for joining. We'll send release notes occasionally. No spam, no gates.",
   '',
   "One last step: confirm your email so we know it's you.",
   '',
