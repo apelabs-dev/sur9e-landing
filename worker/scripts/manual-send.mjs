@@ -40,13 +40,13 @@ const confirmUrl = `https://sur9e.com/api/waitlist/confirm?e=${e}&t=${confirmTok
 const unsubscribeUrl = `https://sur9e.com/api/waitlist/unsubscribe?e=${e}&t=${unsubscribeToken}`;
 
 const html = `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>Welcome to the sur9e waitlist</title></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>Welcome to the Sur9e waitlist</title></head>
 <body style="margin:0;padding:0;background:#f5f4f1;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0a0a0b;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f4f1;">
     <tr><td align="center" style="padding:40px 16px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:520px;background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:18px;">
         <tr><td style="padding:32px 32px 0;">
-          <img src="https://sur9e.com/assets/sur9e-wordmark-email-light.png" width="160" height="35" alt="sur9e" style="display:block;border:0;outline:none;text-decoration:none;color:#0a0a0b;font-size:26px;font-weight:700;letter-spacing:-0.025em;line-height:1;">
+          <img src="https://sur9e.com/assets/sur9e-wordmark-email-light.png" width="160" height="35" alt="Sur9e" style="display:block;border:0;outline:none;text-decoration:none;color:#0a0a0b;font-size:26px;font-weight:700;letter-spacing:-0.025em;line-height:1;">
           <div style="margin-top:10px;font-family:'IBM Plex Mono',Menlo,Consolas,monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#ff5a1f;">Know which jobs are worth your time.</div>
         </td></tr>
         <tr><td style="padding:30px 32px 4px;">
@@ -86,7 +86,7 @@ const text = [
   '',
   `Confirm your email: ${confirmUrl}`,
   '',
-  '— sur9e · Know which jobs are worth your time.',
+  '— Sur9e · Know which jobs are worth your time.',
   '',
   `Unsubscribe: ${unsubscribeUrl}`,
 ].join('\n');
@@ -101,7 +101,7 @@ const res = await fetch('https://api.resend.com/emails', {
     from: 'Sur9e <noreply@send.sur9e.com>',
     reply_to: 'hello@sur9e.com',
     to: [email],
-    subject: 'Welcome to the sur9e waitlist',
+    subject: 'Welcome to the Sur9e waitlist',
     text,
     html,
     headers: {

@@ -73,13 +73,13 @@ function welcomeEmailHtml({ confirmUrl, unsubscribeUrl }: EmailUrls): string {
   // their dark/light auto-theming. Inline styles only; <table> layout for
   // Outlook compat.
   return `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>Welcome to the sur9e waitlist</title></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>Welcome to the Sur9e waitlist</title></head>
 <body style="margin:0;padding:0;background:#f5f4f1;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0a0a0b;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f4f1;">
     <tr><td align="center" style="padding:40px 16px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:520px;background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:18px;">
         <tr><td style="padding:32px 32px 0;">
-          <img src="https://sur9e.com/assets/sur9e-wordmark-email-light.png" width="160" height="35" alt="sur9e" style="display:block;border:0;outline:none;text-decoration:none;color:#0a0a0b;font-size:26px;font-weight:700;letter-spacing:-0.025em;line-height:1;">
+          <img src="https://sur9e.com/assets/sur9e-wordmark-email-light.png" width="160" height="35" alt="Sur9e" style="display:block;border:0;outline:none;text-decoration:none;color:#0a0a0b;font-size:26px;font-weight:700;letter-spacing:-0.025em;line-height:1;">
           <div style="margin-top:10px;font-family:'IBM Plex Mono',Menlo,Consolas,monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#ff5a1f;">Know which jobs are worth your time.</div>
         </td></tr>
         <tr><td style="padding:30px 32px 4px;">
@@ -121,7 +121,7 @@ function welcomeEmailText({ confirmUrl, unsubscribeUrl }: EmailUrls): string {
     '',
     `Confirm your email: ${confirmUrl}`,
     '',
-    '— sur9e · Know which jobs are worth your time.',
+    '— Sur9e · Know which jobs are worth your time.',
     '',
     `Unsubscribe: ${unsubscribeUrl}`,
   ].join('\n');
@@ -158,7 +158,7 @@ async function sendConfirmationEmail(env: Env, email: string): Promise<void> {
       from: 'Sur9e <noreply@send.sur9e.com>',
       reply_to: 'hello@sur9e.com',
       to: [email],
-      subject: 'Welcome to the sur9e waitlist',
+      subject: 'Welcome to the Sur9e waitlist',
       text: welcomeEmailText(urls),
       html: welcomeEmailHtml(urls),
       // RFC 8058 one-click unsubscribe — required by Gmail/Yahoo for bulk
@@ -315,7 +315,7 @@ function brandedPage(opts: BrandedPageOpts): Response {
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${opts.title} — sur9e</title>
+<title>${opts.title} — Sur9e</title>
 <link rel="icon" href="https://sur9e.com/favicon.svg">
 <style>
 :root { color-scheme: dark; }
@@ -364,7 +364,7 @@ p { margin: 0 0 22px; font-size: 15px; line-height: 1.65; color: #cccccc; }
 </style>
 </head><body>
 <main>
-  <img class="wordmark" src="https://sur9e.com/assets/sur9e-wordmark-email-v2.png" alt="sur9e" width="180" height="40">
+  <img class="wordmark" src="https://sur9e.com/assets/sur9e-wordmark-email-v2.png" alt="Sur9e" width="180" height="40">
   <div class="eyebrow">Know which jobs are worth your time.</div>
   <section class="card">
     <div class="icon" aria-hidden="true">${opts.icon}</div>
@@ -441,7 +441,7 @@ async function handleConfirm(req: Request, env: Env): Promise<Response> {
     icon: '&#10003;',
     iconColor: 'linear-gradient(135deg,#c9430f,#ff6a2a)',
     heading: "You're confirmed.",
-    body: "Welcome to the sur9e release-notes list. We'll email occasionally. No spam, no gates.",
+    body: "Welcome to the Sur9e release-notes list. We'll email occasionally. No spam, no gates.",
     cta: { text: 'Back to sur9e.com', href: 'https://sur9e.com' },
   });
 }
@@ -511,7 +511,7 @@ async function handleUnsubscribe(req: Request, env: Env): Promise<Response> {
     icon: '&#8722;',
     iconColor: '#3a3a3d',
     heading: "You've been removed.",
-    body: "We've taken your email off the sur9e waitlist. Changed your mind? You can rejoin anytime at sur9e.com.",
+    body: "We've taken your email off the Sur9e waitlist. Changed your mind? You can rejoin anytime at sur9e.com.",
     cta: { text: 'Back to sur9e.com', href: 'https://sur9e.com' },
   });
 }
