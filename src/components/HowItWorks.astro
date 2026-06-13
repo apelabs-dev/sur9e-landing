@@ -1,0 +1,876 @@
+---
+const installCommand = 'bash -c "$(curl -fsSL https://sur9e.com/install)"';
+
+const beats = [
+  'Clone it. Run setup. Open your agent. It reads its own docs, interviews you, builds your profile, and starts evaluating. The product onboards itself.',
+  'It runs on the agent subscription you already pay for. No new account, no API keys to juggle, no second bill mid-hunt.',
+  "It's not just a CLI. A local web UI runs on the same files: pipeline, reports, spend, all at `localhost:3000`. The agent does the work. The web app shows the state.",
+];
+
+const terminalLines = [
+  { kind: 'prompt', text: 'Paste job URL' },
+  { kind: 'input', text: 'https://jobs.ashbyhq.com/orbit-labs/fde-applied-ai' },
+  { kind: 'work', text: 'screening role against profile...' },
+  { kind: 'cost', text: '$0.20 screen · passes threshold' },
+  { kind: 'work', text: 'evaluating deep fit, dealbreakers, comp...' },
+  { kind: 'cost', text: '$0.44 eval · 4.3 / 5.0 high confidence' },
+  { kind: 'done', text: 'wrote report + updated pipeline files' },
+];
+---
+
+<section class="mechanic" id="how-it-works" aria-labelledby="how-heading">
+  <div class="mechanic-paper" aria-hidden="true"></div>
+  <div class="mechanic-inner">
+    <div class="section-head mechanic-head reveal">
+      <span class="eyebrow">01 · How it works</span>
+      <h2 id="how-heading">
+        There's no app to sign up for. It runs inside the coding agent you
+        already use.
+      </h2>
+    </div>
+
+    <div class="mechanic-grid">
+      <div class="mechanic-beats reveal">
+        {
+          beats.map((beat, index) => (
+            <article class="mechanic-beat">
+              <span class="beat-index">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <p
+                set:html={beat.replace(
+                  '`localhost:3000`',
+                  '<code>localhost:3000</code>',
+                )}
+              />
+            </article>
+          ))
+        }
+      </div>
+
+      <aside class="quickstart reveal" aria-label="Quickstart install command">
+        <div class="quickstart-top">
+          <span>Quickstart</span>
+          <span>one command</span>
+        </div>
+        <div class="command-row">
+          <code>{installCommand}</code>
+          <button
+            type="button"
+            class="copy-button"
+            data-copy-button
+            data-copy-value={installCommand}
+            data-copied-label="Copied"
+          >
+            <span class="copy-icon" aria-hidden="true">
+              <svg class="copy-glyph" viewBox="0 0 20 20" fill="none">
+                <rect x="7" y="5" width="9" height="11" rx="2"></rect>
+                <path d="M4 12.5V4a2 2 0 0 1 2-2h7.5"></path>
+              </svg>
+            </span>
+            <span data-copy-label>Copy</span>
+          </button>
+        </div>
+        <p>
+          Needs Node 20+, Git, and one AI coding CLI. That's it. (Python 3.10+
+          for the job scanner; setup installs it on macOS.)
+        </p>
+        <div class="agent-row" aria-label="Supported AI coding CLIs">
+          <span>claude code</span>
+          <span>codex</span>
+          <span>opencode</span>
+          <span class="next-agent">antigravity · next</span>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="demo-band" aria-labelledby="demo-heading">
+    <div class="demo-band-inner">
+      <div class="demo-copy reveal">
+        <span class="demo-kicker">same files, two interfaces</span>
+        <h3 id="demo-heading">
+          The agent works on the left. Your files update on the right.
+        </h3>
+        <p>
+          Scripted from a real session. Real labels, real cost. The agent works
+          on the left. Your files update on the right.
+        </p>
+      </div>
+
+      <div
+        class="split-demo reveal"
+        role="img"
+        aria-label="Scripted replay of an agent screening a role and a local web UI updating the pipeline"
+      >
+        <div class="agent-terminal" aria-hidden="true">
+          <div class="terminal-head">
+            <span></span><span></span><span></span>
+            <strong>Sur9e agent</strong>
+          </div>
+          <div class="terminal-body">
+            {
+              terminalLines.map((line) => (
+                <div class={`terminal-line line-${line.kind}`}>
+                  <span class="line-mark">
+                    {line.kind === 'prompt' ? '>' : '·'}
+                  </span>
+                  <span>{line.text}</span>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="local-ui" aria-hidden="true">
+          <div class="ui-shell">
+            <div class="ui-sidebar">
+              <span class="ui-brand">Sur9e</span>
+              <span class="ui-nav active">Pipeline</span>
+              <span class="ui-nav">Reports</span>
+              <span class="ui-nav">Spend</span>
+            </div>
+            <div class="ui-main">
+              <div class="ui-topbar">
+                <div>
+                  <strong>Pipeline</strong>
+                  <span>localhost:3000</span>
+                </div>
+                <span class="sync-pill">files updated</span>
+              </div>
+              <div class="kanban">
+                <div class="kanban-col">
+                  <div class="col-head"><span></span>Screened <b>12</b></div>
+                  <div class="job-card muted">
+                    <span>Relay Systems</span>
+                    <strong>3.1</strong>
+                    <small>Comp gap · remote flag</small>
+                  </div>
+                  <div class="job-card muted">
+                    <span>Northstar AI</span>
+                    <strong>3.6</strong>
+                    <small>Maybe · ask recruiter</small>
+                  </div>
+                </div>
+                <div class="kanban-col active-col">
+                  <div class="col-head"><span></span>Evaluated <b>4</b></div>
+                  <div class="job-card materialized">
+                    <span>Orbit Labs</span>
+                    <strong>4.3</strong>
+                    <small>FDE, Applied AI · $220K-$280K</small>
+                  </div>
+                </div>
+                <div class="kanban-col ghost-col">
+                  <div class="col-head"><span></span>Apply <b>1</b></div>
+                  <div class="job-card ghost-card"></div>
+                </div>
+              </div>
+            </div>
+            <aside class="report-drawer">
+              <div class="drawer-head">
+                <div>
+                  <span>Orbit Labs</span>
+                  <strong>Forward Deployed Engineer</strong>
+                </div>
+                <b>4.3/5.0</b>
+              </div>
+              <span class="confidence">high confidence</span>
+              <div class="next-steps">
+                <strong>Next steps</strong>
+                <p>
+                  Apply rarely. Tailor CV, ask about travel, keep comp floor
+                  visible.
+                </p>
+              </div>
+              <div class="drawer-block">
+                <span>TL;DR</span>
+                <p>
+                  Strong applied-AI fit, clean comp, one travel dealbreaker to
+                  confirm before spending another token.
+                </p>
+              </div>
+              <div class="score-table">
+                <div><span>Fit</span><b>4.6</b></div>
+                <div><span>Comp</span><b>4.2</b></div>
+                <div><span>Dealbreakers</span><b>1 hit</b></div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .mechanic {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+  }
+  .mechanic-paper {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 54%;
+    pointer-events: none;
+    background:
+      radial-gradient(rgba(31, 29, 26, 0.055) 1px, transparent 1.4px),
+      linear-gradient(90deg, rgba(255, 86, 0, 0.05) 1px, transparent 1px),
+      linear-gradient(rgba(17, 17, 17, 0.035) 1px, transparent 1px);
+    background-size:
+      24px 24px,
+      96px 96px,
+      96px 96px;
+    -webkit-mask-image: linear-gradient(#000 0%, transparent 92%);
+    mask-image: linear-gradient(#000 0%, transparent 92%);
+  }
+  .mechanic-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 112px 24px 88px;
+  }
+  .mechanic-head {
+    margin-bottom: 54px;
+  }
+  .mechanic-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 0.78fr);
+    gap: 56px;
+    align-items: start;
+  }
+  .mechanic-beats {
+    display: grid;
+    gap: 18px;
+  }
+  .mechanic-beat {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 18px;
+    padding: 20px 0;
+    border-top: 1px solid var(--border);
+  }
+  .mechanic-beat:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+  .beat-index {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--accent);
+  }
+  .mechanic-beat p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.6;
+    letter-spacing: -0.012em;
+    color: var(--text-2);
+    text-wrap: pretty;
+  }
+  .mechanic-beat code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    color: var(--accent-text);
+    background: color-mix(in srgb, var(--accent) 9%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+    border-radius: var(--radius-sm);
+    padding: 1px 5px;
+  }
+  .quickstart {
+    position: sticky;
+    top: 104px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.92),
+        rgba(255, 255, 255, 0.72)
+      ),
+      var(--surface);
+    box-shadow: var(--shadow-lg);
+    padding: 18px;
+  }
+  .quickstart-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+    color: var(--text-3);
+    font: 600 12px var(--font-display);
+  }
+  .command-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: stretch;
+    background: var(--bg-dark);
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius);
+    padding: 8px;
+  }
+  .command-row code {
+    min-width: 0;
+    align-self: center;
+    color: var(--text-dark);
+    font: 500 13px/1.5 var(--font-mono);
+    white-space: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .command-row code::-webkit-scrollbar {
+    display: none;
+  }
+  .copy-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: var(--radius-sm);
+    background: var(--accent-cta);
+    color: #fff;
+    padding: 0 12px;
+    font: 700 12px var(--font-display);
+    cursor: pointer;
+    transition:
+      background var(--dur-quick),
+      border-color var(--dur-quick);
+  }
+  .copy-button:hover {
+    background: var(--accent-cta-hover);
+  }
+  .copy-icon,
+  .copy-icon svg {
+    width: 14px;
+    height: 14px;
+    display: block;
+  }
+  .copy-icon svg {
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .quickstart p {
+    margin: 14px 0 18px;
+    color: var(--text-3);
+    line-height: 1.55;
+  }
+  .agent-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    border-top: 1px solid var(--rule);
+    padding-top: 16px;
+  }
+  .agent-row span {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+    color: var(--text-2);
+    padding: 7px 9px;
+    font: 600 12px var(--font-mono);
+    white-space: nowrap;
+  }
+  .agent-row .next-agent {
+    color: var(--text-3);
+    opacity: 0.55;
+  }
+  .demo-band {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(255, 106, 42, 0.22),
+        transparent 28rem
+      ),
+      radial-gradient(
+        circle at 88% 64%,
+        rgba(153, 184, 132, 0.08),
+        transparent 22rem
+      ),
+      linear-gradient(180deg, #201610 0%, #12100e 42%, #080808 100%);
+    color: var(--text-dark);
+    padding: 92px 24px 108px;
+    border-top: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+  .demo-band::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.026) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+    background-size: 64px 64px;
+    -webkit-mask-image: radial-gradient(
+      circle at 50% 42%,
+      #000 0 34%,
+      transparent 78%
+    );
+    mask-image: radial-gradient(circle at 50% 42%, #000 0 34%, transparent 78%);
+  }
+  .demo-band-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+  .demo-copy {
+    max-width: 720px;
+    margin: 0 auto 42px;
+    text-align: center;
+  }
+  .demo-kicker {
+    display: inline-block;
+    margin-bottom: 14px;
+    color: var(--beauty-ember-2);
+    font: 700 12px var(--font-display);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .demo-copy h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(34px, 5vw, 58px);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+    color: #fff8ef;
+    text-wrap: balance;
+  }
+  .demo-copy p {
+    max-width: 620px;
+    margin: 18px auto 0;
+    color: rgba(244, 244, 245, 0.68);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .split-demo {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.55fr) minmax(0, 1fr);
+    gap: 22px;
+    align-items: center;
+  }
+  .agent-terminal,
+  .local-ui {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-lg);
+    background: rgba(10, 10, 11, 0.76);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.05) inset,
+      0 36px 96px -48px rgba(0, 0, 0, 0.82);
+  }
+  .agent-terminal {
+    overflow: hidden;
+  }
+  .terminal-head {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px 14px;
+    color: var(--text-dark-muted);
+    font: 600 12px var(--font-display);
+  }
+  .terminal-head span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-dark-strong);
+  }
+  .terminal-head span:first-child {
+    background: var(--accent);
+  }
+  .terminal-head strong {
+    margin-left: auto;
+    font-weight: 600;
+  }
+  .terminal-body {
+    min-height: 420px;
+    padding: 18px 16px;
+    display: grid;
+    align-content: start;
+    gap: 14px;
+    font: 500 13px/1.45 var(--font-mono);
+  }
+  .terminal-line {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 8px;
+    color: rgba(244, 244, 245, 0.74);
+    opacity: 0;
+    transform: translateY(5px);
+    animation: terminal-line 6800ms var(--ease-calm) infinite;
+  }
+  .terminal-line:nth-child(1) {
+    animation-delay: 0ms;
+  }
+  .terminal-line:nth-child(2) {
+    animation-delay: 520ms;
+  }
+  .terminal-line:nth-child(3) {
+    animation-delay: 1160ms;
+  }
+  .terminal-line:nth-child(4) {
+    animation-delay: 1900ms;
+  }
+  .terminal-line:nth-child(5) {
+    animation-delay: 2660ms;
+  }
+  .terminal-line:nth-child(6) {
+    animation-delay: 3460ms;
+  }
+  .terminal-line:nth-child(7) {
+    animation-delay: 4300ms;
+  }
+  .line-mark {
+    color: var(--accent);
+  }
+  .line-input {
+    color: var(--text-dark);
+  }
+  .line-cost {
+    color: var(--tier-mid);
+  }
+  .line-done {
+    color: var(--tier-high);
+  }
+  @keyframes terminal-line {
+    0%,
+    8% {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    14%,
+    82% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0.32;
+      transform: translateY(0);
+    }
+  }
+  .local-ui {
+    padding: 12px;
+    background:
+      radial-gradient(
+        circle at 26% 14%,
+        rgba(255, 106, 42, 0.12),
+        transparent 20rem
+      ),
+      rgba(18, 18, 20, 0.88);
+  }
+  .ui-shell {
+    position: relative;
+    display: grid;
+    grid-template-columns: 104px minmax(0, 1fr);
+    min-height: 520px;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: #0f0f11;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .ui-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 18px 12px;
+    background: #17171a;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .ui-brand {
+    margin-bottom: 14px;
+    color: var(--accent);
+    font: 700 15px var(--font-display);
+  }
+  .ui-nav {
+    border-radius: var(--radius-sm);
+    color: var(--text-dark-muted);
+    padding: 8px;
+    font: 600 12px var(--font-display);
+  }
+  .ui-nav.active {
+    color: var(--text-dark);
+    background: rgba(255, 86, 0, 0.14);
+  }
+  .ui-main {
+    min-width: 0;
+    padding: 16px;
+  }
+  .ui-topbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .ui-topbar strong {
+    display: block;
+    color: var(--text-dark);
+    font: 700 18px var(--font-display);
+  }
+  .ui-topbar span {
+    color: var(--text-dark-muted);
+    font: 500 12px var(--font-mono);
+  }
+  .sync-pill {
+    align-self: start;
+    border: 1px solid color-mix(in srgb, var(--tier-high) 42%, transparent);
+    border-radius: var(--radius-pill);
+    color: var(--tier-high) !important;
+    padding: 5px 8px;
+  }
+  .kanban {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  .kanban-col {
+    min-height: 330px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.035);
+    padding: 10px;
+  }
+  .active-col {
+    border-color: color-mix(in srgb, var(--accent) 42%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 15%, transparent);
+  }
+  .col-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    color: var(--text-dark-2);
+    font: 700 12px var(--font-display);
+  }
+  .col-head span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .col-head b {
+    margin-left: auto;
+    color: var(--text-dark-muted);
+    font-weight: 600;
+  }
+  .job-card {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius);
+    background: #1c1c1f;
+    padding: 11px;
+    margin-bottom: 9px;
+  }
+  .job-card span,
+  .job-card strong,
+  .job-card small {
+    display: block;
+  }
+  .job-card span {
+    color: var(--text-dark);
+    font: 700 13px var(--font-display);
+  }
+  .job-card strong {
+    margin: 9px 0 4px;
+    color: var(--tier-high);
+    font: 700 26px var(--font-display);
+    letter-spacing: -0.05em;
+  }
+  .job-card small {
+    color: var(--text-dark-muted);
+    line-height: 1.35;
+  }
+  .job-card.muted {
+    opacity: 0.58;
+  }
+  .materialized {
+    animation: materialize 6800ms var(--ease-calm) infinite;
+  }
+  @keyframes materialize {
+    0%,
+    48% {
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+    }
+    58%,
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  .ghost-card {
+    height: 98px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent);
+  }
+  .report-drawer {
+    position: absolute;
+    top: 76px;
+    right: 12px;
+    bottom: 12px;
+    width: min(330px, 46%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius);
+    background: #fdfcf8;
+    color: var(--text);
+    padding: 16px;
+    box-shadow: 0 24px 70px -30px rgba(0, 0, 0, 0.72);
+    animation: drawer-in 6800ms var(--ease-calm) infinite;
+  }
+  @keyframes drawer-in {
+    0%,
+    56% {
+      opacity: 0;
+      transform: translateX(34px);
+    }
+    68%,
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  .drawer-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: start;
+  }
+  .drawer-head span {
+    display: block;
+    color: var(--text-3);
+    font: 600 12px var(--font-display);
+  }
+  .drawer-head strong {
+    display: block;
+    margin-top: 3px;
+    color: var(--text);
+    font: 700 16px/1.1 var(--font-display);
+  }
+  .drawer-head b {
+    color: var(--score-high);
+    font: 700 24px var(--font-display);
+  }
+  .confidence {
+    display: inline-flex;
+    margin: 12px 0 14px;
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--score-high) 13%, transparent);
+    color: var(--score-high);
+    padding: 4px 8px;
+    font: 700 11px var(--font-display);
+  }
+  .next-steps {
+    border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--border));
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--accent) 8%, #fff);
+    padding: 12px;
+  }
+  .next-steps strong,
+  .drawer-block span {
+    color: var(--text);
+    font: 700 12px var(--font-display);
+  }
+  .next-steps p,
+  .drawer-block p {
+    margin: 5px 0 0;
+    color: var(--text-3);
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .drawer-block {
+    margin-top: 14px;
+  }
+  .score-table {
+    margin-top: 14px;
+    border-top: 1px solid var(--rule);
+  }
+  .score-table div {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--rule);
+    color: var(--text-3);
+    font: 600 12px var(--font-display);
+  }
+  .score-table b {
+    color: var(--text);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .terminal-line,
+    .materialized,
+    .report-drawer {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @media (max-width: 980px) {
+    .mechanic-grid,
+    .split-demo {
+      grid-template-columns: 1fr;
+    }
+    .quickstart {
+      position: relative;
+      top: auto;
+    }
+    .terminal-body {
+      min-height: auto;
+    }
+  }
+  @media (max-width: 720px) {
+    .mechanic-inner {
+      padding: 86px 24px 68px;
+    }
+    .mechanic-head {
+      margin-bottom: 34px;
+    }
+    .mechanic-beat {
+      grid-template-columns: 1fr;
+      gap: 8px;
+      padding: 17px 0;
+    }
+    .mechanic-beat p {
+      font-size: 16px;
+    }
+    .command-row {
+      grid-template-columns: 1fr;
+    }
+    .copy-button {
+      justify-content: center;
+      min-height: 40px;
+    }
+    .demo-band {
+      padding: 72px 18px 78px;
+    }
+    .split-demo {
+      gap: 16px;
+    }
+    .ui-shell {
+      grid-template-columns: 1fr;
+      min-height: 620px;
+    }
+    .ui-sidebar {
+      display: none;
+    }
+    .kanban {
+      grid-template-columns: 1fr;
+    }
+    .ghost-col {
+      display: none;
+    }
+    .report-drawer {
+      inset: auto 12px 12px;
+      width: auto;
+      max-height: 300px;
+    }
+  }
+</style>
+
+<script>
+  import { initScriptCopyButtons } from '../scripts/script-copy-button.js';
+
+  initScriptCopyButtons(document);
+</script>
