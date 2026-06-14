@@ -1,0 +1,123 @@
+/* Report page canvas — lift the whole page to the paper tier (one above
+   default --bg canvas). Per user preference, /report renders on white
+   in light and on the slightly-elevated charcoal #131315 in dark.
+   Scoped via .report-wrap (the page-level container, always in the DOM
+   on /report) rather than body[data-screen-label] which depends on a
+   useEffect that wasn't reliably running.
+
+   flex: 1 makes this fill the parent .main (display: flex, column) so
+   on short reports the bg-paper paints all the way to the viewport
+   bottom — without it, .main's cream --bg shows below the content as
+   a visible empty band beneath the floating .action-bar. */
+.report-light .report-wrap {
+  background: var(--bg-paper);
+  flex: 1;
+  width: 100%;
+}
+
+.report-light .report-header {
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--space-6);
+}
+.report-light .report-meta {
+  display: flex;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-3);
+  margin-bottom: var(--space-3);
+}
+.report-light .report-meta .report-num {
+  color: var(--accent);
+}
+.report-light .report-header h1 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 600;
+  margin: 0;
+}
+.report-light .report-header h2 {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-2);
+  margin: 4px 0 var(--space-3);
+}
+.report-light .report-score {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: var(--space-2);
+}
+.report-light .report-notes {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+.report-light .report-markdown {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text);
+}
+.report-light .report-markdown h1 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  margin-top: var(--space-6);
+}
+.report-light .report-markdown h2 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  margin-top: var(--space-5);
+}
+.report-light .report-markdown h3 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  margin-top: var(--space-4);
+}
+.report-light .report-markdown p {
+  margin: var(--space-3) 0;
+}
+.report-light .report-markdown ul,
+.report-light .report-markdown ol {
+  padding-left: var(--space-5);
+}
+.report-light .report-markdown li {
+  margin: 4px 0;
+}
+.report-light .report-markdown code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--bg-paper);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+.report-light .report-markdown pre {
+  background: var(--bg-paper);
+  padding: var(--space-3);
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+.report-light .report-markdown pre code {
+  background: none;
+  padding: 0;
+}
+.report-light .report-empty {
+  padding: var(--space-7) var(--space-6);
+  text-align: center;
+  color: var(--text-3);
+}
+.report-light .report-empty p {
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 400px;
+  margin: 0 auto var(--space-3);
+}
+.report-light .report-empty a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.report-light .report-empty a:hover {
+  text-decoration: underline;
+}

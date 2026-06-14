@@ -26,7 +26,7 @@ score_breakdown:
 
 <div data-callout data-variant="success" data-emoji="✅">
 
-**Next Steps** Send the hiring manager's connect note today, then submit the application. The onsite includes a **30-minute project demo** — start building the RAG pipeline presentation (10–12 slides) this week.
+**Next Steps** Send the hiring manager’s connect note today, then submit the application. The onsite includes a **30-minute project demo** — start building the RAG pipeline presentation (10–12 slides) this week.
 
 </div>
 
@@ -235,8 +235,7 @@ Five back-to-back blocks across the half-day.
 - **Likely prompt:** "Design an AI pipeline that scores and routes inbound leads with &lt; 5% hallucination rate" or a GTM-flavored sensor/data-ingestion variant. inferred from JD and Sift's product domain
 - **Prepare:** practice drawing data flow diagrams out loud — ingestion, normalization, storage tier, retrieval layer, output validation. Focus on failure modes and monitoring. Ask clarifying questions before committing to a design direction.
 
-> 4c. Lunch / team break (60 min)
-
+#### 4c. Lunch / team break (60 min)
 - **Format:** casual lunch with team members; no formal interviewer-candidate dynamic.
 - **What they evaluate:** interpersonal fit and how you engage in unstructured conversation — this is still an assessment. **Thrive Together** is a stated value; how you collaborate socially matters.
 - **How to prepare:** have two or three genuine questions about the product roadmap, team dynamics, or day-to-day workflows ready. Treat it as a two-way interview, not downtime.
@@ -247,8 +246,7 @@ Five back-to-back blocks across the half-day.
 - **What they evaluate:** real Python fluency, collaboration, whether you explain your reasoning as you go. This is **not algorithm puzzles** — closer to "build X with these constraints" in a real editor against live code.
 - **Prepare:** practice writing Python production code out loud — API clients with retry/backoff, async pipelines, clean error handling. Review your n8n webhook integration patterns in Python and how you'd rewrite them natively.
 
-> 4e. Final engineering team interview (30 min)
-
+#### 4e. Final engineering team interview (30 min)
 - **Conducted by:** an engineering leader — the documented process lists the CTO/co-founder Austin Spiegel for this slot.
 - **What they evaluate:** values alignment — **Bias for Action**, **Own the Outcome**, and **Long-Term Mindset** probed explicitly. Also a genuine two-way conversation about company direction.
 - **Likely question:** "Tell me about a time you shipped before it was perfect and how you managed the risk." inferred, Bias for Action

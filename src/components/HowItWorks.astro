@@ -1,20 +1,62 @@
 ---
+import ReportCard from '../report-vendor/ReportCard';
+import { loadReport } from '../report-vendor/load-report';
+import '../report-vendor/styles/report-light.css';
+import '../report-vendor/styles/scoped/report-hero.css';
+import '../report-vendor/styles/scoped/report-snapshot.css';
+import '../report-vendor/styles/scoped/report-inline.css';
+import '../report-vendor/styles/scoped/tiptap-editor.css';
+import '../report-vendor/styles/scoped/chrome.css';
+
 const installCommand = 'bash -c "$(curl -fsSL https://sur9e.com/install)"';
+const demoCommand = '/sur9e evaluate';
 
-const beats = [
-  'Clone it. Run setup. Open your agent. It reads its own docs, interviews you, builds your profile, and starts evaluating. The product onboards itself.',
-  'It runs on the agent subscription you already pay for. No new account, no API keys to juggle, no second bill mid-hunt.',
-  "It's not just a CLI. A local web UI runs on the same files: pipeline, reports, spend, all at `localhost:3000`. The agent does the work. The web app shows the state.",
-];
+// Public-safe Sift report (Outreach section dropped, hiring-manager name
+// redacted), parsed at build time and rendered by the read-only <ReportCard>.
+const report = loadReport();
 
-const terminalLines = [
-  { kind: 'prompt', text: 'Paste job URL' },
-  { kind: 'input', text: 'https://jobs.ashbyhq.com/orbit-labs/fde-applied-ai' },
-  { kind: 'work', text: 'screening role against profile...' },
-  { kind: 'cost', text: '$0.20 screen · passes threshold' },
-  { kind: 'work', text: 'evaluating deep fit, dealbreakers, comp...' },
-  { kind: 'cost', text: '$0.44 eval · 4.3 / 5.0 high confidence' },
-  { kind: 'done', text: 'wrote report + updated pipeline files' },
+const cliEvents = [
+  {
+    kind: 'narration',
+    text: "Got it. I'll run Sur9e: screen cheap, evaluate deep, then write the report.",
+  },
+  {
+    kind: 'read',
+    text: 'Read 3 files (CLAUDE.md, content/modes/screen.md, content/modes/evaluate.md)',
+  },
+  {
+    kind: 'narration',
+    text: 'The AI agent is the CLI. Modes are prompts in content/modes; the web UI reads the same files.',
+  },
+  {
+    kind: 'tool',
+    name: 'Bash',
+    command: 'npx tsx --conditions=react-server cli/resolve-mode.mjs evaluate',
+    output: 'mode evaluate -> provider claude · model default',
+  },
+  {
+    kind: 'tool',
+    name: 'Mode',
+    command: 'screen https://jobs.ashbyhq.com/siftstack/gtm-engineer',
+    output: '$0.20 screen · passes threshold',
+  },
+  {
+    kind: 'tool',
+    name: 'Mode',
+    command: 'evaluate --deep --num 5',
+    output: '$0.44 eval · 4.3 / 5.0 high confidence',
+  },
+  {
+    kind: 'update',
+    file: 'artifacts/reports/005-siftstack-2026-06-05.md',
+    summary: 'Added 1 report, updated 1 tracker row',
+  },
+  {
+    kind: 'tool',
+    name: 'Bash',
+    command: 'open http://localhost:3000/report/005-siftstack',
+    output: 'local report opened · pipeline refreshed from disk',
+  },
 ];
 ---
 
@@ -29,172 +71,294 @@ const terminalLines = [
       </h2>
     </div>
 
-    <div class="mechanic-grid">
-      <div class="mechanic-beats reveal">
-        {
-          beats.map((beat, index) => (
-            <article class="mechanic-beat">
-              <span class="beat-index">
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              <p
-                set:html={beat.replace(
-                  '`localhost:3000`',
-                  '<code>localhost:3000</code>',
-                )}
-              />
-            </article>
-          ))
-        }
-      </div>
-
-      <aside class="quickstart reveal" aria-label="Quickstart install command">
-        <div class="quickstart-top">
-          <span>Quickstart</span>
-          <span>one command</span>
-        </div>
-        <div class="command-row">
-          <code>{installCommand}</code>
-          <button
-            type="button"
-            class="copy-button"
-            data-copy-button
-            data-copy-value={installCommand}
-            data-copied-label="Copied"
+    <div class="qs-steps">
+      <svg class="qs-trajectory" aria-hidden="true">
+        <defs>
+          <!-- Same orange→peach→orange sweep as the hero "worth your time"
+               headline accent (tokens: --accent #ff5600, #ffb88a highlight). -->
+          <linearGradient id="qsAccentGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#ff5600"></stop>
+            <stop offset="50%" stop-color="#ffb88a"></stop>
+            <stop offset="100%" stop-color="#ff5600"></stop>
+          </linearGradient>
+          <!-- userSpaceOnUse: the connector is a zero-width vertical path, so an
+               objectBoundingBox gradient would be degenerate and drop the stroke.
+               y2 is set to the steps' height in draw(). -->
+          <linearGradient
+            id="qsAccentGradV"
+            gradientUnits="userSpaceOnUse"
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="600"
           >
-            <span class="copy-icon" aria-hidden="true">
-              <svg class="copy-glyph" viewBox="0 0 20 20" fill="none">
-                <rect x="7" y="5" width="9" height="11" rx="2"></rect>
-                <path d="M4 12.5V4a2 2 0 0 1 2-2h7.5"></path>
-              </svg>
-            </span>
-            <span data-copy-label>Copy</span>
-          </button>
+            <stop offset="0%" stop-color="#ff5600"></stop>
+            <stop offset="50%" stop-color="#ffb88a"></stop>
+            <stop offset="100%" stop-color="#ff5600"></stop>
+          </linearGradient>
+        </defs>
+        <path class="qs-path-done"></path>
+        <path class="qs-path-next"></path>
+      </svg>
+      <article class="qs-step reveal">
+        <div class="qs-rail" aria-hidden="true">
+          <span class="qs-node">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <path
+                d="M32 4 39.5 24.5 60 32 39.5 39.5 32 60 24.5 39.5 4 32 24.5 24.5Z"
+              ></path>
+            </svg>
+            <span class="qs-node-num">01</span>
+          </span>
         </div>
-        <p>
-          Needs Node 20+, Git, and one AI coding CLI. That's it. (Python 3.10+
-          for the job scanner; setup installs it on macOS.)
-        </p>
-        <div class="agent-row" aria-label="Supported AI coding CLIs">
-          <span>claude code</span>
-          <span>codex</span>
-          <span>opencode</span>
-          <span class="next-agent">antigravity · next</span>
+        <div class="qs-text">
+          <h3>Run one command</h3>
+          <p>
+            One command checks your prerequisites, clones the repo, and launches
+            the guided setup. Needs Node 20+, Git, and one AI coding CLI (<code
+              >claude code</code
+            >, <code>codex</code>, or <code>opencode</code>). Python 3.10+
+            powers the job scanner. Runs anywhere your agent does.
+          </p>
         </div>
-      </aside>
+        <div class="qs-visual qs-visual-term">
+          <div class="qs-term">
+            <div class="qs-term-bar" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="command-row">
+              <pre
+                class="command-line"><code><span class="command-shell">bash -c</span> <span class="command-url">"$(curl -fsSL https://sur9e.com/install)"</span></code></pre>
+              <button
+                type="button"
+                class="copy-button"
+                aria-label="Copy install command"
+                data-copy-button
+                data-copy-value={installCommand}
+                data-copied-label="Copied"
+              >
+                <span class="copy-icon" aria-hidden="true">
+                  <svg class="copy-glyph" viewBox="0 0 20 20" fill="none">
+                    <rect x="7" y="5" width="9" height="11" rx="2"></rect>
+                    <path d="M4 12.5V4a2 2 0 0 1 2-2h7.5"></path>
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="qs-step reveal">
+        <div class="qs-rail" aria-hidden="true">
+          <span class="qs-node">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <path
+                d="M32 4 39.5 24.5 60 32 39.5 39.5 32 60 24.5 39.5 4 32 24.5 24.5Z"
+              ></path>
+            </svg>
+            <span class="qs-node-num">02</span>
+          </span>
+        </div>
+        <div class="qs-text">
+          <h3>The agent onboards you</h3>
+          <p>
+            Open your agent inside the folder. It reads its own docs, interviews
+            you about your CV, goals, and dealbreakers, and builds your profile.
+            The product onboards itself.
+          </p>
+        </div>
+        <div class="qs-visual qs-visual-img">
+          <img
+            src="/assets/download-box-icon-ai-sparkle-transparent.png"
+            alt="Your LinkedIn, CV, and wins flowing into Sur9e"
+            width="300"
+            height="300"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      </article>
+
+      <article class="qs-step reveal">
+        <div class="qs-rail" aria-hidden="true">
+          <span class="qs-node">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <path
+                d="M32 4 39.5 24.5 60 32 39.5 39.5 32 60 24.5 39.5 4 32 24.5 24.5Z"
+              ></path>
+            </svg>
+            <span class="qs-node-num">03</span>
+          </span>
+        </div>
+        <div class="qs-text">
+          <h3>Evaluate your first offer</h3>
+          <p>
+            Paste a job. Sur9e screens it cheap, then evaluates deep, scoring it
+            against your real profile in about 30 seconds: fit, comp, seniority,
+            and dealbreakers, with the reasoning behind every call.
+          </p>
+        </div>
+        <div class="qs-visual qs-visual-card">
+          <div class="qs-card">
+            <div class="qs-card-head">
+              <div class="qs-card-mark">
+                <svg
+                  viewBox="100 100 312 312"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  ><path d="m120 392 272-57.683V120l-272 58.357z"></path></svg
+                >
+              </div>
+              <div>
+                <div class="qs-card-co">Stripe</div>
+                <div class="qs-card-role">Technical Account Mgr</div>
+              </div>
+            </div>
+            <div class="qs-card-score">
+              <div class="qs-card-num">4.4</div>
+              <div class="qs-card-denom">/ 5.0</div>
+            </div>
+            <div class="qs-card-bar">
+              <span class="on"></span><span class="on"></span><span class="on"
+              ></span><span class="on"></span><span></span>
+            </div>
+            <div class="qs-card-tag">Apply · strong fit</div>
+          </div>
+        </div>
+      </article>
     </div>
   </div>
 
   <div class="demo-band" aria-labelledby="demo-heading">
     <div class="demo-band-inner">
       <div class="demo-copy reveal">
-        <span class="demo-kicker">same files, two interfaces</span>
-        <h3 id="demo-heading">
-          The agent works on the left. Your files update on the right.
-        </h3>
+        <span class="demo-kicker">same run, two views</span>
+        <h3 id="demo-heading">Watch it work. Read what it wrote.</h3>
         <p>
-          Scripted from a real session. Real labels, real cost. The agent works
-          on the left. Your files update on the right.
+          One evaluate run, two ways to see it: the agent reasoning in your
+          terminal, and the report it writes — rendered by the real Sur9e
+          viewer, not a mockup. Flip between them.
         </p>
       </div>
 
-      <div
-        class="split-demo reveal"
-        role="img"
-        aria-label="Scripted replay of an agent screening a role and a local web UI updating the pipeline"
-      >
-        <div class="agent-terminal" aria-hidden="true">
-          <div class="terminal-head">
-            <span></span><span></span><span></span>
-            <strong>Sur9e agent</strong>
-          </div>
-          <div class="terminal-body">
-            {
-              terminalLines.map((line) => (
-                <div class={`terminal-line line-${line.kind}`}>
-                  <span class="line-mark">
-                    {line.kind === 'prompt' ? '>' : '·'}
-                  </span>
-                  <span>{line.text}</span>
-                </div>
-              ))
-            }
-          </div>
+      <div class="demo-deck" data-deck>
+        <div class="deck-tabs" role="tablist" aria-label="Demo views">
+          <button
+            type="button"
+            class="deck-tab is-active"
+            data-deck-tab="agent"
+            id="deck-tab-agent"
+            role="tab"
+            aria-selected="true"
+            aria-controls="deck-card-agent"
+          >
+            <span class="deck-tab-dot" aria-hidden="true"></span>Agent
+          </button>
+          <button
+            type="button"
+            class="deck-tab"
+            data-deck-tab="report"
+            id="deck-tab-report"
+            role="tab"
+            aria-selected="false"
+            aria-controls="deck-card-report"
+          >
+            <span class="deck-tab-dot" aria-hidden="true"></span>Report
+          </button>
         </div>
 
-        <div class="local-ui" aria-hidden="true">
-          <div class="ui-shell">
-            <div class="ui-sidebar">
-              <span class="ui-brand">Sur9e</span>
-              <span class="ui-nav active">Pipeline</span>
-              <span class="ui-nav">Reports</span>
-              <span class="ui-nav">Spend</span>
+        <div class="deck-stage">
+          <div
+            class="deck-card is-front"
+            data-deck-card="agent"
+            id="deck-card-agent"
+            role="tabpanel"
+            aria-labelledby="deck-tab-agent"
+          >
+            <div class="agent-terminal" aria-hidden="true">
+              <div class="cli-topline">
+                v24.15.0 ~/career/sur9e git:(main) 0 • +0 -0 (14s)
+              </div>
+              <div class="cli-rule"></div>
+              <div class="terminal-body">
+                {
+                  cliEvents.map((event) => (
+                    <div class={`cli-event event-${event.kind}`}>
+                      {event.kind === 'narration' && (
+                        <>
+                          <span class="event-dot">•</span>
+                          <p>{event.text}</p>
+                        </>
+                      )}
+                      {event.kind === 'read' && (
+                        <p class="read-line">{event.text}</p>
+                      )}
+                      {event.kind === 'tool' && (
+                        <>
+                          <span class="event-dot green">•</span>
+                          <div class="tool-call">
+                            <p>
+                              <strong>{event.name}</strong>({event.command})
+                            </p>
+                            <span class="tool-output">└ {event.output}</span>
+                          </div>
+                        </>
+                      )}
+                      {event.kind === 'update' && (
+                        <>
+                          <span class="event-dot green">•</span>
+                          <div class="tool-call">
+                            <p>
+                              <strong>Update</strong>({event.file})
+                            </p>
+                            <span class="tool-output">└ {event.summary}</span>
+                            <div class="terminal-diff">
+                              <span class="diff-line context">5</span>
+                              <span class="diff-line removed">
+                                - Status: Screened · fit unknown
+                              </span>
+                              <span class="diff-line added">
+                                + Status: Evaluated · score 4.3/5.0 · high
+                                confidence
+                              </span>
+                              <span class="diff-line added">
+                                + Next: send hiring-manager note, build the RAG
+                                demo deck
+                              </span>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  ))
+                }
+              </div>
+              <div class="cli-input-window">
+                <div class="cli-input-meta" aria-hidden="true">
+                  <span>v24.15.0</span>
+                  <span>~/career/sur9e</span>
+                  <span>main</span>
+                  <span>+0</span>
+                </div>
+                <div class="cli-user-input">
+                  <code>{demoCommand}</code>
+                  <span class="cli-input-caret"></span>
+                </div>
+              </div>
             </div>
-            <div class="ui-main">
-              <div class="ui-topbar">
-                <div>
-                  <strong>Pipeline</strong>
-                  <span>localhost:3000</span>
-                </div>
-                <span class="sync-pill">files updated</span>
-              </div>
-              <div class="kanban">
-                <div class="kanban-col">
-                  <div class="col-head"><span></span>Screened <b>12</b></div>
-                  <div class="job-card muted">
-                    <span>Relay Systems</span>
-                    <strong>3.1</strong>
-                    <small>Comp gap · remote flag</small>
-                  </div>
-                  <div class="job-card muted">
-                    <span>Northstar AI</span>
-                    <strong>3.6</strong>
-                    <small>Maybe · ask recruiter</small>
-                  </div>
-                </div>
-                <div class="kanban-col active-col">
-                  <div class="col-head"><span></span>Evaluated <b>4</b></div>
-                  <div class="job-card materialized">
-                    <span>Orbit Labs</span>
-                    <strong>4.3</strong>
-                    <small>FDE, Applied AI · $220K-$280K</small>
-                  </div>
-                </div>
-                <div class="kanban-col ghost-col">
-                  <div class="col-head"><span></span>Apply <b>1</b></div>
-                  <div class="job-card ghost-card"></div>
-                </div>
-              </div>
+          </div>
+
+          <div
+            class="deck-card is-back"
+            data-deck-card="report"
+            id="deck-card-report"
+            role="tabpanel"
+            aria-labelledby="deck-tab-report"
+          >
+            <div class="report-scroll">
+              <ReportCard client:visible report={report} />
             </div>
-            <aside class="report-drawer">
-              <div class="drawer-head">
-                <div>
-                  <span>Orbit Labs</span>
-                  <strong>Forward Deployed Engineer</strong>
-                </div>
-                <b>4.3/5.0</b>
-              </div>
-              <span class="confidence">high confidence</span>
-              <div class="next-steps">
-                <strong>Next steps</strong>
-                <p>
-                  Apply rarely. Tailor CV, ask about travel, keep comp floor
-                  visible.
-                </p>
-              </div>
-              <div class="drawer-block">
-                <span>TL;DR</span>
-                <p>
-                  Strong applied-AI fit, clean comp, one travel dealbreaker to
-                  confirm before spending another token.
-                </p>
-              </div>
-              <div class="score-table">
-                <div><span>Fit</span><b>4.6</b></div>
-                <div><span>Comp</span><b>4.2</b></div>
-                <div><span>Dealbreakers</span><b>1 hit</b></div>
-              </div>
-            </aside>
           </div>
         </div>
       </div>
@@ -206,8 +370,58 @@ const terminalLines = [
   .mechanic {
     position: relative;
     overflow: hidden;
-    background: var(--bg);
+    background:
+      radial-gradient(
+        circle at 14% 10%,
+        rgba(255, 106, 42, 0.07),
+        transparent 38%
+      ),
+      radial-gradient(
+        circle at 88% 84%,
+        rgba(153, 184, 132, 0.06),
+        transparent 42%
+      ),
+      var(--bg);
     color: var(--text);
+  }
+  /* faint starfield specks */
+  .mechanic::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(
+        1.5px 1.5px at 12% 20%,
+        rgba(255, 122, 68, 0.4),
+        transparent 60%
+      ),
+      radial-gradient(
+        1px 1px at 79% 13%,
+        rgba(120, 120, 120, 0.22),
+        transparent 60%
+      ),
+      radial-gradient(
+        1.5px 1.5px at 63% 72%,
+        rgba(255, 122, 68, 0.3),
+        transparent 60%
+      ),
+      radial-gradient(
+        1px 1px at 31% 85%,
+        rgba(120, 120, 120, 0.2),
+        transparent 60%
+      ),
+      radial-gradient(
+        1px 1px at 92% 58%,
+        rgba(255, 122, 68, 0.28),
+        transparent 60%
+      ),
+      radial-gradient(
+        1px 1px at 46% 8%,
+        rgba(120, 120, 120, 0.18),
+        transparent 60%
+      );
   }
   .mechanic-paper {
     position: absolute;
@@ -235,116 +449,459 @@ const terminalLines = [
   .mechanic-head {
     margin-bottom: 54px;
   }
-  .mechanic-grid {
+  /* ── 3-step quickstart: stepped trajectory · text left, visual right ── */
+  .qs-steps {
+    position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(360px, 0.78fr);
-    gap: 56px;
-    align-items: start;
+    gap: 0;
+    /* matches the hero "worth your time" accent gradient base */
+    --qs-spine: var(--accent);
+    /* pending grey — identical to the un-reached (empty) star outline so the
+       line follows the same colour rule as the markers it connects */
+    --qs-pending: color-mix(in srgb, var(--text) 24%, transparent);
   }
-  .mechanic-beats {
+  /* JS-drawn right-angle staircase linking the orbit nodes (robust to height) */
+  .qs-trajectory {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 900ms var(--ease-calm) 150ms;
+  }
+  .qs-trajectory.in {
+    opacity: 1;
+  }
+  .qs-trajectory path {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: opacity 250ms var(--ease-calm);
+    vector-effect: non-scaling-stroke;
+  }
+  .qs-path-done {
+    stroke: url(#qsAccentGradV);
+  }
+  .qs-path-next {
+    stroke: var(--qs-pending);
+    stroke-dasharray: 14 8;
+  }
+  .qs-step {
+    position: relative;
+    z-index: 1;
     display: grid;
-    gap: 18px;
+    grid-template-columns: 72px minmax(0, 1fr) minmax(300px, 0.86fr);
+    gap: 32px;
+    align-items: center;
+    padding: 38px 0;
   }
-  .mechanic-beat {
+  .qs-step:nth-of-type(2) {
+    transition-delay: 90ms;
+    /* alternate: artefact on the left, text on the right */
+    grid-template-columns: 72px minmax(300px, 0.86fr) minmax(0, 1fr);
+  }
+  .qs-step:nth-of-type(2) .qs-text {
+    order: 1;
+  }
+  .qs-step:nth-of-type(3) {
+    transition-delay: 180ms;
+  }
+  .qs-rail {
+    position: relative;
+    align-self: stretch;
+  }
+  .qs-node {
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    width: 64px;
+    height: 64px;
+    opacity: 0;
+    transform: translateY(-50%);
+    transition:
+      opacity 460ms var(--ease-calm),
+      transform 460ms var(--ease-calm);
+  }
+  .qs-node svg {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    transform-origin: 50% 50%;
+    will-change: transform;
+  }
+  .qs-node svg path {
+    fill: none;
+    stroke: var(--qs-pending);
+    stroke-width: 3;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    transition:
+      fill 250ms var(--ease-calm),
+      stroke 250ms var(--ease-calm);
+    shape-rendering: geometricPrecision;
+    vector-effect: non-scaling-stroke;
+  }
+  .qs-node-num {
+    position: absolute;
+    inset: 0;
     display: grid;
-    grid-template-columns: 56px 1fr;
-    gap: 18px;
-    padding: 20px 0;
-    border-top: 1px solid var(--border);
+    place-items: center;
+    font: 900 14px/1 var(--font-display);
+    color: color-mix(in srgb, var(--text) 48%, transparent);
+    letter-spacing: -0.01em;
+    text-rendering: geometricPrecision;
+    transition: color 250ms var(--ease-calm);
   }
-  .mechanic-beat:last-child {
-    border-bottom: 1px solid var(--border);
+  .qs-step.in .qs-node {
+    opacity: 1;
+    transform: translateY(-50%);
+    transition-delay: 240ms;
   }
-  .beat-index {
+  .qs-step.is-active .qs-node svg {
+    animation: qs-node-pulse 1.6s ease-in-out infinite;
+  }
+  .qs-step.is-active .qs-node svg path {
+    fill: none;
+    stroke: url(#qsAccentGrad);
+  }
+  .qs-step.is-active .qs-node-num,
+  .qs-step.is-done .qs-node-num {
+    color: var(--qs-spine);
+  }
+  .qs-step.is-done .qs-node svg path {
+    fill: url(#qsAccentGrad);
+    stroke: url(#qsAccentGrad);
+  }
+  /* warm accent glow — only on the filled (done) stars */
+  .qs-step.is-done .qs-node svg {
+    filter: drop-shadow(
+        0 0 5px color-mix(in srgb, var(--accent) 58%, transparent)
+      )
+      drop-shadow(0 0 13px color-mix(in srgb, var(--accent) 30%, transparent));
+  }
+  .qs-step.is-done .qs-node-num {
+    color: var(--bg);
+  }
+  @keyframes qs-node-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.06);
+    }
+  }
+  .qs-text {
+    max-width: 460px;
+  }
+  .qs-text h3 {
+    margin: 0 0 12px;
     font-family: var(--font-display);
+    font-size: 26px;
     font-weight: 600;
-    font-size: 13px;
-    color: var(--accent);
+    letter-spacing: -0.02em;
+    color: var(--text);
   }
-  .mechanic-beat p {
+  .qs-text p {
     margin: 0;
-    font-size: 18px;
+    font-size: 17px;
     line-height: 1.6;
-    letter-spacing: -0.012em;
+    letter-spacing: -0.01em;
     color: var(--text-2);
     text-wrap: pretty;
   }
-  .mechanic-beat code {
+  .qs-text code {
     font-family: var(--font-mono);
-    font-size: 0.92em;
+    font-size: 0.88em;
     color: var(--accent-text);
     background: color-mix(in srgb, var(--accent) 9%, transparent);
     border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
     border-radius: var(--radius-sm);
     padding: 1px 5px;
   }
-  .quickstart {
-    position: sticky;
-    top: 104px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    background:
-      linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.92),
-        rgba(255, 255, 255, 0.72)
-      ),
-      var(--surface);
-    box-shadow: var(--shadow-lg);
-    padding: 18px;
+  .qs-visual {
+    align-self: center;
+    display: grid;
+    place-items: center;
+    min-width: 0;
   }
-  .quickstart-top {
+
+  /* Step 1 — terminal panel */
+  .qs-term {
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius-lg);
+    background: var(--bg-dark);
+    box-shadow:
+      0 34px 60px -22px rgba(0, 0, 0, 0.6),
+      0 8px 18px -10px rgba(0, 0, 0, 0.45),
+      0 0 60px -10px rgba(255, 106, 42, 0.22);
+  }
+  .qs-term-bar {
     display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 14px;
-    color: var(--text-3);
-    font: 600 12px var(--font-display);
+    gap: 7px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border-dark);
+  }
+  .qs-term-bar span {
+    width: 11px;
+    height: 11px;
+    border-radius: 999px;
+  }
+  .qs-term-bar span:nth-child(1) {
+    background: #ff5f57;
+  }
+  .qs-term-bar span:nth-child(2) {
+    background: #febc2e;
+  }
+  .qs-term-bar span:nth-child(3) {
+    background: #28c840;
+  }
+  .qs-term .command-row {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    padding: 16px;
+  }
+
+  /* Step 2 — onboarding image */
+  .qs-visual-img img {
+    width: min(100%, 260px);
+    height: auto;
+    display: block;
+    opacity: 0;
+    filter: drop-shadow(0 0 20px rgba(255, 106, 42, 0.14))
+      drop-shadow(0 6px 10px rgba(0, 0, 0, 0.08));
+    animation: qs-float 5.5s ease-in-out infinite;
+    transition: opacity 720ms var(--ease-calm);
+  }
+  .qs-step.is-active .qs-visual-img img,
+  .qs-step.is-done .qs-visual-img img {
+    opacity: 1;
+  }
+  @keyframes qs-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-9px);
+    }
+  }
+
+  /* Step 3 — sample evaluation card (hero-style) */
+  .qs-card {
+    width: min(100%, 280px);
+    border: 1px solid var(--border-dark);
+    border-radius: 14px;
+    padding: 16px 18px;
+    background: linear-gradient(180deg, rgb(28, 28, 31), rgb(19, 19, 21));
+    box-shadow:
+      0 34px 60px -22px rgba(0, 0, 0, 0.6),
+      0 8px 18px -10px rgba(0, 0, 0, 0.45),
+      0 0 60px -10px rgba(255, 106, 42, 0.22);
+    font-family: var(--font-body);
+  }
+  .qs-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .qs-card-mark {
+    position: relative;
+    overflow: hidden;
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 7px;
+    background: linear-gradient(140deg, #6f5cff, #533afd);
+    color: #fff;
+  }
+  /* signature orange corner — same accent as the hero score-cards */
+  .qs-card-mark::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-top-left-radius: 4px;
+  }
+  .qs-card-mark svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+  }
+  .qs-card-co {
+    font: 600 13.5px var(--font-display);
+    letter-spacing: -0.01em;
+    color: var(--text-dark);
+  }
+  .qs-card-role {
+    margin-top: 2px;
+    font: 600 9.5px var(--font-mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-dark-muted);
+  }
+  .qs-card-score {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .qs-card-num {
+    font: 600 36px var(--font-display);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--tier-high);
+  }
+  .qs-card-denom {
+    font: 400 11px var(--font-mono);
+    color: var(--text-dark-muted);
+  }
+  .qs-card-bar {
+    display: flex;
+    gap: 3px;
+    margin-top: 11px;
+  }
+  .qs-card-bar span {
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--surface-dark-2);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 360ms var(--ease-calm);
+  }
+  .qs-card-bar span.on {
+    background: var(--tier-high);
+  }
+  .qs-step.is-active .qs-card-bar span,
+  .qs-step.is-done .qs-card-bar span {
+    transform: scaleX(1);
+  }
+  .qs-step.is-active .qs-card-bar span:nth-child(1) {
+    transition-delay: 380ms;
+  }
+  .qs-step.is-active .qs-card-bar span:nth-child(2) {
+    transition-delay: 460ms;
+  }
+  .qs-step.is-active .qs-card-bar span:nth-child(3) {
+    transition-delay: 540ms;
+  }
+  .qs-step.is-active .qs-card-bar span:nth-child(4) {
+    transition-delay: 620ms;
+  }
+  .qs-step.is-active .qs-card-bar span:nth-child(5) {
+    transition-delay: 700ms;
+  }
+  .qs-card-tag {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 13px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font: 500 9.5px var(--font-mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--tier-high);
+    background: color-mix(in srgb, var(--tier-high) 12%, transparent);
+    opacity: 0;
+    transform: scale(0.82);
+    transition:
+      opacity 300ms var(--ease-calm),
+      transform 300ms var(--ease-calm);
+  }
+  .qs-step.is-active .qs-card-tag,
+  .qs-step.is-done .qs-card-tag {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .qs-step.is-active .qs-card-tag {
+    transition-delay: 780ms;
   }
   .command-row {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 8px;
-    align-items: stretch;
+    align-items: center;
     background: var(--bg-dark);
     border: 1px solid var(--border-dark);
     border-radius: var(--radius);
     padding: 8px;
   }
-  .command-row code {
+  .command-line {
     min-width: 0;
     align-self: center;
-    color: var(--text-dark);
-    font: 500 13px/1.5 var(--font-mono);
-    white-space: nowrap;
+    margin: 0;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 10px 12px;
     overflow-x: auto;
     scrollbar-width: none;
   }
-  .command-row code::-webkit-scrollbar {
+  .command-line code {
+    font: 500 11px/1.55 var(--font-mono);
+    white-space: nowrap;
+  }
+  .command-line code.qs-typing::after {
+    content: '▋';
+    margin-left: 1px;
+    color: #8de2c5;
+    animation: qs-caret 1s steps(1) infinite;
+  }
+  @keyframes qs-caret {
+    50% {
+      opacity: 0;
+    }
+  }
+  .command-line::-webkit-scrollbar {
     display: none;
+  }
+  .command-shell {
+    color: #ffd082;
+  }
+  .command-url {
+    color: #8de2c5;
   }
   .copy-button {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    gap: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: var(--radius-sm);
-    background: var(--accent-cta);
-    color: #fff;
-    padding: 0 12px;
-    font: 700 12px var(--font-display);
+    background: transparent;
+    color: var(--text-dark);
+    padding: 0;
+    font: 700 11px var(--font-display);
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    min-height: 0;
     cursor: pointer;
     transition:
       background var(--dur-quick),
       border-color var(--dur-quick);
   }
   .copy-button:hover {
-    background: var(--accent-cta-hover);
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.28);
   }
   .copy-icon,
   .copy-icon svg {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     display: block;
   }
   .copy-icon svg {
@@ -352,31 +909,6 @@ const terminalLines = [
     stroke-width: 1.7;
     stroke-linecap: round;
     stroke-linejoin: round;
-  }
-  .quickstart p {
-    margin: 14px 0 18px;
-    color: var(--text-3);
-    line-height: 1.55;
-  }
-  .agent-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    border-top: 1px solid var(--rule);
-    padding-top: 16px;
-  }
-  .agent-row span {
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: var(--surface-2);
-    color: var(--text-2);
-    padding: 7px 9px;
-    font: 600 12px var(--font-mono);
-    white-space: nowrap;
-  }
-  .agent-row .next-agent {
-    color: var(--text-3);
-    opacity: 0.55;
   }
   .demo-band {
     position: relative;
@@ -448,11 +980,122 @@ const terminalLines = [
     font-size: 16px;
     line-height: 1.55;
   }
-  .split-demo {
-    display: grid;
-    grid-template-columns: minmax(280px, 0.55fr) minmax(0, 1fr);
-    gap: 22px;
+  /* ── flip deck — two stacked cards, one focused at a time ── */
+  .demo-deck {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .deck-tabs {
+    display: flex;
+    width: fit-content;
+    margin: 0 auto 24px;
+    gap: 4px;
+    padding: 5px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .deck-tab {
+    display: inline-flex;
     align-items: center;
+    gap: 8px;
+    border: 0;
+    border-radius: var(--radius-pill);
+    padding: 9px 20px;
+    background: transparent;
+    color: rgba(244, 244, 245, 0.66);
+    font: 700 13px var(--font-display);
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    transition:
+      background var(--dur-quick),
+      color var(--dur-quick);
+  }
+  .deck-tab:hover {
+    color: #fff;
+  }
+  .deck-tab.is-active {
+    background: var(--accent-cta);
+    color: #fff;
+  }
+  .deck-tab-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.85;
+  }
+  .deck-stage {
+    position: relative;
+    height: 700px;
+    /* headroom so the back card can peek above the front without
+       colliding with the tabs */
+    margin-top: 34px;
+  }
+  /* Alcove-style window frame: generous radius, a clean diffuse lift shadow
+     (no glow), a hairline border + faint top highlight. Calm + polished. */
+  .deck-card {
+    position: absolute;
+    inset: 0;
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow:
+      0 44px 84px -30px rgba(0, 0, 0, 0.62),
+      0 14px 36px -18px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transition:
+      transform 460ms var(--ease-calm),
+      opacity 460ms var(--ease-calm);
+    will-change: transform, opacity;
+  }
+  /* the white report card needs a light neutral border — the white-translucent
+     border is invisible on white paper */
+  .deck-card[data-deck-card='report'] {
+    border-color: var(--border);
+    box-shadow:
+      0 44px 84px -30px rgba(0, 0, 0, 0.5),
+      0 14px 36px -18px rgba(0, 0, 0, 0.35);
+  }
+  .deck-card.is-front {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+    z-index: 2;
+    pointer-events: auto;
+  }
+  /* the back card peeks above + to the right of the front, dimmed — reads as a
+     physical stack. Its exposed corner is clickable to bring it to the front. */
+  .deck-card.is-back {
+    transform: translate(40px, -26px) scale(0.965);
+    opacity: 0.62;
+    z-index: 1;
+    pointer-events: auto;
+    cursor: pointer;
+    box-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.9);
+  }
+  /* brighten the dark terminal's edge when it's the back card peeking against
+     the dark band (the report card's own light border already reads) */
+  .deck-card[data-deck-card='agent'].is-back {
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  .deck-card > .agent-terminal {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: inherit;
+  }
+  /* terminal scrolls inside the fixed-height card if the run overflows */
+  .deck-card .terminal-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+  .report-scroll {
+    height: 100%;
+    overflow-y: auto;
+    background: #fff;
+    -webkit-overflow-scrolling: touch;
   }
   .agent-terminal,
   .local-ui {
@@ -464,93 +1107,233 @@ const terminalLines = [
       0 36px 96px -48px rgba(0, 0, 0, 0.82);
   }
   .agent-terminal {
+    min-width: 0;
     overflow: hidden;
+    border-color: rgba(255, 255, 255, 0.08);
+    border-radius: 0;
+    background: #000;
+    box-shadow: 0 28px 90px -52px rgba(0, 0, 0, 0.92);
+    color: rgba(255, 255, 255, 0.88);
+    font-family: var(--font-mono);
   }
-  .terminal-head {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 12px 14px;
-    color: var(--text-dark-muted);
-    font: 600 12px var(--font-display);
+  .cli-topline,
+  .cli-command {
+    padding: 0 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  .terminal-head span {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--border-dark-strong);
+  .cli-topline {
+    padding-top: 14px;
+    color: rgba(255, 255, 255, 0.52);
+    font: 600 13px/1.4 var(--font-mono);
   }
-  .terminal-head span:first-child {
-    background: var(--accent);
+  .cli-command {
+    margin-top: 2px;
+    color: #fff;
+    font: 800 15px/1.5 var(--font-mono);
   }
-  .terminal-head strong {
-    margin-left: auto;
-    font-weight: 600;
+  .cli-rule {
+    height: 1px;
+    margin-top: 14px;
+    background: rgba(255, 255, 255, 0.11);
   }
   .terminal-body {
-    min-height: 420px;
-    padding: 18px 16px;
+    min-width: 0;
+    min-height: 500px;
+    padding: 14px 18px 10px;
     display: grid;
     align-content: start;
     gap: 14px;
-    font: 500 13px/1.45 var(--font-mono);
+    font: 500 13px/1.38 var(--font-mono);
+    cursor: text;
   }
-  .terminal-line {
+  .cli-event {
+    min-width: 0;
     display: grid;
-    grid-template-columns: 18px 1fr;
+    grid-template-columns: 16px minmax(0, 1fr);
     gap: 8px;
-    color: rgba(244, 244, 245, 0.74);
     opacity: 0;
-    transform: translateY(5px);
-    animation: terminal-line 6800ms var(--ease-calm) infinite;
+    transform: translateY(6px);
   }
-  .terminal-line:nth-child(1) {
+  /* terminal auto-plays its run once when the deck scrolls into view
+     (JS adds .is-seen); before that the events stay hidden */
+  .demo-deck.is-seen .cli-event {
+    animation: cli-event 720ms var(--ease-calm) both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    /* instant card swaps; terminal shows its final state, no typing */
+    .deck-card {
+      transition: none;
+    }
+    .cli-event {
+      opacity: 1;
+      transform: none;
+    }
+    .demo-deck .cli-event {
+      animation: none;
+    }
+  }
+  @media (max-width: 720px) {
+    .deck-stage {
+      height: 72vh;
+      min-height: 460px;
+    }
+  }
+  .cli-event:nth-child(1) {
     animation-delay: 0ms;
   }
-  .terminal-line:nth-child(2) {
-    animation-delay: 520ms;
+  .cli-event:nth-child(2) {
+    animation-delay: 620ms;
   }
-  .terminal-line:nth-child(3) {
-    animation-delay: 1160ms;
+  .cli-event:nth-child(3) {
+    animation-delay: 1180ms;
   }
-  .terminal-line:nth-child(4) {
-    animation-delay: 1900ms;
+  .cli-event:nth-child(4) {
+    animation-delay: 1740ms;
   }
-  .terminal-line:nth-child(5) {
-    animation-delay: 2660ms;
+  .cli-event:nth-child(5) {
+    animation-delay: 2360ms;
   }
-  .terminal-line:nth-child(6) {
-    animation-delay: 3460ms;
+  .cli-event:nth-child(6) {
+    animation-delay: 2980ms;
   }
-  .terminal-line:nth-child(7) {
-    animation-delay: 4300ms;
+  .cli-event:nth-child(7) {
+    animation-delay: 3600ms;
   }
-  .line-mark {
-    color: var(--accent);
+  .cli-event:nth-child(8) {
+    animation-delay: 4220ms;
   }
-  .line-input {
-    color: var(--text-dark);
+  .cli-event:nth-child(9) {
+    animation-delay: 4840ms;
   }
-  .line-cost {
-    color: var(--tier-mid);
+  .cli-event p {
+    margin: 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
-  .line-done {
-    color: var(--tier-high);
+  .event-dot {
+    color: #fff;
+    font-size: 20px;
+    line-height: 1;
   }
-  @keyframes terminal-line {
+  .event-dot.green {
+    color: #67c36e;
+  }
+  .read-line {
+    grid-column: 2;
+    color: rgba(255, 255, 255, 0.44);
+  }
+  .tool-call {
+    min-width: 0;
+  }
+  .tool-call strong {
+    color: #fff;
+    font-weight: 800;
+  }
+  .tool-output {
+    display: block;
+    margin-top: 5px;
+    padding-left: 10px;
+    color: rgba(255, 255, 255, 0.58);
+    overflow-wrap: anywhere;
+  }
+  .terminal-diff {
+    display: grid;
+    margin-top: 9px;
+    overflow: hidden;
+  }
+  .diff-line {
+    display: block;
+    padding: 1px 8px;
+    overflow-wrap: anywhere;
+  }
+  .diff-line.context {
+    color: rgba(255, 255, 255, 0.42);
+  }
+  .diff-line.removed {
+    background: rgba(128, 22, 18, 0.74);
+    color: rgba(255, 236, 232, 0.92);
+  }
+  .diff-line.added {
+    background: rgba(19, 88, 20, 0.74);
+    color: rgba(235, 255, 232, 0.94);
+  }
+  .cli-input-window {
+    display: grid;
+    gap: 11px;
+    margin: 0 18px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: #000;
+    padding: 12px;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.06) inset,
+      0 0 0 1px rgba(0, 0, 0, 0.5);
+  }
+  .cli-input-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .cli-input-meta span {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.035);
+    color: rgba(218, 255, 190, 0.92);
+    padding: 3px 7px;
+    font: 800 12px/1.2 var(--font-mono);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.38) inset;
+  }
+  .cli-input-meta span:nth-child(2) {
+    color: rgba(244, 244, 245, 0.86);
+  }
+  .cli-user-input {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    width: fit-content;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .cli-input-caret {
+    width: 3px;
+    height: 17px;
+    margin-right: 0;
+    border-radius: 2px;
+    background: #55c7ff;
+    box-shadow: 0 0 12px rgba(85, 199, 255, 0.55);
+    animation: input-cursor 1050ms steps(1, end) infinite;
+  }
+  .cli-user-input code {
+    min-width: 0;
+    overflow-x: auto;
+    color: #fff;
+    font: 700 13px/1.4 var(--font-mono);
+    scrollbar-width: none;
+    white-space: nowrap;
+  }
+  .cli-user-input code::-webkit-scrollbar {
+    display: none;
+  }
+  @keyframes input-cursor {
+    0%,
+    49% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes cli-event {
     0%,
     8% {
       opacity: 0;
-      transform: translateY(5px);
+      transform: translateY(6px);
     }
     14%,
-    82% {
-      opacity: 1;
-      transform: translateY(0);
-    }
     100% {
-      opacity: 0.32;
+      opacity: 1;
       transform: translateY(0);
     }
   }
@@ -799,7 +1582,41 @@ const terminalLines = [
     color: var(--text);
   }
   @media (prefers-reduced-motion: reduce) {
-    .terminal-line,
+    .qs-trajectory path,
+    .qs-node,
+    .qs-node svg,
+    .qs-node svg path,
+    .qs-card-bar span,
+    .qs-card-tag,
+    .qs-visual-img img {
+      transition: none;
+    }
+    .qs-visual-img img {
+      opacity: 1;
+    }
+    .qs-step.in .qs-node,
+    .qs-step.is-active .qs-node {
+      opacity: 1;
+      transform: translateY(-50%);
+    }
+    .qs-step.is-active .qs-node svg {
+      animation: none;
+      transform: scale(1);
+    }
+    .qs-node svg path {
+      fill: url(#qsAccentGrad);
+      stroke: url(#qsAccentGrad);
+    }
+    .qs-card-bar span {
+      transform: scaleX(1);
+    }
+    .qs-card-tag {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .command-line code.qs-typing::after,
+    .cli-event,
+    .cli-input-caret,
     .materialized,
     .report-drawer {
       animation: none;
@@ -808,16 +1625,81 @@ const terminalLines = [
     }
   }
   @media (max-width: 980px) {
-    .mechanic-grid,
+    .qs-steps {
+      gap: 34px;
+    }
+    .qs-step,
+    .qs-step:nth-of-type(2),
     .split-demo {
       grid-template-columns: 1fr;
     }
-    .quickstart {
-      position: relative;
-      top: auto;
+    .qs-step,
+    .qs-step:nth-of-type(2) {
+      grid-template-columns: 54px minmax(0, 1fr);
+      grid-template-areas:
+        'rail text'
+        'rail visual';
+      column-gap: 14px;
+      row-gap: 16px;
+    }
+    .qs-step:nth-of-type(2) .qs-text {
+      order: 0;
+    }
+    .qs-step {
+      align-items: start;
+      padding: 10px 0 18px;
+    }
+    .qs-rail {
+      grid-area: rail;
+      align-self: stretch;
+      min-height: 48px;
+    }
+    .qs-node {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 48px;
+      height: 48px;
+      opacity: 1;
+      transform: none;
+    }
+    .qs-step.in .qs-node {
+      transform: none;
+    }
+    .qs-step.is-active .qs-node svg {
+      animation-name: qs-node-pulse-mobile;
+    }
+    .qs-node-num {
+      font-size: 12px;
+    }
+    .qs-text {
+      grid-area: text;
+      max-width: none;
+    }
+    .qs-visual {
+      grid-area: visual;
+      justify-items: stretch;
     }
     .terminal-body {
       min-height: auto;
+    }
+    @keyframes qs-node-pulse-mobile {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.06);
+      }
+    }
+  }
+  @media (max-width: 980px) and (prefers-reduced-motion: reduce) {
+    .qs-step.in .qs-node,
+    .qs-step.is-active .qs-node {
+      transform: none;
+    }
+    .qs-step.is-active .qs-node svg {
+      transform: scale(1);
     }
   }
   @media (max-width: 720px) {
@@ -827,26 +1709,45 @@ const terminalLines = [
     .mechanic-head {
       margin-bottom: 34px;
     }
-    .mechanic-beat {
-      grid-template-columns: 1fr;
-      gap: 8px;
-      padding: 17px 0;
+    .qs-text h3 {
+      font-size: 22px;
     }
-    .mechanic-beat p {
+    .qs-text p {
       font-size: 16px;
-    }
-    .command-row {
-      grid-template-columns: 1fr;
-    }
-    .copy-button {
-      justify-content: center;
-      min-height: 40px;
     }
     .demo-band {
       padding: 72px 18px 78px;
     }
     .split-demo {
       gap: 16px;
+    }
+    .cli-topline,
+    .cli-command {
+      padding-inline: 14px;
+      white-space: normal;
+    }
+    .cli-topline {
+      font-size: 12px;
+    }
+    .cli-command {
+      font-size: 13px;
+    }
+    .terminal-body {
+      min-height: 520px;
+      padding: 15px 14px 10px;
+      gap: 15px;
+      font-size: 12px;
+    }
+    .cli-input-window {
+      margin-inline: 14px;
+      padding: 10px;
+    }
+    .cli-event {
+      grid-template-columns: 13px minmax(0, 1fr);
+      gap: 6px;
+    }
+    .terminal-diff {
+      font-size: 11px;
     }
     .ui-shell {
       grid-template-columns: 1fr;
@@ -869,8 +1770,310 @@ const terminalLines = [
   }
 </style>
 
+<!-- Global overrides that must reach the client-rendered <ReportCard> island
+     (Astro-scoped component styles never get the island's data-cid, so these
+     can't live in the scoped block above). -->
+<style is:global>
+  /* The report viewer is sized for a full page; scale it down inside the card
+     so the hero + TL;DR are visible without scrolling. */
+  .report-scroll .report-light {
+    zoom: 0.8;
+    /* the card canvas is the bright paper tier, not the cream page bg */
+    background: var(--bg-paper);
+  }
+  /* Clean breathing room inside the card. */
+  .report-scroll .report-wrap {
+    padding: 28px 36px 48px;
+  }
+</style>
+
 <script>
   import { initScriptCopyButtons } from '../scripts/script-copy-button.js';
+  import { initHowItWorksDeck } from '../scripts/how-it-works-deck.js';
 
   initScriptCopyButtons(document);
+  initHowItWorksDeck(document);
+
+  // One scroll spine drives the node state, trajectory fill, and step visuals.
+  (function () {
+    const stepsWrap = document.querySelector('.qs-steps');
+    const svg = stepsWrap?.querySelector('.qs-trajectory');
+    const donePath = svg?.querySelector('.qs-path-done');
+    const nextPath = svg?.querySelector('.qs-path-next');
+    const stepEls = stepsWrap
+      ? [...stepsWrap.querySelectorAll('.qs-step')]
+      : [];
+    const nodes = stepsWrap ? [...stepsWrap.querySelectorAll('.qs-node')] : [];
+    if (!stepsWrap || !svg || !donePath || !nextPath || stepEls.length < 1) {
+      return;
+    }
+
+    const reduce = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches;
+    const scoreEl = stepsWrap.querySelector('.qs-card-num');
+    const scoreTarget = scoreEl ? parseFloat(scoreEl.textContent) || 4.4 : 4.4;
+    const played = new WeakSet();
+    let hasEntered = false;
+    let activeIndex = -1;
+    let segmentDs = [];
+    let raf = 0;
+
+    if (scoreEl && !reduce) scoreEl.textContent = '0.0';
+    let typingRun = 0;
+
+    function terminalParts(step) {
+      const shell = step.querySelector('.command-shell');
+      const url = step.querySelector('.command-url');
+      const code = step.querySelector('.command-line code');
+      if (!shell || !url) return null;
+      shell.dataset.fullText = shell.dataset.fullText || shell.textContent;
+      url.dataset.fullText = url.dataset.fullText || url.textContent;
+      return {
+        shell,
+        url,
+        code,
+        shellText: shell.dataset.fullText,
+        urlText: url.dataset.fullText,
+      };
+    }
+
+    stepEls.forEach((step) => {
+      const parts = terminalParts(step);
+      if (parts && !reduce) {
+        parts.shell.textContent = '';
+        parts.url.textContent = '';
+      }
+    });
+
+    function pathForSegments(from, to) {
+      return segmentDs.slice(from, to).join(' ');
+    }
+
+    function updateLine(index, allDone) {
+      const completed = allDone ? segmentDs.length : Math.max(0, index);
+      donePath.setAttribute('d', pathForSegments(0, completed));
+      nextPath.setAttribute('d', pathForSegments(completed, segmentDs.length));
+    }
+
+    function draw() {
+      if (nodes.length < 2) return;
+      const base = stepsWrap.getBoundingClientRect();
+      svg.setAttribute('viewBox', `0 0 ${base.width} ${base.height}`);
+      // Span the vertical (userSpaceOnUse) line gradient over the full height so
+      // the connector reads orange→peach→orange like the hero accent headline.
+      const gradV = svg.querySelector('#qsAccentGradV');
+      if (gradV) gradV.setAttribute('y2', base.height.toFixed(1));
+      const pts = nodes.map((n) => {
+        const r = n.getBoundingClientRect();
+        const x = r.left - base.left + r.width / 2;
+        const y = r.top - base.top;
+        // Tuck a hair *into* the star at each tip so the connector ends sit
+        // behind the marker (the trajectory SVG is z-index 0, the nodes 1).
+        // Small enough that it never pokes through a hollow (un-filled) star.
+        const overlap = Math.max(2, r.height * 0.04);
+        return {
+          x: +x.toFixed(1),
+          // These match the star path's centerline attachment points:
+          // top tip (32, 4) and bottom tip (32, 60). Pulling toward the star
+          // body (+ at the top tip, − at the bottom tip) hides the connector
+          // ends under the tip stroke — no visible gap, no bleed past the tip.
+          topY: +(y + r.height * (4 / 64) + overlap).toFixed(1),
+          bottomY: +(y + r.height * (60 / 64) - overlap).toFixed(1),
+        };
+      });
+      segmentDs = [];
+      for (let i = 1; i < pts.length; i++) {
+        const a = pts[i - 1];
+        const b = pts[i];
+        const ay = a.bottomY;
+        const by = b.topY;
+        if (by <= ay) continue;
+        const ym = +((ay + by) / 2).toFixed(1);
+        segmentDs.push(
+          `M ${a.x} ${ay} C ${a.x} ${ym}, ${b.x} ${ym}, ${b.x} ${by}`,
+        );
+      }
+      updateProgress();
+    }
+
+    function finishTerminal(step) {
+      const parts = terminalParts(step);
+      if (!parts) return;
+      step.dataset.typingRun = '';
+      parts.shell.textContent = parts.shellText;
+      parts.url.textContent = parts.urlText;
+      if (parts.code) parts.code.classList.remove('qs-typing');
+    }
+
+    function resetTerminal(step) {
+      const parts = terminalParts(step);
+      if (!parts || reduce) return;
+      step.dataset.typingRun = '';
+      parts.shell.textContent = '';
+      parts.url.textContent = '';
+      if (parts.code) parts.code.classList.remove('qs-typing');
+    }
+
+    function finishScore(step) {
+      const el = step.querySelector('.qs-card-num');
+      if (el) el.textContent = scoreTarget.toFixed(1);
+    }
+
+    function typeInto(step, el, text, speed, run, done) {
+      let i = 0;
+      (function tick() {
+        if (step.dataset.typingRun !== run) return;
+        el.textContent = text.slice(0, i);
+        if (i < text.length) {
+          i++;
+          setTimeout(tick, speed);
+        } else if (done) {
+          done();
+        }
+      })();
+    }
+
+    function typeTerminal(step) {
+      const parts = terminalParts(step);
+      if (!parts) return;
+      if (reduce) {
+        finishTerminal(step);
+        return;
+      }
+      const run = String(++typingRun);
+      step.dataset.typingRun = run;
+      parts.shell.textContent = '';
+      parts.url.textContent = '';
+      if (parts.code) parts.code.classList.add('qs-typing');
+      typeInto(step, parts.shell, parts.shellText, 55, run, () =>
+        typeInto(step, parts.url, parts.urlText, 26, run, () => {
+          if (parts.code) parts.code.classList.remove('qs-typing');
+        }),
+      );
+    }
+
+    function countScore(step) {
+      const el = step.querySelector('.qs-card-num');
+      if (!el) return;
+      if (reduce) {
+        finishScore(step);
+        return;
+      }
+      const dur = 950;
+      const start = performance.now();
+      requestAnimationFrame(function tick(now) {
+        const t = Math.min(1, (now - start) / dur);
+        const eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = (scoreTarget * eased).toFixed(1);
+        if (t < 1) requestAnimationFrame(tick);
+      });
+    }
+
+    function playVisual(step) {
+      if (step.querySelector('.command-shell')) {
+        typeTerminal(step);
+        return;
+      }
+      if (played.has(step)) return;
+      played.add(step);
+      if (step.querySelector('.qs-card-num')) countScore(step);
+    }
+
+    function resolveVisual(step) {
+      if (step.querySelector('.command-shell')) finishTerminal(step);
+      if (step.querySelector('.qs-card-num')) {
+        played.add(step);
+        finishScore(step);
+      }
+    }
+
+    function setStepState(index, allDone) {
+      stepEls.forEach((step, i) => {
+        const done = allDone || i < index;
+        const active = !allDone && i === index;
+        step.classList.toggle('is-done', done);
+        step.classList.toggle('is-active', active);
+        step.classList.toggle('is-next', !done && !active);
+        if (active) playVisual(step);
+        if (!active && !done) resetTerminal(step);
+        if (done) resolveVisual(step);
+      });
+      updateLine(index, allDone);
+    }
+
+    function setPreEntryState() {
+      stepEls.forEach((step) => {
+        step.classList.remove('is-done', 'is-active');
+        step.classList.add('is-next');
+      });
+      updateLine(0, false);
+    }
+
+    function sectionIsVisible() {
+      const r = stepsWrap.getBoundingClientRect();
+      return r.top < window.innerHeight && r.bottom > 0;
+    }
+
+    function updateProgress() {
+      if (reduce) {
+        hasEntered = true;
+        svg.classList.add('in');
+        setStepState(-1, true);
+        return;
+      }
+
+      if (!hasEntered && sectionIsVisible()) {
+        hasEntered = true;
+        svg.classList.add('in');
+      }
+      if (!hasEntered) {
+        setPreEntryState();
+        return;
+      }
+
+      const triggerY = window.innerHeight * 0.45;
+      const markerYs = nodes.map((node) => {
+        const r = node.getBoundingClientRect();
+        return r.top + r.height / 2;
+      });
+      const nextIndex = markerYs.findIndex((y) => y >= triggerY);
+      const allDone = nextIndex === -1;
+      const nextActive = allDone ? -1 : nextIndex;
+
+      if (allDone || nextActive !== activeIndex) {
+        activeIndex = nextActive;
+        setStepState(nextActive, allDone);
+      } else {
+        updateLine(nextActive, false);
+      }
+    }
+
+    function requestUpdate() {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        updateProgress();
+      });
+    }
+
+    draw();
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', draw);
+    window.addEventListener('load', draw);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+    // The .reveal entrance animates each step from translateY(20px) → 0. That
+    // shift happens after the initial draw(), so the node tips move ~20px and
+    // the frozen path no longer lines up (gap below one star, bleed past the
+    // next). Recompute once the transform settles.
+    stepsWrap.addEventListener('transitionend', (e) => {
+      if (e.propertyName === 'transform') draw();
+    });
+    if (window.ResizeObserver) {
+      new ResizeObserver(draw).observe(stepsWrap);
+    }
+    stepsWrap.querySelectorAll('img').forEach((img) => {
+      if (!img.complete) img.addEventListener('load', draw, { once: true });
+    });
+  })();
 </script>
