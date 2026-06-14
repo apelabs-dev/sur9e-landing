@@ -37,10 +37,7 @@ function publicSafe(raw) {
     // generic: redact "Firstname Lastname's" possessive before "connect note"
     .replace(/\b[A-Z][a-z]+ [A-Z][a-z]+['’]s connect note/g, 'the hiring manager’s connect note')
     // non-possessive: "the Firstname Lastname connect note" -> "the hiring manager’s connect note"
-    .replace(
-      /\bthe [A-Z][a-z]+ [A-Z][a-z]+ connect note/g,
-      'the hiring manager’s connect note',
-    )
+    .replace(/\bthe [A-Z][a-z]+ [A-Z][a-z]+ connect note/g, 'the hiring manager’s connect note')
     // reversed phrasing: "connect note to [**]Firstname Lastname[**]" -> "...the hiring manager"
     .replace(
       /\bconnect note to (\*\*)?[A-Z][a-z]+ [A-Z][a-z]+(\*\*)?/g,

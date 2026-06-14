@@ -15,6 +15,7 @@
     "format:check": "biome format . && prettier --check '*.{html,md,yml}' '.github/**/*.yml' 'src/**/*.{astro,css}'"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.9",
     "@tiptap/core": "3.24.0",
     "@tiptap/extension-character-count": "3.24.0",
     "@tiptap/extension-code-block-lowlight": "3.24.0",
@@ -39,6 +40,7 @@
     "react-dom": "19.2.0",
     "tailwind-merge": "3.6.0",
     "tiptap-markdown": "0.9.0",
+    "typescript": "^6.0.3",
     "zod": "4.4.3"
   },
   "devDependencies": {
