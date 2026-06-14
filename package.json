@@ -15,10 +15,37 @@
     "format:check": "biome format . && prettier --check '*.{html,md,yml}' '.github/**/*.yml' 'src/**/*.{astro,css}'"
   },
   "dependencies": {
-    "astro": "^6.3.1"
+    "@tiptap/core": "3.24.0",
+    "@tiptap/extension-character-count": "3.24.0",
+    "@tiptap/extension-code-block-lowlight": "3.24.0",
+    "@tiptap/extension-color": "3.24.0",
+    "@tiptap/extension-details": "3.24.0",
+    "@tiptap/extension-highlight": "3.24.0",
+    "@tiptap/extension-image": "3.24.0",
+    "@tiptap/extension-link": "3.24.0",
+    "@tiptap/extension-placeholder": "3.24.0",
+    "@tiptap/extension-table": "3.24.0",
+    "@tiptap/extension-task-item": "3.24.0",
+    "@tiptap/extension-task-list": "3.24.0",
+    "@tiptap/extension-text-style": "3.24.0",
+    "@tiptap/pm": "3.24.0",
+    "@tiptap/react": "3.24.0",
+    "@tiptap/starter-kit": "3.24.0",
+    "astro": "^6.3.1",
+    "clsx": "2.1.1",
+    "js-yaml": "4.2.0",
+    "lowlight": "3.3.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "tailwind-merge": "3.6.0",
+    "tiptap-markdown": "0.9.0",
+    "zod": "4.4.3"
   },
   "devDependencies": {
+    "@astrojs/react": "5.0.7",
     "@biomejs/biome": "^2.4.15",
+    "@types/react": "19.2.0",
+    "@types/react-dom": "19.2.0",
     "prettier": "^3.8.3",
     "prettier-plugin-astro": "^0.14.1"
   }
