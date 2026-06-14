@@ -122,62 +122,63 @@
   pointer-events: auto;
 }
 
-/* Force the app's drawer hero layout at ALL widths inside our drawer: eyebrow
-   pills on row 1 (full width), then the company name + score together on row 2
-   so the score stays in line with the company name (the default desktop hero
-   top-aligns the score, which floats above the title when the pills wrap). */
-.deck-pipe .cd-v1-body .hero {
-  grid-template-columns: 1fr auto;
-  align-items: start;
-  column-gap: 16px;
-  row-gap: 12px;
-}
-.deck-pipe .cd-v1-body .hero > div:first-child {
-  display: contents;
-}
-.deck-pipe .cd-v1-body .hero-eyebrow {
-  grid-column: 1 / -1;
-  grid-row: 1;
-}
-.deck-pipe .cd-v1-body .hero-id-row {
-  grid-column: 1 / 2;
-  grid-row: 2;
-  align-self: start;
-}
-.deck-pipe .cd-v1-body .hero-score {
-  grid-column: 2 / 3;
-  grid-row: 2;
-  align-self: start;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 7px;
-  width: auto;
-  text-align: right;
-}
-/* size the score block down to the app's drawer scale so the numeral keeps
-   hierarchy over the 32px company name without dwarfing it (was the desktop
-   clamp ~72px → floated above the title) */
-.deck-pipe .cd-v1-body .score-numeral {
-  font-size: 44px;
-  line-height: 0.85;
-  letter-spacing: -0.04em;
-}
-.deck-pipe .cd-v1-body .score-bar {
-  width: 100px;
-  gap: 3px;
-}
-.deck-pipe .cd-v1-body .score-bar .seg {
-  height: 3px;
-  width: auto;
-}
-.deck-pipe .cd-v1-body .legit-pill {
-  font-size: 10px;
-  padding: 3px 9px;
-}
-.deck-pipe .cd-v1-body .hero-meta-strip {
-  grid-column: 1 / -1;
-  grid-row: 3;
+/* MOBILE ONLY: force the app's narrow drawer hero layout — eyebrow pills on
+   row 1 (full width), then the company name + (scaled-down) score together on
+   row 2 so the score stays in line with the title. On wider screens we keep
+   the vendored desktop hero (bigger score), unchanged. */
+@media (max-width: 720px) {
+  .deck-pipe .cd-v1-body .hero {
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    column-gap: 16px;
+    row-gap: 12px;
+  }
+  .deck-pipe .cd-v1-body .hero > div:first-child {
+    display: contents;
+  }
+  .deck-pipe .cd-v1-body .hero-eyebrow {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+  .deck-pipe .cd-v1-body .hero-id-row {
+    grid-column: 1 / 2;
+    grid-row: 2;
+    align-self: start;
+  }
+  .deck-pipe .cd-v1-body .hero-score {
+    grid-column: 2 / 3;
+    grid-row: 2;
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 7px;
+    width: auto;
+    text-align: right;
+  }
+  /* size the score block down to the app's drawer scale so the numeral keeps
+     hierarchy over the 32px company name without dwarfing it */
+  .deck-pipe .cd-v1-body .score-numeral {
+    font-size: 44px;
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+  }
+  .deck-pipe .cd-v1-body .score-bar {
+    width: 100px;
+    gap: 3px;
+  }
+  .deck-pipe .cd-v1-body .score-bar .seg {
+    height: 3px;
+    width: auto;
+  }
+  .deck-pipe .cd-v1-body .legit-pill {
+    font-size: 10px;
+    padding: 3px 9px;
+  }
+  .deck-pipe .cd-v1-body .hero-meta-strip {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
 }
 
 /* nav-row divider between the close/expand cluster and the prev/next group
