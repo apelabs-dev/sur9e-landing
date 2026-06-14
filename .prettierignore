@@ -1,0 +1,4 @@
+# Vendored verbatim from the sur9e product repo — keep as-is, don't reformat.
+src/report-vendor/
+dist/
+node_modules/

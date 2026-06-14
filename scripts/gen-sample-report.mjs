@@ -12,7 +12,8 @@
 
 import { readFileSync, writeFileSync } from 'node:fs';
 
-const SRC = '../sur9e/artifacts/reports/005-siftstack-2026-06-05.md';
+const SRC =
+  '../sur9e/artifacts/reports/005-siftstack-2026-06-05.md';
 const OUT = new URL('../src/report-vendor/data/sample-report.md', import.meta.url);
 
 const raw = readFileSync(SRC, 'utf8');

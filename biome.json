@@ -6,6 +6,7 @@
     "includes": [
       "**",
       "!node_modules/**",
+      "!src/report-vendor/**",
       "!output/**",
       "!data/**",
       "!reports/**",

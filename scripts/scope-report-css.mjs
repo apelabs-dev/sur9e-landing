@@ -22,7 +22,13 @@ const outDir = join(stylesDir, 'scoped');
 mkdirSync(outDir, { recursive: true });
 
 const PREFIX = '.report-light';
-const FILES = ['report-hero.css', 'report-snapshot.css', 'report-inline.css', 'tiptap-editor.css', 'chrome.css'];
+const FILES = [
+  'report-hero.css',
+  'report-snapshot.css',
+  'report-inline.css',
+  'tiptap-editor.css',
+  'chrome.css',
+];
 
 const plugin = prefixer({
   prefix: PREFIX,

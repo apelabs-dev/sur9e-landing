@@ -41,7 +41,7 @@ export function initHowItWorksDeck(root = document) {
   // Auto-play the agent terminal once, when the deck first enters the viewport.
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(
-      (entries) => {
+      entries => {
         for (const e of entries) {
           if (e.isIntersecting) {
             deck.classList.add('is-seen');
