@@ -1,19 +1,17 @@
 ---
-import ReportCard from '../report-vendor/ReportCard';
-import { loadReport } from '../report-vendor/load-report';
+import PipelineCard from '../report-vendor/PipelineCard';
 import '../report-vendor/styles/report-light.css';
 import '../report-vendor/styles/scoped/report-hero.css';
 import '../report-vendor/styles/scoped/report-snapshot.css';
 import '../report-vendor/styles/scoped/report-inline.css';
 import '../report-vendor/styles/scoped/tiptap-editor.css';
 import '../report-vendor/styles/scoped/chrome.css';
+import '../report-vendor/styles/scoped/pipeline-inline.css';
+import '../report-vendor/styles/scoped/board-drawer.css';
+import '../report-vendor/styles/deck-pipeline.css';
 
 const installCommand = 'bash -c "$(curl -fsSL https://sur9e.com/install)"';
 const demoCommand = '/sur9e evaluate';
-
-// Public-safe Sift report (Outreach section dropped, hiring-manager name
-// redacted), parsed at build time and rendered by the read-only <ReportCard>.
-const report = loadReport();
 
 const cliEvents = [
   {
@@ -356,9 +354,7 @@ const cliEvents = [
             role="tabpanel"
             aria-labelledby="deck-tab-report"
           >
-            <div class="report-scroll">
-              <ReportCard client:visible report={report} />
-            </div>
+            <PipelineCard client:visible />
           </div>
         </div>
       </div>
@@ -1767,23 +1763,6 @@ const cliEvents = [
       width: auto;
       max-height: 300px;
     }
-  }
-</style>
-
-<!-- Global overrides that must reach the client-rendered <ReportCard> island
-     (Astro-scoped component styles never get the island's data-cid, so these
-     can't live in the scoped block above). -->
-<style is:global>
-  /* The report viewer is sized for a full page; scale it down inside the card
-     so the hero + TL;DR are visible without scrolling. */
-  .report-scroll .report-light {
-    zoom: 0.8;
-    /* the card canvas is the bright paper tier, not the cream page bg */
-    background: var(--bg-paper);
-  }
-  /* Clean breathing room inside the card. */
-  .report-scroll .report-wrap {
-    padding: 28px 36px 48px;
   }
 </style>
 
