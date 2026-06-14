@@ -1,91 +1,39 @@
-/* Fit the vendored pipeline (page header + board + drawer) inside the deck's
-   Report card. Loaded globally (reaches the island); selectors are deck-scoped
-   via .deck-pipe so they can't leak. */
+/* Fit the vendored pipeline (exact app page-head + filter-bar + board + drawer)
+   inside the deck's Report card. Loaded globally (reaches the island);
+   selectors are deck-scoped via .deck-pipe so they can't leak. The page-head /
+   filter-bar / chip styles come VERBATIM from the scoped chrome.css — we don't
+   restyle them here, only lay them out as canvas content. */
 .deck-pipe {
   position: absolute;
   inset: 0;
   overflow: hidden;
   border-radius: inherit;
-  background: var(--bg-paper);
+  /* the Offers page canvas is the cream --bg (header + board share it; cards
+     are white --surface) — matches the app. The drawer's report is white. */
+  background: var(--bg);
   display: flex;
   flex-direction: column;
 }
 
-/* "Offers" page header — compacted from the app's full-page .page-head */
-.deck-pipe .pipe-head {
+/* page-head + filter-bar are part of the canvas (not a fixed header); the
+   drawer hovers OVER them. They keep their exact app sizing; only the
+   top padding is trimmed so the big title doesn't waste the card height. */
+.deck-pipe .page-head {
   flex: 0 0 auto;
-  padding: 18px 22px 12px;
+  /* trim the app's tall page padding so the title + search sit close together
+     in the card (the app has full-page room; the card doesn't) */
+  padding: var(--space-5) var(--space-6) var(--space-2);
 }
-.deck-pipe .pipe-head h1 {
-  margin: 0;
-  font: 600 22px/1.1 var(--font-display);
-  letter-spacing: -0.02em;
-  color: var(--text);
-}
-.deck-pipe .pipe-head .sub {
-  margin-top: 4px;
-  font: 400 13px var(--font-body);
-  color: var(--text-3);
-}
-
-/* offers filter bar (search + active pills) — the app's kanban header chrome */
 .deck-pipe .filter-bar {
   flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 22px 12px;
-  flex-wrap: wrap;
-}
-.deck-pipe .filter-bar .search {
-  flex: 1 1 220px;
-  max-width: 340px;
-  min-width: 160px;
-}
-.deck-pipe .filter-search {
-  appearance: none;
-  height: 34px;
-  padding: 0 12px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm, 6px);
-  background: var(--surface);
-  color: var(--text);
-  font: 400 13px var(--font-body);
-}
-.deck-pipe .filter-search::placeholder {
-  color: var(--text-muted);
-}
-.deck-pipe .filter-pillbtn {
-  appearance: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  height: 30px;
-  padding: 0 6px 0 11px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-pill, 999px);
-  background: var(--surface);
-  color: var(--text-2);
-  font: 500 12px var(--font-display);
-  cursor: pointer;
-}
-.deck-pipe .filter-pillbtn .x {
-  font-size: 13px;
-  color: var(--text-muted);
+  padding-top: var(--space-2);
+  padding-bottom: var(--space-3);
 }
 
-/* stage: holds the board + scrim + drawer; the drawer is absolute within it so
-   the header above stays visible */
-.deck-pipe .pipe-stage {
-  position: relative;
+/* board fills the remaining height and scrolls horizontally */
+.deck-pipe .board-wrap {
   flex: 1 1 auto;
   min-height: 0;
-  overflow: hidden;
-}
-
-/* board: horizontal scroll, 3 columns, no app chrome */
-.deck-pipe .board-wrap {
-  height: 100%;
   overflow: hidden;
 }
 .deck-pipe .board {
@@ -93,8 +41,8 @@
   flex-wrap: nowrap;
   gap: 14px;
   height: 100%;
-  /* the vendored .board is width:max-content (built to scroll a full-page board);
-     constrain it to the card so its own overflow-x:auto actually scrolls */
+  /* the vendored .board is width:max-content (built to scroll a full-page
+     board); constrain it to the card so its own overflow-x:auto scrolls */
   width: 100%;
   max-width: 100%;
   padding: 16px 18px;
@@ -108,7 +56,9 @@
   overscroll-behavior-x: contain;
 }
 .deck-pipe .column {
-  flex: 0 0 250px;
+  /* wider columns so the enum chips (archetype/seniority/work_mode) and the
+     location · comp meta sit on one line instead of wrapping */
+  flex: 0 0 392px;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -126,10 +76,10 @@
   font-family: inherit;
 }
 
-/* drawer: absolute within the stage (below the header), slides from the right,
-   covers ~78% (obscures Applied+Interview; Evaluated peeks left). The nav row +
-   buttons are styled by the vendored, scoped board-drawer.css so they match the
-   app. Vertical scroll lives on the body. */
+/* drawer: absolute over the WHOLE canvas (covers the header + board), slides
+   from the right, ~78% wide (Evaluated column peeks left). Nav row + buttons
+   are styled by the vendored, scoped board-drawer.css so they match the app.
+   Vertical scroll lives on the body. */
 .deck-pipe .cd-drawer {
   position: absolute;
   top: 0;
@@ -157,7 +107,7 @@
   overflow-y: auto;
 }
 
-/* scrim dims the board behind the open drawer */
+/* scrim dims the canvas behind the open drawer */
 .deck-pipe .deck-scrim {
   position: absolute;
   inset: 0;
@@ -170,6 +120,74 @@
 .deck-pipe.is-open .deck-scrim {
   opacity: 1;
   pointer-events: auto;
+}
+
+/* Force the app's drawer hero layout at ALL widths inside our drawer: eyebrow
+   pills on row 1 (full width), then the company name + score together on row 2
+   so the score stays in line with the company name (the default desktop hero
+   top-aligns the score, which floats above the title when the pills wrap). */
+.deck-pipe .cd-v1-body .hero {
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  column-gap: 16px;
+  row-gap: 12px;
+}
+.deck-pipe .cd-v1-body .hero > div:first-child {
+  display: contents;
+}
+.deck-pipe .cd-v1-body .hero-eyebrow {
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
+.deck-pipe .cd-v1-body .hero-id-row {
+  grid-column: 1 / 2;
+  grid-row: 2;
+  align-self: start;
+}
+.deck-pipe .cd-v1-body .hero-score {
+  grid-column: 2 / 3;
+  grid-row: 2;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+  width: auto;
+  text-align: right;
+}
+/* size the score block down to the app's drawer scale so the numeral keeps
+   hierarchy over the 32px company name without dwarfing it (was the desktop
+   clamp ~72px → floated above the title) */
+.deck-pipe .cd-v1-body .score-numeral {
+  font-size: 44px;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+}
+.deck-pipe .cd-v1-body .score-bar {
+  width: 100px;
+  gap: 3px;
+}
+.deck-pipe .cd-v1-body .score-bar .seg {
+  height: 3px;
+  width: auto;
+}
+.deck-pipe .cd-v1-body .legit-pill {
+  font-size: 10px;
+  padding: 3px 9px;
+}
+.deck-pipe .cd-v1-body .hero-meta-strip {
+  grid-column: 1 / -1;
+  grid-row: 3;
+}
+
+/* nav-row divider between the close/expand cluster and the prev/next group
+   (the vendored .cd-nav-divider ships unstyled) */
+.deck-pipe .cd-nav-divider {
+  flex: 0 0 auto;
+  width: 1px;
+  height: 18px;
+  background: var(--border);
+  margin: 0 2px;
 }
 
 /* scale the report inside the drawer to fit (same approach as the single card) */
