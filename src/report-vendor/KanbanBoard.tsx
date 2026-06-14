@@ -23,11 +23,24 @@ export function KanbanBoard({
               <div className="col-head">
                 <div className="col-head-row">
                   <div className="col-title-block">
-                    <span className="col-dot" aria-hidden="true" />
-                    <span className="col-title">{col.label}</span>
+                    <span className={`col-dot ${col.key}`} aria-hidden="true" />
+                    <span className="col-title" data-status={col.key}>
+                      {col.label}
+                    </span>
                   </div>
                   <span className="col-count">{items.length}</span>
                 </div>
+                {items.length > 0 && (
+                  <div className="col-density" style={{ color: `var(--s-${col.key})` }}>
+                    {items.map(o => {
+                      const sc = Number.parseFloat(o.summary.score) || 0;
+                      const op = Math.max(0.2, Math.min(1, sc / 5));
+                      return (
+                        <span key={o.summary.num} className="bar" style={{ opacity: op }} />
+                      );
+                    })}
+                  </div>
+                )}
               </div>
               <div className="col-body">
                 {items.map(o => (

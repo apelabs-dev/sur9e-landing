@@ -1,27 +1,111 @@
-/* Fit the vendored pipeline board + drawer inside the deck's Report card.
-   Loaded globally (reaches the island); selectors are deck-scoped via
-   .deck-pipe so they can't leak. */
+/* Fit the vendored pipeline (page header + board + drawer) inside the deck's
+   Report card. Loaded globally (reaches the island); selectors are deck-scoped
+   via .deck-pipe so they can't leak. */
 .deck-pipe {
   position: absolute;
   inset: 0;
   overflow: hidden;
   border-radius: inherit;
   background: var(--bg-paper);
+  display: flex;
+  flex-direction: column;
 }
-/* board: horizontal scroll, 3 fixed-ish columns, no app chrome */
+
+/* "Offers" page header — compacted from the app's full-page .page-head */
+.deck-pipe .pipe-head {
+  flex: 0 0 auto;
+  padding: 18px 22px 12px;
+}
+.deck-pipe .pipe-head h1 {
+  margin: 0;
+  font: 600 22px/1.1 var(--font-display);
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.deck-pipe .pipe-head .sub {
+  margin-top: 4px;
+  font: 400 13px var(--font-body);
+  color: var(--text-3);
+}
+
+/* offers filter bar (search + active pills) — the app's kanban header chrome */
+.deck-pipe .filter-bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 22px 12px;
+  flex-wrap: wrap;
+}
+.deck-pipe .filter-bar .search {
+  flex: 1 1 220px;
+  max-width: 340px;
+  min-width: 160px;
+}
+.deck-pipe .filter-search {
+  appearance: none;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 6px);
+  background: var(--surface);
+  color: var(--text);
+  font: 400 13px var(--font-body);
+}
+.deck-pipe .filter-search::placeholder {
+  color: var(--text-muted);
+}
+.deck-pipe .filter-pillbtn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 6px 0 11px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill, 999px);
+  background: var(--surface);
+  color: var(--text-2);
+  font: 500 12px var(--font-display);
+  cursor: pointer;
+}
+.deck-pipe .filter-pillbtn .x {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* stage: holds the board + scrim + drawer; the drawer is absolute within it so
+   the header above stays visible */
+.deck-pipe .pipe-stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* board: horizontal scroll, 3 columns, no app chrome */
 .deck-pipe .board-wrap {
   height: 100%;
   overflow: hidden;
 }
 .deck-pipe .board {
   display: flex;
+  flex-wrap: nowrap;
   gap: 14px;
   height: 100%;
-  padding: 18px;
+  /* the vendored .board is width:max-content (built to scroll a full-page board);
+     constrain it to the card so its own overflow-x:auto actually scrolls */
+  width: 100%;
+  max-width: 100%;
+  padding: 16px 18px;
   overflow-x: auto;
   overflow-y: hidden;
   align-items: flex-start;
   scrollbar-width: thin;
+  /* horizontal swipe scrolls the board on touch devices */
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 .deck-pipe .column {
   flex: 0 0 250px;
@@ -41,9 +125,11 @@
   width: 100%;
   font-family: inherit;
 }
-/* drawer: absolute within the card (not fixed to viewport), slides from right,
-   covers ~78% (obscures the Applied+Interview columns; Evaluated peeks left).
-   Vertical scroll lives on the body. */
+
+/* drawer: absolute within the stage (below the header), slides from the right,
+   covers ~78% (obscures Applied+Interview; Evaluated peeks left). The nav row +
+   buttons are styled by the vendored, scoped board-drawer.css so they match the
+   app. Vertical scroll lives on the body. */
 .deck-pipe .cd-drawer {
   position: absolute;
   top: 0;
@@ -54,6 +140,8 @@
   transition: transform 280ms var(--ease-calm, cubic-bezier(0.2, 0, 0, 1));
   z-index: 3;
   box-shadow: -24px 0 60px -30px rgba(0, 0, 0, 0.5);
+  background: var(--surface);
+  border-left: 1px solid var(--border);
 }
 .deck-pipe .cd-drawer.on {
   transform: translate3d(0, 0, 0);
@@ -68,33 +156,7 @@
   min-height: 0;
   overflow-y: auto;
 }
-/* drawer nav row + close control (board-drawer.css ships scoped rules too; this
-   is a self-contained fallback so the close control is always visible) */
-.deck-pipe .cd-v1-navrow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 46px;
-  padding: 0 14px;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg-paper);
-}
-.deck-pipe .cd-navbtn {
-  appearance: none;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: var(--radius-sm, 4px);
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-  font-size: 18px;
-  line-height: 1;
-  color: var(--text-2);
-}
-.deck-pipe .cd-navtitle {
-  font: 600 13px var(--font-display);
-  color: var(--text);
-}
+
 /* scrim dims the board behind the open drawer */
 .deck-pipe .deck-scrim {
   position: absolute;
@@ -107,12 +169,15 @@
 }
 .deck-pipe.is-open .deck-scrim {
   opacity: 1;
+  pointer-events: auto;
 }
+
 /* scale the report inside the drawer to fit (same approach as the single card) */
 .deck-pipe .cd-v1-body .report-light {
   zoom: 0.82;
   background: var(--bg-paper);
 }
+
 @media (prefers-reduced-motion: reduce) {
   .deck-pipe .cd-drawer,
   .deck-pipe .deck-scrim {
@@ -124,6 +189,6 @@
     width: 100%;
   }
   .deck-pipe .column {
-    flex-basis: 78%;
+    flex-basis: 80%;
   }
 }
