@@ -31,7 +31,10 @@ export function ReportDrawer({
         </div>
         <div className="cd-v1-body">
           {offer && (
-            <div className="report-light report-wrap">
+            // key by offer num so the read-only TipTap editor remounts with
+            // fresh content when the selected offer changes (it doesn't sync
+            // its body on prop change otherwise).
+            <div className="report-light report-wrap" key={offer.summary.num}>
               <ReportRender r={offer.report} />
             </div>
           )}
