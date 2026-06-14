@@ -1,0 +1,129 @@
+/* Fit the vendored pipeline board + drawer inside the deck's Report card.
+   Loaded globally (reaches the island); selectors are deck-scoped via
+   .deck-pipe so they can't leak. */
+.deck-pipe {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  background: var(--bg-paper);
+}
+/* board: horizontal scroll, 3 fixed-ish columns, no app chrome */
+.deck-pipe .board-wrap {
+  height: 100%;
+  overflow: hidden;
+}
+.deck-pipe .board {
+  display: flex;
+  gap: 14px;
+  height: 100%;
+  padding: 18px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: flex-start;
+  scrollbar-width: thin;
+}
+.deck-pipe .column {
+  flex: 0 0 250px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: 100%;
+}
+.deck-pipe .col-body {
+  overflow-y: auto;
+  min-height: 0;
+}
+.deck-pipe .card {
+  cursor: pointer;
+  appearance: none;
+  text-align: left;
+  width: 100%;
+  font-family: inherit;
+}
+/* drawer: absolute within the card (not fixed to viewport), slides from right,
+   covers ~78% (obscures the Applied+Interview columns; Evaluated peeks left).
+   Vertical scroll lives on the body. */
+.deck-pipe .cd-drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 78%;
+  height: 100%;
+  transform: translate3d(100%, 0, 0);
+  transition: transform 280ms var(--ease-calm, cubic-bezier(0.2, 0, 0, 1));
+  z-index: 3;
+  box-shadow: -24px 0 60px -30px rgba(0, 0, 0, 0.5);
+}
+.deck-pipe .cd-drawer.on {
+  transform: translate3d(0, 0, 0);
+}
+.deck-pipe .cd-v1 {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.deck-pipe .cd-v1-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+/* drawer nav row + close control (board-drawer.css ships scoped rules too; this
+   is a self-contained fallback so the close control is always visible) */
+.deck-pipe .cd-v1-navrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-paper);
+}
+.deck-pipe .cd-navbtn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius-sm, 4px);
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--text-2);
+}
+.deck-pipe .cd-navtitle {
+  font: 600 13px var(--font-display);
+  color: var(--text);
+}
+/* scrim dims the board behind the open drawer */
+.deck-pipe .deck-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 280ms var(--ease-calm, cubic-bezier(0.2, 0, 0, 1));
+}
+.deck-pipe.is-open .deck-scrim {
+  opacity: 1;
+}
+/* scale the report inside the drawer to fit (same approach as the single card) */
+.deck-pipe .cd-v1-body .report-light {
+  zoom: 0.82;
+  background: var(--bg-paper);
+}
+@media (prefers-reduced-motion: reduce) {
+  .deck-pipe .cd-drawer,
+  .deck-pipe .deck-scrim {
+    transition: none;
+  }
+}
+@media (max-width: 720px) {
+  .deck-pipe .cd-drawer {
+    width: 100%;
+  }
+  .deck-pipe .column {
+    flex-basis: 78%;
+  }
+}

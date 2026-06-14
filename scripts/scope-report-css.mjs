@@ -28,6 +28,8 @@ const FILES = [
   'report-inline.css',
   'tiptap-editor.css',
   'chrome.css',
+  'pipeline-inline.css',
+  'board-drawer.css',
 ];
 
 const plugin = prefixer({
