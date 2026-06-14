@@ -1,45 +1,58 @@
-// Generate the public-safe report shown by the landing's <ReportCard> demo
-// from the real (gitignored) product report. Keeps the candidate-facing
-// report intact while removing third-party PII and fixing a source markdown
-// glitch. Run: node scripts/gen-sample-report.mjs
-//
-//   1. Drop the Outreach section (third-party names + LinkedIn URLs) and
-//      everything after it.
-//   2. Redact the hiring-manager name in the Next Steps callout (public page).
-//   3. Fix source markdown: the "4c. Lunch" / "4e. Final engineering" onsite
-//      blocks were authored as blockquotes; they are section sub-headers, so
-//      render them as h4 like a heading (matches the surrounding 4a/4b/4d).
+// Generate public-safe report .md files for the pipeline demo from the real
+// (gitignored) product reports. For each: drop the Outreach section (third-party
+// names + LinkedIn URLs), redact the hiring-manager name, fix the 4c/4e
+// blockquote->h4 source glitch. Run: node scripts/gen-sample-report.mjs
 
 import { readFileSync, writeFileSync } from 'node:fs';
 
-const SRC =
-  '../sur9e/artifacts/reports/005-siftstack-2026-06-05.md';
-const OUT = new URL('../src/report-vendor/data/sample-report.md', import.meta.url);
+const SRC_DIR = '../sur9e/artifacts/reports';
+const OUT_DIR = new URL('../src/report-vendor/data/', import.meta.url);
 
-const raw = readFileSync(SRC, 'utf8');
-const m = raw.match(/^(---\n[\s\S]*?\n---\n?)([\s\S]*)$/);
-if (!m) throw new Error('no frontmatter');
-const front = m[1];
-let body = m[2];
+// product filename (stem) -> output filename (stem)
+const REPORTS = [
+  ['005-siftstack-2026-06-05', '005-siftstack'],
+  ['746-stripe-2026-06-07', '746-stripe'],
+  ['559-bitwarden-2026-06-06', '559-bitwarden'],
+  ['569-cleo-2026-06-06', '569-cleo'],
+  ['694-tiptap-2026-06-07', '694-tiptap'],
+];
 
-// 1. Truncate before the Outreach section.
-const cut = body.indexOf('\n## Outreach');
-if (cut !== -1) body = body.slice(0, cut) + '\n';
+function publicSafe(raw) {
+  const m = raw.match(/^(---\n[\s\S]*?\n---\n?)([\s\S]*)$/);
+  if (!m) throw new Error('no frontmatter');
+  // Strip raw LinkedIn job-posting URLs from the frontmatter `url:` field. Some
+  // postings are `linkedin.com/jobs/view/...` links; the public demo should not
+  // expose them (the accepted Sift report carries no linkedin.com URL). Blank
+  // only LinkedIn URLs, keep the field so the build-time loader still parses it;
+  // non-LinkedIn `url:` values (e.g. the Ashby link) are left untouched.
+  const front = m[1].replace(/^(url:\s*).*linkedin\.com.*$/im, '$1""');
+  let body = m[2];
+  const cut = body.indexOf('\n## Outreach');
+  if (cut !== -1) body = body.slice(0, cut) + '\n';
+  body = body
+    .replace(
+      /Send [A-Z][a-zA-Z.'’-]+ [A-Z][a-zA-Z.'’-]+['’]s connect note today \(drafted in Outreach below\)/g,
+      'Send the hiring manager’s connect note today',
+    )
+    // generic: redact "Firstname Lastname's" possessive before "connect note"
+    .replace(/\b[A-Z][a-z]+ [A-Z][a-z]+['’]s connect note/g, 'the hiring manager’s connect note')
+    // non-possessive: "the Firstname Lastname connect note" -> "the hiring manager’s connect note"
+    .replace(
+      /\bthe [A-Z][a-z]+ [A-Z][a-z]+ connect note/g,
+      'the hiring manager’s connect note',
+    )
+    // reversed phrasing: "connect note to [**]Firstname Lastname[**]" -> "...the hiring manager"
+    .replace(
+      /\bconnect note to (\*\*)?[A-Z][a-z]+ [A-Z][a-z]+(\*\*)?/g,
+      'connect note to $1the hiring manager$2',
+    )
+    .replace(/^> (4[ce]\..*\(\d+ min\))\s*$/gm, '#### $1');
+  return front + body.replace(/\n{3,}/g, '\n\n').trimEnd() + '\n';
+}
 
-// 2. Redact the hiring-manager name (only appears in Next Steps after the cut).
-body = body
-  .replace(
-    /Send Tom Berger['’]s connect note today \(drafted in Outreach below\)/g,
-    'Send the hiring manager’s connect note today',
-  )
-  .replace(/Tom Berger['’]s/g, 'the hiring manager’s')
-  .replace(/Tom Berger/g, 'the hiring manager');
-
-// 3. Blockquote → h4 for the onsite sub-headers (source authoring glitch).
-body = body
-  .replace(/^> (4c\. Lunch \/ team break \(60 min\))\s*$/m, '#### $1')
-  .replace(/^> (4e\. Final engineering team interview \(30 min\))\s*$/m, '#### $1');
-
-const out = front + body.replace(/\n{3,}/g, '\n\n').trimEnd() + '\n';
-writeFileSync(OUT, out, 'utf8');
-console.log('wrote src/report-vendor/data/sample-report.md');
+for (const [src, out] of REPORTS) {
+  const raw = readFileSync(`${SRC_DIR}/${src}.md`, 'utf8');
+  writeFileSync(new URL(`${out}.md`, OUT_DIR), publicSafe(raw), 'utf8');
+  console.log(`wrote ${out}.md`);
+}
+console.log('done');
