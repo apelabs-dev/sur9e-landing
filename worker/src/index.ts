@@ -107,7 +107,7 @@ function welcomeEmailText(unsubscribeUrl: string): string {
     '',
     "Thanks for subscribing to Sur9e release notes. We'll email occasionally when there's something worth your time. No spam, it's a promise.",
     '',
-    "Sur9e is the free, self-hosted job-hunt copilot that runs inside your AI coding agent. It scores roles against your real CV before you apply, all on your machine.",
+    'Sur9e is the free, self-hosted job-hunt copilot that runs inside your AI coding agent. It scores roles against your real CV before you apply, all on your machine.',
     '',
     'Star us on GitHub: https://github.com/arspesk/sur9e',
     '',
