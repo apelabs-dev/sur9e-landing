@@ -328,37 +328,9 @@ body {
   place-items: center;
   padding: 32px 24px;
 }
-/* faint CSS starfield — ties these pages to the landing's dark sections (the
-   subscribe flow ends here). Static, no JS, renders even with scripting off. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    /* brighter scattered "feature" stars (span the whole viewport) */
-    radial-gradient(1.6px 1.6px at 12% 18%, rgba(255,160,120,0.55), transparent 60%),
-    radial-gradient(2px 2px at 78% 12%, rgba(255,255,255,0.6), transparent 55%),
-    radial-gradient(1.6px 1.6px at 63% 72%, rgba(255,160,120,0.45), transparent 60%),
-    radial-gradient(1.4px 1.4px at 31% 86%, rgba(255,255,255,0.4), transparent 60%),
-    radial-gradient(1.4px 1.4px at 92% 56%, rgba(255,160,120,0.4), transparent 60%),
-    radial-gradient(1.4px 1.4px at 46% 8%, rgba(255,255,255,0.36), transparent 60%),
-    radial-gradient(1.6px 1.6px at 88% 90%, rgba(255,255,255,0.42), transparent 60%),
-    radial-gradient(1.4px 1.4px at 18% 52%, rgba(255,255,255,0.32), transparent 60%),
-    /* tiled fine star dust — repeats across the viewport for density */
-    radial-gradient(1px 1px at 40px 60px, rgba(255,255,255,0.55), transparent 55%),
-    radial-gradient(1px 1px at 150px 30px, rgba(255,255,255,0.4), transparent 55%),
-    radial-gradient(1px 1px at 90px 170px, rgba(255,200,170,0.5), transparent 55%),
-    radial-gradient(1px 1px at 220px 120px, rgba(255,255,255,0.35), transparent 55%),
-    radial-gradient(1px 1px at 280px 210px, rgba(255,255,255,0.45), transparent 55%),
-    radial-gradient(1px 1px at 320px 70px, rgba(255,200,170,0.4), transparent 55%);
-  background-size:
-    100% 100%, 100% 100%, 100% 100%, 100% 100%,
-    100% 100%, 100% 100%, 100% 100%, 100% 100%,
-    360px 360px, 360px 360px, 360px 360px,
-    360px 360px, 360px 360px, 360px 360px;
-}
+/* canvas starfield — same treatment as the landing's dark sections (hero/§3/§6):
+   a real, dense twinkling field, painted once + frozen under reduced motion. */
+.stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 main { position: relative; z-index: 1; width: 100%; max-width: 480px; text-align: center; }
 .wordmark { display: inline-block; width: 180px; height: auto; }
 .eyebrow { margin-top: 6px; font-family: 'IBM Plex Mono', Menlo, Consolas, monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #888; }
@@ -390,6 +362,7 @@ p { margin: 0 0 22px; font-size: 15px; line-height: 1.65; color: #cccccc; }
 .footer a { color: #888; text-decoration: none; }
 </style>
 </head><body>
+<canvas class="stars" aria-hidden="true"></canvas>
 <main>
   <svg class="wordmark" viewBox="0 0 1063 234" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sur9e">
     <path d="M683.049 233.502C672.897 232.452 656.98 229.783 648.652 228.091C641.808 226.72 641.217 226.392 640.77 223.729L640.323 220.824L655.641 216.541C677.198 210.481 702.786 197.391 721.727 188.504C771.574 164.992 786.489 145.113 786.489 131.865C786.489 127.418 783.373 122.25 778.658 118.617C776.301 116.839 769.734 113.206 764.179 110.537C758.623 107.867 752.391 104.555 750.376 103.263C742.21 97.7673 741.198 85.9751 748.189 77.0818C750.799 73.7698 759.635 67.4671 773.362 59.0657C786.913 50.8217 793.063 46.3029 799.793 39.6722L805.096 34.4189L797.265 31.5135L789.434 28.5228V25.4535V22.3841L801.891 16.8881C808.711 13.8974 819.903 8.80804 826.723 5.73867C834.212 2.26268 840.191 0 841.872 0H844.564V4.28269C844.482 6.54536 843.806 12.284 842.884 16.9668C842.043 21.6561 839.856 33.6909 838.169 43.8697L834.971 62.2138H831.855C828.91 62.2138 828.486 61.8924 825.965 57.6097C820.997 49.2083 821.673 49.3657 817.375 55.1043C811.991 62.4564 801.72 72.3138 791.532 79.9085C786.646 83.6272 782.355 87.1819 782.02 87.8246C780.756 89.8446 783.872 92.0286 796.165 97.7607C810.31 104.306 817.628 109.881 824.031 118.846C831.773 129.832 835.059 141.794 834.219 156.499C833.126 175.728 826.224 189.868 811.239 203.601C795.748 217.82 784.774 226.95 750.71 231.96C740.677 233.416 733.793 233.738 714.056 233.98C700.745 234.059 686.766 233.902 683.04 233.495L683.049 233.502Z" fill="#FF5A1F"/>
@@ -408,6 +381,35 @@ p { margin: 0 0 22px; font-size: 15px; line-height: 1.65; color: #cccccc; }
   </section>
   <p class="footer">&copy; 2026 Sur9e &middot; <a href="https://sur9e.com">sur9e.com</a></p>
 </main>
+<script>
+(function(){
+  var c=document.querySelector('.stars'); if(!c||!c.getContext) return;
+  var ctx=c.getContext('2d');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var field=[],w=0,h=0;
+  function build(){
+    w=innerWidth; h=innerHeight;
+    var dpr=Math.min(devicePixelRatio||1,2);
+    c.width=Math.round(w*dpr); c.height=Math.round(h*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    var n=Math.floor(w*h/6000); field=[];
+    for(var i=0;i<n;i++){field.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.1+0.3,o:Math.random(),sp:Math.random()*0.014+0.003,d:Math.random()<0.5?1:-1,ember:Math.random()<0.22});}
+  }
+  function paint(tw){
+    ctx.clearRect(0,0,w,h);
+    for(var i=0;i<field.length;i++){var s=field[i];
+      if(tw){s.o+=s.sp*s.d; if(s.o>1){s.o=1;s.d=-1;} if(s.o<0.15){s.o=0.15;s.d=1;}}
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,7);
+      var a=tw?s.o:0.55*s.o+0.18;
+      ctx.fillStyle=s.ember?('rgba(255,160,110,'+a+')'):('rgba(244,244,245,'+a+')');
+      ctx.fill();
+    }
+  }
+  build();
+  if(reduce){paint(false);} else {(function tick(){paint(true);requestAnimationFrame(tick);})();}
+  var rt; addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){build(); if(reduce) paint(false);},150);});
+})();
+</script>
 </body></html>`;
   return new Response(html, {
     status,
