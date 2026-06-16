@@ -40,9 +40,14 @@ const unsubscribeToken = createHmac('sha256', env.UNSUBSCRIBE_SECRET)
   .digest('hex');
 const unsubscribeUrl = `https://sur9e.com/api/subscribe/unsubscribe?e=${e}&t=${unsubscribeToken}`;
 
+// Keep in sync with POSTAL_ADDRESS in worker/src/index.ts. Empty until a real
+// address exists; the footer line is hidden while empty so no placeholder is sent.
+const POSTAL_ADDRESS = '';
+
 const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>You're subscribed to Sur9e release notes</title></head>
 <body style="margin:0;padding:0;background:#f5f4f1;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0a0a0b;">
+  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;opacity:0;color:transparent;">You're on the Sur9e release-notes list. Occasional updates, nothing else.&#8203;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;</div>
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f4f1;">
     <tr><td align="center" style="padding:40px 16px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:520px;background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:18px;">
@@ -54,6 +59,7 @@ const html = `<!doctype html>
           <h1 style="margin:0 0 14px;font-size:24px;line-height:1.18;font-weight:700;letter-spacing:-0.025em;color:#0a0a0b;">You're subscribed.</h1>
           <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Thanks for subscribing to Sur9e release notes. We'll email occasionally when there's something worth your time. No spam, no gates.</p>
           <p style="margin:0 0 4px;font-size:14px;line-height:1.6;color:#7a7a82;">Nothing else to do — you're on the list. We don't ask you to confirm.</p>
+          <p style="margin:14px 0 0;font-size:13.5px;line-height:1.6;color:#7a7a82;">Get it at <a href="https://sur9e.com" style="color:#c9430f;text-decoration:none;">sur9e.com</a> — free, self-hosted, MIT.</p>
         </td></tr>
         <tr><td style="padding:18px 32px;border-top:1px solid rgba(0,0,0,0.06);">
           <p style="margin:0;font-family:'IBM Plex Mono',Menlo,Consolas,monospace;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7a82;">
@@ -64,7 +70,7 @@ const html = `<!doctype html>
       </table>
       <p style="margin:18px 0 0;font-size:11px;line-height:1.6;color:#9a9a9a;">
         You're getting this because you subscribed at sur9e.com.<br>
-        <a href="${unsubscribeUrl}" style="color:#7a7a82;text-decoration:underline;">Unsubscribe</a> &middot; <a href="mailto:hello@sur9e.com" style="color:#9a9a9a;text-decoration:none;">hello@sur9e.com</a> &middot; &copy; 2026 Sur9e
+        <a href="${unsubscribeUrl}" style="color:#7a7a82;text-decoration:underline;">Unsubscribe</a> &middot; <a href="mailto:hello@sur9e.com" style="color:#9a9a9a;text-decoration:none;">hello@sur9e.com</a> &middot; &copy; 2026 Sur9e${POSTAL_ADDRESS ? `<br>${POSTAL_ADDRESS}` : ''}
       </p>
     </td></tr>
   </table>
@@ -77,10 +83,13 @@ const text = [
   '',
   "Nothing else to do — you're on the list. We don't ask you to confirm.",
   '',
+  'Get it at sur9e.com — free, self-hosted, MIT.',
+  '',
   '— Sur9e · Know which jobs are worth your time.',
   '',
   'You subscribed at sur9e.com.',
   `Unsubscribe: ${unsubscribeUrl}`,
+  ...(POSTAL_ADDRESS ? ['', POSTAL_ADDRESS] : []),
 ].join('\n');
 
 const res = await fetch('https://api.resend.com/emails', {
