@@ -85,9 +85,10 @@ function welcomeEmailHtml(unsubscribeUrl: string): string {
           <img src="https://sur9e.com/assets/sur9e-wordmark-email-light.png" width="160" height="35" alt="Sur9e" style="display:block;border:0;outline:none;text-decoration:none;color:#0a0a0b;font-size:26px;font-weight:700;letter-spacing:-0.025em;line-height:1;">
           <div style="margin-top:10px;font-family:'IBM Plex Mono',Menlo,Consolas,monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#ff5a1f;">Know which jobs are worth your time.</div>
         </td></tr>
-        <tr><td style="padding:30px 32px 8px;">
+        <tr><td style="padding:30px 32px 28px;">
           <h1 style="margin:0 0 14px;font-size:24px;line-height:1.18;font-weight:700;letter-spacing:-0.025em;color:#0a0a0b;">You're subscribed.</h1>
           <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Thanks for subscribing to Sur9e release notes. We'll email occasionally when there's something worth your time. No spam, it's a promise.</p>
+          <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Sur9e is the free, self-hosted job-hunt copilot that runs inside your AI coding agent. Release notes are how you'll hear what's new and what's next.</p>
           <p style="margin:14px 0 0;font-size:13.5px;line-height:1.6;color:#7a7a82;">Star us on <a href="https://github.com/arspesk/sur9e" style="color:#c9430f;text-decoration:none;">GitHub</a>.</p>
         </td></tr>
       </table>
@@ -105,6 +106,8 @@ function welcomeEmailText(unsubscribeUrl: string): string {
     "You're subscribed.",
     '',
     "Thanks for subscribing to Sur9e release notes. We'll email occasionally when there's something worth your time. No spam, it's a promise.",
+    '',
+    "Sur9e is the free, self-hosted job-hunt copilot that runs inside your AI coding agent. Release notes are how you'll hear what's new and what's next.",
     '',
     'Star us on GitHub: https://github.com/arspesk/sur9e',
     '',
