@@ -51,8 +51,22 @@ Workers & Pages → `sur9e-subscribe` → Settings → Triggers → Routes → A
 Renaming the worker (`sur9e-waitlist` → `sur9e-subscribe`) creates a **new** CF
 Worker; a route can only belong to one worker, so order matters:
 
-1. `ALTER TABLE waitlist RENAME TO subscribers;` on Railway (the Worker SQL
-   targets `subscribers`).
+1. Rename the table on Railway (the Worker SQL targets `subscribers`). Run this
+   **directly** against the live DB — do NOT run `scripts/init-db.mjs` first, or
+   it creates an empty `subscribers` table and the rename then fails with
+   `relation "subscribers" already exists`.
+
+   ```sql
+   -- one-time rename; the columns/indexes carry over unchanged
+   ALTER TABLE waitlist RENAME TO subscribers;
+   ALTER INDEX IF EXISTS waitlist_email_idx RENAME TO subscribers_email_idx;
+
+   -- verify: table exists, row count preserved, expected columns present
+   SELECT count(*) AS rows FROM subscribers;
+   SELECT column_name FROM information_schema.columns
+   WHERE table_name = 'subscribers' ORDER BY ordinal_position;
+   -- expect: id, email, source, created_at, confirmed_at, notified_at, unsubscribed_at
+   ```
 2. On the new `sur9e-subscribe` worker: `wrangler secret put RESEND_API_KEY`
    and `wrangler secret put UNSUBSCRIBE_SECRET` (= old `CONFIRM_SECRET` value).
 3. Confirm the Hyperdrive id matches the live DB.
