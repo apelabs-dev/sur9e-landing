@@ -31,7 +31,7 @@ export function PipelineCard() {
       {/* exact app Offers header (styles vendored verbatim) */}
       <div className="page-head">
         <div>
-          <h1>Offers</h1>
+          <h2>Offers</h2>
           <div className="sub">{OFFERS.length} scored — your pipeline, ranked by fit.</div>
         </div>
       </div>

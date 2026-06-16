@@ -11,7 +11,7 @@ import '../report-vendor/styles/scoped/board-drawer.css';
 import '../report-vendor/styles/deck-pipeline.css';
 
 const installCommand = 'bash -c "$(curl -fsSL https://sur9e.com/install)"';
-const demoCommand = '/sur9e evaluate';
+const demoCommand = '/sur9e apply';
 
 const cliEvents = [
   {
@@ -36,13 +36,13 @@ const cliEvents = [
     kind: 'tool',
     name: 'Mode',
     command: 'screen https://jobs.ashbyhq.com/siftstack/gtm-engineer',
-    output: '$0.20 screen · passes threshold',
+    output: 'screen · passes threshold',
   },
   {
     kind: 'tool',
     name: 'Mode',
     command: 'evaluate --deep --num 5',
-    output: '$0.44 eval · 4.3 / 5.0 high confidence',
+    output: 'eval · 4.3 / 5.0 high confidence',
   },
   {
     kind: 'update',
@@ -73,11 +73,11 @@ const cliEvents = [
       <svg class="qs-trajectory" aria-hidden="true">
         <defs>
           <!-- Same orange→peach→orange sweep as the hero "worth your time"
-               headline accent (tokens: --accent #ff5600, #ffb88a highlight). -->
+               headline accent (tokens: --accent #ff5a1f, #ffb88a highlight). -->
           <linearGradient id="qsAccentGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#ff5600"></stop>
+            <stop offset="0%" stop-color="#ff5a1f"></stop>
             <stop offset="50%" stop-color="#ffb88a"></stop>
-            <stop offset="100%" stop-color="#ff5600"></stop>
+            <stop offset="100%" stop-color="#ff5a1f"></stop>
           </linearGradient>
           <!-- userSpaceOnUse: the connector is a zero-width vertical path, so an
                objectBoundingBox gradient would be degenerate and drop the stroke.
@@ -90,9 +90,9 @@ const cliEvents = [
             x2="0"
             y2="600"
           >
-            <stop offset="0%" stop-color="#ff5600"></stop>
+            <stop offset="0%" stop-color="#ff5a1f"></stop>
             <stop offset="50%" stop-color="#ffb88a"></stop>
-            <stop offset="100%" stop-color="#ff5600"></stop>
+            <stop offset="100%" stop-color="#ff5a1f"></stop>
           </linearGradient>
         </defs>
         <path class="qs-path-done"></path>
@@ -193,8 +193,8 @@ const cliEvents = [
           <h3>Evaluate your first offer</h3>
           <p>
             Paste a job. Sur9e screens it cheap, then evaluates deep, scoring it
-            against your real profile in about 30 seconds: fit, comp, seniority,
-            and dealbreakers, with the reasoning behind every call.
+            against your real profile: fit, comp, seniority, and dealbreakers,
+            with the reasoning behind every call.
           </p>
         </div>
         <div class="qs-visual qs-visual-card">
@@ -235,8 +235,9 @@ const cliEvents = [
         <h3 id="demo-heading">Watch it work. Read what it wrote.</h3>
         <p>
           One evaluate run, two ways to see it: the agent reasoning in your
-          terminal, and the report it writes — rendered by the real Sur9e
-          viewer, not a mockup. Flip between them.
+          terminal, and the report it writes. That report is a markdown file you
+          own, edited inline in the real Sur9e viewer, not a mockup. Flip
+          between them.
         </p>
       </div>
 
@@ -245,30 +246,30 @@ const cliEvents = [
           <button
             type="button"
             class="deck-tab is-active"
-            data-deck-tab="agent"
-            id="deck-tab-agent"
+            data-deck-tab="report"
+            id="deck-tab-report"
             role="tab"
             aria-selected="true"
-            aria-controls="deck-card-agent"
+            aria-controls="deck-card-report"
           >
-            <span class="deck-tab-dot" aria-hidden="true"></span>Terminal
+            <span class="deck-tab-dot" aria-hidden="true"></span>Web
           </button>
           <button
             type="button"
             class="deck-tab"
-            data-deck-tab="report"
-            id="deck-tab-report"
+            data-deck-tab="agent"
+            id="deck-tab-agent"
             role="tab"
             aria-selected="false"
-            aria-controls="deck-card-report"
+            aria-controls="deck-card-agent"
           >
-            <span class="deck-tab-dot" aria-hidden="true"></span>Web
+            <span class="deck-tab-dot" aria-hidden="true"></span>Terminal
           </button>
         </div>
 
         <div class="deck-stage">
           <div
-            class="deck-card is-front"
+            class="deck-card is-back"
             data-deck-card="agent"
             id="deck-card-agent"
             role="tabpanel"
@@ -348,7 +349,7 @@ const cliEvents = [
           </div>
 
           <div
-            class="deck-card is-back"
+            class="deck-card is-front"
             data-deck-card="report"
             id="deck-card-report"
             role="tabpanel"
@@ -426,7 +427,7 @@ const cliEvents = [
     pointer-events: none;
     background:
       radial-gradient(rgba(31, 29, 26, 0.055) 1px, transparent 1.4px),
-      linear-gradient(90deg, rgba(255, 86, 0, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 90, 31, 0.05) 1px, transparent 1px),
       linear-gradient(rgba(17, 17, 17, 0.035) 1px, transparent 1px);
     background-size:
       24px 24px,
@@ -966,7 +967,7 @@ const cliEvents = [
     font-size: clamp(34px, 5vw, 58px);
     line-height: 0.98;
     letter-spacing: -0.045em;
-    color: #fff8ef;
+    color: var(--text-dark-hi);
     text-wrap: balance;
   }
   .demo-copy p {
@@ -1374,7 +1375,7 @@ const cliEvents = [
   }
   .ui-nav.active {
     color: var(--text-dark);
-    background: rgba(255, 86, 0, 0.14);
+    background: rgba(255, 90, 31, 0.14);
   }
   .ui-main {
     min-width: 0;

@@ -107,19 +107,10 @@
   overflow-y: auto;
 }
 
-/* scrim dims the canvas behind the open drawer */
+/* scrim disabled — the board stays fully visible and interactive while the
+   drawer is open (no dimming/shadowing, never blocks pointer events) */
 .deck-pipe .deck-scrim {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: rgba(0, 0, 0, 0.18);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 280ms var(--ease-calm, cubic-bezier(0.2, 0, 0, 1));
-}
-.deck-pipe.is-open .deck-scrim {
-  opacity: 1;
-  pointer-events: auto;
+  display: none;
 }
 
 /* MOBILE ONLY: force the app's narrow drawer hero layout — eyebrow pills on

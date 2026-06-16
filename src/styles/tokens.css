@@ -57,8 +57,8 @@
   --border-form: #8e8c85; /* Form-control border — ≈3.1:1 on --bg (WCAG 1.4.11) */
   --rule: #ebe9e4;
 
-  /* ─── Accent (warm orange, matches app's #ff5600) ─── */
-  --accent: #ff5600;
+  /* ─── Accent (warm orange, matches the brand logo + app #ff5a1f) ─── */
+  --accent: #ff5a1f;
   --accent-on: #ffffff;
   --accent-hover: color-mix(in oklab, var(--accent), black 8%);
   --accent-active: color-mix(in oklab, var(--accent), black 14%);
@@ -110,6 +110,7 @@
   --text-dark-muted: #8a8a92;
   --text-dark-dim: #5a5a62;
   --text-dark-faint: #3a3a3f;
+  --text-dark-hi: #fff8ef; /* warm near-white — headlines on the dark beats */
   --border-dark: #2a2a2f;
   --border-dark-strong: #3a3a3f;
   --border-dark-faint: #1a1a1d;
@@ -179,7 +180,7 @@
 }
 html {
   scroll-behavior: smooth;
-  -webkit-tap-highlight-color: rgba(255, 86, 0, 0.18);
+  -webkit-tap-highlight-color: rgba(255, 90, 31, 0.18);
 }
 a,
 button,
@@ -303,7 +304,7 @@ img {
   color: #fff;
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.28) inset,
-    0 18px 42px -18px rgba(255, 86, 0, 0.82);
+    0 18px 42px -18px rgba(255, 90, 31, 0.82);
 }
 .btn-primary:hover {
   background: var(--accent-cta-hover);
@@ -314,7 +315,10 @@ img {
   font-size: 13.5px;
   font-weight: 600;
   letter-spacing: 0.16em;
-  color: var(--accent);
+  /* --accent-cta (#c9430f ≈4.9:1 on cream) so the eyebrow clears WCAG AA at
+     this small size; --accent (#ff5a1f) is only ~3.3:1 and fails. Dark-section
+     eyebrows (§3/§6) override this to a brighter ember locally. */
+  color: var(--accent-cta);
   text-transform: uppercase;
 }
 
@@ -495,32 +499,32 @@ img {
   0%,
   20% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(255, 86, 0, 0.45);
+    box-shadow: 0 0 0 0 rgba(255, 90, 31, 0.45);
   }
   23% {
     transform: scale(1.06);
-    box-shadow: 0 0 0 10px rgba(255, 86, 0, 0);
+    box-shadow: 0 0 0 10px rgba(255, 90, 31, 0);
   }
   26%,
   100% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(255, 86, 0, 0);
+    box-shadow: 0 0 0 0 rgba(255, 90, 31, 0);
   }
 }
 @keyframes focusGlow {
   0%,
   18% {
-    box-shadow: 0 0 0 0 rgba(255, 86, 0, 0);
+    box-shadow: 0 0 0 0 rgba(255, 90, 31, 0);
     border-color: var(--border-dark);
   }
   22%,
   28% {
-    box-shadow: 0 0 0 3px rgba(255, 86, 0, 0.18);
+    box-shadow: 0 0 0 3px rgba(255, 90, 31, 0.18);
     border-color: var(--accent);
   }
   32%,
   100% {
-    box-shadow: 0 0 0 0 rgba(255, 86, 0, 0);
+    box-shadow: 0 0 0 0 rgba(255, 90, 31, 0);
     border-color: var(--border-dark);
   }
 }
@@ -833,6 +837,6 @@ img {
   50% {
     transform: translateY(-8px);
     border-color: rgba(255, 106, 42, 0.38);
-    color: #fff8ef;
+    color: var(--text-dark-hi);
   }
 }

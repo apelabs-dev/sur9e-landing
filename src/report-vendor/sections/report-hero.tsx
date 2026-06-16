@@ -161,7 +161,7 @@ export function ReportHero({ r }: ReportHeroProps) {
         <div className="hero-id-row">
           <CompanyAvatar company={r.company} logoUrl={r.company_logo} href={r.url} />
           <div>
-            <h1>{r.company}</h1>
+            <h2>{r.company}</h2>
             <div className="hero-role">{r.role}</div>
           </div>
         </div>

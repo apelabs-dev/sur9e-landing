@@ -170,6 +170,9 @@
               <g class="zero-shard shard-br" clip-path="url(#offerShardBr)"
                 ><text x="25" y="50" text-anchor="middle">0</text></g
               >
+              <text class="zero-solid" x="25" y="50" text-anchor="middle"
+                >0</text
+              >
               <path
                 class="zero-crack crack-main"
                 d="M27,0 L23,9 L28,17 L21,27 L26,36 L19,46 L24,53 L22,60"
@@ -211,15 +214,17 @@
       <span class="hero-dash">—</span><br /><em>before you apply.</em>
     </h1>
     <p class="hero-sub">
-      Sur9e scores every role against your experience, goals, and dealbreakers —
-      in 30 seconds.
+      An open-source job-hunt copilot that runs inside an AI coding agent like
+      Claude Code. Paste a role; it scores the real fit against your CV, goals,
+      and dealbreakers in one pass, on your machine.
     </p>
     <div class="cta-row">
-      <a href="/install" class="btn btn-primary"> Install Sur9e </a>
+      <a href="/install" class="btn btn-primary"> Install </a>
       <a href="#how-it-works" class="btn btn-secondary"> See how it works </a>
     </div>
     <p class="hero-trust">
-      Free &amp; open source · Self-hosted · Runs with your AI agent
+      Free &amp; open source · $0 on top of your AI subscription · Runs on your
+      machine
     </p>
   </div>
 </section>
@@ -292,7 +297,7 @@
     background: radial-gradient(
       420px 320px at var(--mx) var(--my),
       rgba(255, 120, 50, 0.55),
-      rgba(255, 86, 0, 0.18) 35%,
+      rgba(255, 90, 31, 0.18) 35%,
       transparent 65%
     );
     pointer-events: none;
@@ -374,6 +379,16 @@
     font-weight: 700;
     letter-spacing: -0.045em;
     fill: url('#offerZeroGradient');
+  }
+  /* Solid overlay zero — sits on top of the shard pieces so their seams never
+     show; the 0 reads as one whole glyph until the strike, then it vanishes to
+     reveal the shards as they crack and fall. */
+  .funnel-stats .zero-solid {
+    transition: opacity 60ms linear;
+  }
+  .funnel-stats.is-cracked .zero-solid {
+    opacity: 0;
+    transition: opacity 60ms linear 170ms;
   }
   .funnel-stats .zero-shard {
     transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -610,29 +625,25 @@
   @media (max-width: 720px) {
     .funnel-stats {
       margin-bottom: 26px;
+      padding: 16px 14px 14px;
     }
     .funnel-stats .fs-row {
-      grid-template-columns: max-content max-content;
-      justify-content: center;
-      gap: 18px 42px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      justify-content: stretch;
+      gap: 8px;
     }
     .funnel-stats .fs-cell {
-      gap: 6px;
-    }
-    .funnel-stats .fs-drop {
-      padding-top: 0;
-      justify-content: center;
+      gap: 5px;
     }
     .funnel-stats .fs-num {
-      font-size: 58px;
       letter-spacing: -0.05em;
     }
     .funnel-stats .fs-zero-svg {
-      width: 48px;
+      width: 30px;
     }
     .funnel-stats .fs-lbl {
-      font-size: 9.5px;
-      letter-spacing: 0.08em;
+      font-size: 8px;
+      letter-spacing: 0.03em;
     }
     .funnel-stats .fs-bars {
       display: none;
@@ -647,14 +658,11 @@
     }
   }
   @media (max-width: 380px) {
-    .funnel-stats .fs-num {
-      font-size: 54px;
-    }
     .funnel-stats .fs-zero-svg {
-      width: 46px;
+      width: 27px;
     }
     .funnel-stats .fs-lbl {
-      font-size: 8.8px;
+      font-size: 7.5px;
     }
     .funnel-stats .fs-line {
       font-size: 16.5px;
@@ -1041,10 +1049,10 @@
     -webkit-backdrop-filter: blur(22px) saturate(130%);
   }
   .funnel-stats .fs-eyebrow {
-    color: rgba(244, 244, 245, 0.56);
+    color: rgba(244, 244, 245, 0.66);
   }
   .funnel-stats .fs-num {
-    font-size: clamp(48px, 6.2vw, 76px);
+    font-size: clamp(30px, 7.6vw, 76px);
   }
   .funnel-stats .fs-line {
     color: var(--beauty-ember-2);
@@ -1058,12 +1066,12 @@
     font-size: clamp(48px, 7.2vw, 86px);
     line-height: 0.94;
     letter-spacing: -0.055em;
-    color: #fff8ef;
+    color: var(--text-dark-hi);
     text-shadow: 0 24px 80px rgba(0, 0, 0, 0.48);
   }
   .hero h1 em {
-    color: #fff8ef;
-    -webkit-text-fill-color: #fff8ef;
+    color: var(--text-dark-hi);
+    -webkit-text-fill-color: var(--text-dark-hi);
     background: none;
     -webkit-background-clip: initial;
     background-clip: initial;
@@ -1076,7 +1084,7 @@
     font-size: 17px;
   }
   .hero-trust {
-    color: rgba(244, 244, 245, 0.58);
+    color: rgba(244, 244, 245, 0.68);
   }
 
   .cta-row {
@@ -1113,25 +1121,16 @@
     .hero-aura {
       width: min(92vw, 760px);
     }
+    /* Narrow view: hide the chip labels — they have no clear space without
+       overlapping the numbers panel or the headline. Keep the radar ring
+       + sweep lines so the cosmic "scope" texture stays. */
+    .hero-aura .aura-node {
+      display: none;
+    }
   }
   @media (max-width: 720px) {
     .hero-aura {
       opacity: 0.78;
-    }
-    .aura-node {
-      opacity: 0.62;
-      transform: scale(0.86);
-    }
-    .node-a {
-      top: 12%;
-      left: 5%;
-    }
-    .node-b {
-      top: 9%;
-      right: 10%;
-    }
-    .node-c {
-      display: none;
     }
   }
 </style>

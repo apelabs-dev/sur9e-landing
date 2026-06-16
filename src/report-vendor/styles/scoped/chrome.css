@@ -1016,7 +1016,7 @@
   gap: var(--space-5);
   flex-wrap: wrap;
 }
-.report-light .page-head h1 {
+.report-light .page-head :is(h1, h2) {
   font-family: var(--font-display);
   font-size: 40px;
   font-weight: 600;
@@ -1427,7 +1427,7 @@
   .report-light .cd-drawer .cd-v1-body {
     padding-bottom: 32px;
   }
-  .report-light .page-head h1 {
+  .report-light .page-head :is(h1, h2) {
     font-size: 28px;
   }
 
