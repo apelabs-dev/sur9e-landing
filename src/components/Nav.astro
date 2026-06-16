@@ -68,6 +68,17 @@
   <span id="scrollProgress"></span>
 </div>
 
+<a href="#top" class="to-top" id="toTop" aria-label="Back to top" tabindex="-1">
+  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path
+      d="M12 19V5M12 5l-6 6M12 5l6 6"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
+  </svg>
+</a>
+
 <style>
   .nav {
     position: fixed;
@@ -240,6 +251,67 @@
     box-shadow: 0 0 8px rgba(255, 90, 31, 0.5);
     transform-origin: left center;
   }
+  /* Floating back-to-top — dark glass, matches the nav pill (revived from the
+     pre-revamp footer button); fades in once you scroll past the first viewport */
+  .to-top {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 90;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: var(--text-dark-2);
+    background: rgba(18, 18, 20, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    box-shadow:
+      0 10px 30px -10px rgba(0, 0, 0, 0.5),
+      0 1px 0 rgba(255, 255, 255, 0.06) inset;
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition:
+      opacity var(--dur-base) var(--ease-calm),
+      transform var(--dur-base) var(--ease-calm),
+      color var(--dur-quick),
+      border-color var(--dur-quick);
+  }
+  .to-top.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .to-top:hover {
+    color: var(--accent);
+    border-color: rgba(255, 90, 31, 0.35);
+  }
+  .to-top:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .to-top svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .to-top,
+    .to-top.show {
+      transform: none;
+      transition: opacity var(--dur-base);
+    }
+  }
+  @media (max-width: 480px) {
+    .to-top {
+      right: 14px;
+      bottom: 14px;
+    }
+  }
+
   .nav-cta {
     display: inline-flex;
     align-items: center;
@@ -356,6 +428,7 @@
     const nav = document.getElementById('nav');
     if (!nav) return;
     const progress = document.getElementById('scrollProgress');
+    const toTop = document.getElementById('toTop');
     const toggle = document.getElementById('navToggle');
     const navLinks = document.getElementById('navLinks');
     const linkEls = navLinks
@@ -369,6 +442,12 @@
           document.documentElement.scrollHeight - window.innerHeight;
         const pct = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
         progress.style.width = pct + '%';
+      }
+      if (toTop) {
+        // reveal once the user is roughly a viewport down the page
+        const show = window.scrollY > window.innerHeight * 0.9;
+        toTop.classList.toggle('show', show);
+        toTop.setAttribute('tabindex', show ? '0' : '-1');
       }
     }
     onScroll();
