@@ -116,14 +116,24 @@ function welcomeEmailText(unsubscribeUrl: string): string {
   ].join('\n');
 }
 
-async function buildUnsubscribeUrl(env: Env, email: string): Promise<string> {
-  const token = await hmacHex(env.UNSUBSCRIBE_SECRET, `unsub:${email}`);
-  const e = encodeURIComponent(email);
-  return `${env.BASE_URL}/api/subscribe/unsubscribe?e=${e}&t=${token}`;
+// Prod hosts always use the canonical configured BASE_URL; every other host
+// (staging, *.pages.dev preview, `wrangler dev` localhost) self-hosts the link
+// so it resolves on the same environment the signup came through — otherwise a
+// stage/dev signup mails a sur9e.com link that 404s until prod is deployed.
+const PROD_HOSTS = new Set(['sur9e.com', 'www.sur9e.com']);
+function resolveBaseUrl(req: Request, env: Env): string {
+  const u = new URL(req.url);
+  return PROD_HOSTS.has(u.host) ? env.BASE_URL : u.origin;
 }
 
-async function sendWelcomeEmail(env: Env, email: string): Promise<void> {
-  const unsubscribeUrl = await buildUnsubscribeUrl(env, email);
+async function buildUnsubscribeUrl(req: Request, env: Env, email: string): Promise<string> {
+  const token = await hmacHex(env.UNSUBSCRIBE_SECRET, `unsub:${email}`);
+  const e = encodeURIComponent(email);
+  return `${resolveBaseUrl(req, env)}/api/subscribe/unsubscribe?e=${e}&t=${token}`;
+}
+
+async function sendWelcomeEmail(req: Request, env: Env, email: string): Promise<void> {
+  const unsubscribeUrl = await buildUnsubscribeUrl(req, env, email);
 
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -267,7 +277,7 @@ async function handleSignup(req: Request, env: Env, ctx: ExecutionContext): Prom
   ctx.waitUntil(
     (async () => {
       const settled = await Promise.allSettled([
-        sendWelcomeEmail(env, email),
+        sendWelcomeEmail(req, env, email),
         sendSignupNotification(env, email, source, action as 'new' | 'reenroll'),
       ]);
       for (const r of settled) {
