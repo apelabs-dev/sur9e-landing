@@ -6,23 +6,24 @@
 # (or pasted in the Cloudflare dashboard → Worker → Settings → Variables).
 
 # Railway Postgres connection string. Needed locally for `wrangler dev` and
-# for the initial DDL run via psql. In production, the Worker reads through
-# the Hyperdrive binding (env.WAITLIST_DB.connectionString), so this var is
-# only used at dev time.
+# for the initial DDL run via the init-db script. In production, the Worker
+# reads through the Hyperdrive binding (env.SUBSCRIBE_DB.connectionString), so
+# this var is only used at dev time.
 RAILWAY_DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/DATABASE
 
 # Resend API key. Scope: Sending access, restricted to sur9e.com.
 # Generate at https://resend.com/api-keys
 RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-# HMAC secret used to sign confirmation links in the welcome email.
+# HMAC secret used to sign one-click unsubscribe links.
 # Generate with: openssl rand -hex 32
-# Treat as a secret — rotating it invalidates all outstanding confirmation
-# links, so only rotate when you're OK with that.
-CONFIRM_SECRET=replace_with_64_hex_chars_from_openssl_rand_hex_32
+# CUTOVER: set this to the OLD worker's CONFIRM_SECRET value, so unsubscribe
+# links already mailed under /api/waitlist/unsubscribe keep verifying.
+# Rotating it invalidates all outstanding unsubscribe links.
+UNSUBSCRIBE_SECRET=replace_with_64_hex_chars_from_openssl_rand_hex_32
 
-# Where to send "new signup" admin ping emails. Optional — if unset, the
+# Where to send "new subscriber" admin ping emails. Optional — if unset, the
 # Worker logs the signup but skips sending the notification. Useful for
-# getting an inbox ping every time someone joins the waitlist (or
-# re-enrolls after a previous unsubscribe).
+# getting an inbox ping every time someone subscribes (or resubscribes after
+# a previous unsubscribe).
 ADMIN_NOTIFY_EMAIL=you@example.com

@@ -4,7 +4,7 @@
 //   2. Trajectory draw-in: the solid ember route draws to the waypoint star ONCE
 //      when the section scrolls into view (stroke-dashoffset, no RAF loop). Under
 //      reduced motion it renders already-complete.
-//   3. Subscribe form → existing waitlist Worker (POST /api/waitlist).
+//   3. Subscribe form → subscribe Worker (POST /api/subscribe).
 //
 // The copy button is handled by the shared initScriptCopyButtons.
 
@@ -119,7 +119,7 @@ export function initClosing(root = document) {
     }
   }
 
-  /* ---------------- subscribe → waitlist Worker ---------------- */
+  /* ---------------- subscribe → subscribe Worker ---------------- */
   const form = section.querySelector('[data-subscribe]');
   if (form) {
     const input = form.querySelector('input[type="email"]');
@@ -157,13 +157,13 @@ export function initClosing(root = document) {
       setState('busy', 'Subscribing…');
 
       try {
-        const res = await fetch('/api/waitlist', {
+        const res = await fetch('/api/subscribe', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ email, source: 'closing' }),
         });
         if (res.ok) {
-          setState('success', "You're on the list.");
+          setState('success', "You're subscribed.");
         } else {
           const data = await res.json().catch(() => ({}));
           unlock();

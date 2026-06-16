@@ -1,6 +1,9 @@
 // One-shot: send the welcome email manually via Resend, bypassing the
 // Worker's INSERT path. Use when a row already exists in the DB and you
-// want to (re-)deliver the confirmation without deleting + re-submitting.
+// want to (re-)deliver the welcome without deleting + re-submitting.
+//
+// Single opt-in: there is no confirmation step — this just (re)sends the
+// welcome with a working one-click unsubscribe link.
 //
 // Email template is intentionally duplicated from worker/src/index.ts to
 // keep this script standalone (Node .mjs can't import the TS Worker code).
@@ -32,15 +35,13 @@ if (!email) {
 }
 
 const e = encodeURIComponent(email);
-const confirmToken = createHmac('sha256', env.CONFIRM_SECRET).update(email).digest('hex');
-const unsubscribeToken = createHmac('sha256', env.CONFIRM_SECRET)
+const unsubscribeToken = createHmac('sha256', env.UNSUBSCRIBE_SECRET)
   .update(`unsub:${email}`)
   .digest('hex');
-const confirmUrl = `https://sur9e.com/api/waitlist/confirm?e=${e}&t=${confirmToken}`;
-const unsubscribeUrl = `https://sur9e.com/api/waitlist/unsubscribe?e=${e}&t=${unsubscribeToken}`;
+const unsubscribeUrl = `https://sur9e.com/api/subscribe/unsubscribe?e=${e}&t=${unsubscribeToken}`;
 
 const html = `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>Welcome to the Sur9e waitlist</title></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>You're subscribed to Sur9e release notes</title></head>
 <body style="margin:0;padding:0;background:#f5f4f1;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0a0a0b;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f4f1;">
     <tr><td align="center" style="padding:40px 16px;">
@@ -49,18 +50,10 @@ const html = `<!doctype html>
           <img src="https://sur9e.com/assets/sur9e-wordmark-email-light.png" width="160" height="35" alt="Sur9e" style="display:block;border:0;outline:none;text-decoration:none;color:#0a0a0b;font-size:26px;font-weight:700;letter-spacing:-0.025em;line-height:1;">
           <div style="margin-top:10px;font-family:'IBM Plex Mono',Menlo,Consolas,monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#ff5a1f;">Know which jobs are worth your time.</div>
         </td></tr>
-        <tr><td style="padding:30px 32px 4px;">
-          <h1 style="margin:0 0 14px;font-size:24px;line-height:1.18;font-weight:700;letter-spacing:-0.025em;color:#0a0a0b;">You're on the list.</h1>
-          <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Thanks for joining. We'll send release notes occasionally. No spam, no gates.</p>
-          <p style="margin:0 0 26px;font-size:14px;line-height:1.6;color:#7a7a82;">One last step: confirm your email so we know it's you.</p>
-        </td></tr>
-        <tr><td align="center" style="padding:0 32px 30px;">
-          <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr>
-            <td bgcolor="#c9430f" style="border-radius:999px;background:#c9430f;">
-              <a href="${confirmUrl}" style="display:inline-block;padding:14px 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:999px;">Confirm your email &rarr;</a>
-            </td>
-          </tr></table>
-          <p style="margin:18px 0 0;font-size:11px;line-height:1.5;color:#9a9a9a;">Or paste this link into your browser:<br><a href="${confirmUrl}" style="color:#7a7a82;word-break:break-all;">${confirmUrl}</a></p>
+        <tr><td style="padding:30px 32px 8px;">
+          <h1 style="margin:0 0 14px;font-size:24px;line-height:1.18;font-weight:700;letter-spacing:-0.025em;color:#0a0a0b;">You're subscribed.</h1>
+          <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Thanks for subscribing to Sur9e release notes. We'll email occasionally when there's something worth your time. No spam, no gates.</p>
+          <p style="margin:0 0 4px;font-size:14px;line-height:1.6;color:#7a7a82;">Nothing else to do — you're on the list. We don't ask you to confirm.</p>
         </td></tr>
         <tr><td style="padding:18px 32px;border-top:1px solid rgba(0,0,0,0.06);">
           <p style="margin:0;font-family:'IBM Plex Mono',Menlo,Consolas,monospace;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7a82;">
@@ -70,7 +63,7 @@ const html = `<!doctype html>
         </td></tr>
       </table>
       <p style="margin:18px 0 0;font-size:11px;line-height:1.6;color:#9a9a9a;">
-        You're getting this because you joined the waitlist at sur9e.com.<br>
+        You're getting this because you subscribed at sur9e.com.<br>
         <a href="${unsubscribeUrl}" style="color:#7a7a82;text-decoration:underline;">Unsubscribe</a> &middot; <a href="mailto:hello@sur9e.com" style="color:#9a9a9a;text-decoration:none;">hello@sur9e.com</a> &middot; &copy; 2026 Sur9e
       </p>
     </td></tr>
@@ -78,16 +71,15 @@ const html = `<!doctype html>
 </body></html>`;
 
 const text = [
-  "You're on the list.",
+  "You're subscribed.",
   '',
-  "Thanks for joining. We'll send release notes occasionally. No spam, no gates.",
+  "Thanks for subscribing to Sur9e release notes. We'll email occasionally when there's something worth your time. No spam, no gates.",
   '',
-  "One last step: confirm your email so we know it's you.",
-  '',
-  `Confirm your email: ${confirmUrl}`,
+  "Nothing else to do — you're on the list. We don't ask you to confirm.",
   '',
   '— Sur9e · Know which jobs are worth your time.',
   '',
+  'You subscribed at sur9e.com.',
   `Unsubscribe: ${unsubscribeUrl}`,
 ].join('\n');
 
@@ -101,7 +93,7 @@ const res = await fetch('https://api.resend.com/emails', {
     from: 'Sur9e <noreply@send.sur9e.com>',
     reply_to: 'hello@sur9e.com',
     to: [email],
-    subject: 'Welcome to the Sur9e waitlist',
+    subject: "You're subscribed to Sur9e release notes",
     text,
     html,
     headers: {

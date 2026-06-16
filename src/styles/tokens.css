@@ -3,7 +3,7 @@
    Tokens mirror the app's design system (sur9e-mvp src/app/styles/tokens.css)
    post-Intercom adoption + post-WCAG fixes. Landing-only extras (--beauty-*,
    --bg-dark-warm, --tier-*) preserved so existing FeatureShot mockups +
-   Hero aura + Waitlist glass treatments keep working.
+   Hero aura + subscribe-form glass treatments keep working.
 =================================================================== */
 
 /* General Sans loaded locally — matches the app's display font. */
@@ -93,7 +93,7 @@
   --score-mid: #7a5f1c;
   --score-low: #8b3a30;
 
-  /* ─── Beauty-pass extras (landing-only — used by Hero aura + Waitlist glass) ─── */
+  /* ─── Beauty-pass extras (landing-only — used by Hero aura + subscribe-form glass) ─── */
   --beauty-ember: #ff6a2a;
   --beauty-ember-2: #ff9a62;
   --beauty-olive: #99b884;
@@ -202,8 +202,7 @@ summary,
 }
 .hero :focus-visible,
 .faq :focus-visible,
-.email-form :focus-visible,
-.waitlist :focus-visible,
+.closing :focus-visible,
 .nav :focus-visible {
   outline-color: #fff;
 }

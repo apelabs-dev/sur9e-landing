@@ -1,5 +1,5 @@
 {
-  "name": "sur9e-waitlist-worker",
+  "name": "sur9e-subscribe-worker",
   "private": true,
   "type": "module",
   "scripts": {

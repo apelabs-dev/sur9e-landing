@@ -1,4 +1,4 @@
-name = "sur9e-waitlist"
+name = "sur9e-subscribe"
 main = "src/index.ts"
 compatibility_date = "2026-05-12"
 compatibility_flags = ["nodejs_compat"]
@@ -7,15 +7,19 @@ routes = [
   { pattern = "sur9e.com/api/*", zone_name = "sur9e.com" }
 ]
 
-# Hyperdrive binding for Railway Postgres. Create the Hyperdrive config in
-# the CF dashboard with the Railway connection string, then paste the ID below.
+# Hyperdrive binding for Railway Postgres. SAME database as the old
+# sur9e-waitlist worker — the id is unchanged; only the binding name moved
+# to SUBSCRIBE_DB. (The maintainer renames the table waitlist -> subscribers
+# separately; the Worker SQL already targets `subscribers`.)
 [[hyperdrive]]
-binding = "WAITLIST_DB"
+binding = "SUBSCRIBE_DB"
 id = "7f7ee25dee9f495a8cc3ab327e4625ce"
 
 [vars]
-CONFIRM_BASE_URL = "https://sur9e.com"
+BASE_URL = "https://sur9e.com"
 
 # Secrets — set via `wrangler secret put NAME` (do NOT commit values):
-#   RESEND_API_KEY  — Resend API key, "Sending access" restricted to sur9e.com
-#   CONFIRM_SECRET  — 32+ random hex chars, used to HMAC-sign confirmation tokens
+#   RESEND_API_KEY     — Resend API key, "Sending access" restricted to sur9e.com
+#   UNSUBSCRIBE_SECRET — 32+ random hex chars, used to HMAC-sign unsubscribe tokens.
+#       IMPORTANT (cutover): set this to the OLD worker's CONFIRM_SECRET value so
+#       unsubscribe links already mailed under /api/waitlist/unsubscribe still verify.

@@ -1216,7 +1216,7 @@
     // Magnetic primary CTA — gentle pull toward cursor (skip for reduced motion)
     if (!reduceMotion()) {
       document
-        .querySelectorAll('.cta-primary, .btn-primary, .waitlist-form button')
+        .querySelectorAll('.cta-primary, .btn-primary, .cl-sub button')
         .forEach((btn) => {
           if (!(btn instanceof HTMLElement)) return;
           btn.addEventListener('pointermove', (e) => {

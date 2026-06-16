@@ -3,7 +3,7 @@
 // trajectory arrives from off-screen and draws to a single bright waypoint star
 // ("destination reached"), over the recolored §3 starfield. Below: the eyebrow,
 // H2, the install-command box (primary CTA), a ghost GitHub button, the subscribe
-// field (→ existing waitlist Worker), and the micro-proof row. Copy is canonical.
+// field (→ the subscribe Worker), and the micro-proof row. Copy is canonical.
 
 const installCommand = 'bash -c "$(curl -fsSL https://sur9e.com/install)"';
 const repoUrl = 'https://github.com/arspesk/sur9e';
@@ -87,7 +87,7 @@ const repoUrl = 'https://github.com/arspesk/sur9e';
       <span aria-hidden="true">★</span> Star on GitHub
     </a>
 
-    {/* subscribe → existing waitlist Worker */}
+    {/* subscribe → subscribe Worker (POST /api/subscribe) */}
     <form class="cl-sub" data-subscribe novalidate>
       <p class="cl-sub-cap">
         Release notes, occasionally. No spam, it’s a promise.

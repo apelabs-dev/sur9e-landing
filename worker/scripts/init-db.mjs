@@ -1,6 +1,9 @@
-// One-shot: applies the locked waitlist DDL from
-// sur9e-mvp/docs/strategy.md §18 to the Railway Postgres.
-// Run once: `node scripts/init-db.mjs`
+// One-shot: ensures the `subscribers` table exists on the Railway Postgres,
+// for a FRESH setup. Run once: `node scripts/init-db.mjs`
+//
+// NOTE: on the live DB the maintainer owns the rename of the existing table
+// (`ALTER TABLE waitlist RENAME TO subscribers`); this script only CREATEs
+// IF NOT EXISTS, so it is safe to run but will not migrate existing data.
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -35,27 +38,27 @@ try {
 
   console.log('Applying DDL…');
   await sql.unsafe(`
-    CREATE TABLE IF NOT EXISTS waitlist (
+    CREATE TABLE IF NOT EXISTS subscribers (
       id SERIAL PRIMARY KEY,
       email TEXT UNIQUE NOT NULL,
       source TEXT,
       created_at TIMESTAMP DEFAULT NOW(),
       confirmed_at TIMESTAMP,
-      notified_at TIMESTAMP,
+      notified_at TIMESTAMP,        -- DEPRECATED: legacy double-opt-in admin-ping marker, no longer written
       unsubscribed_at TIMESTAMP
     );
-    ALTER TABLE waitlist ADD COLUMN IF NOT EXISTS unsubscribed_at TIMESTAMP;
-    CREATE INDEX IF NOT EXISTS waitlist_email_idx ON waitlist(email);
+    ALTER TABLE subscribers ADD COLUMN IF NOT EXISTS unsubscribed_at TIMESTAMP;
+    CREATE INDEX IF NOT EXISTS subscribers_email_idx ON subscribers(email);
   `);
   console.log('DDL applied.');
 
-  const [{ count }] = await sql`SELECT COUNT(*)::int AS count FROM waitlist`;
-  console.log(`waitlist row count: ${count}`);
+  const [{ count }] = await sql`SELECT COUNT(*)::int AS count FROM subscribers`;
+  console.log(`subscribers row count: ${count}`);
 
   const cols = await sql`
     SELECT column_name, data_type, is_nullable
     FROM information_schema.columns
-    WHERE table_name = 'waitlist'
+    WHERE table_name = 'subscribers'
     ORDER BY ordinal_position
   `;
   console.log('Schema:');

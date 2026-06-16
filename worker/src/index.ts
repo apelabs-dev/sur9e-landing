@@ -1,11 +1,11 @@
 import postgres from 'postgres';
 
 export interface Env {
-  WAITLIST_DB: Hyperdrive;
+  SUBSCRIBE_DB: Hyperdrive;
   RESEND_API_KEY: string;
-  CONFIRM_BASE_URL: string;
-  CONFIRM_SECRET: string;
-  // Where to send "new signup" admin pings. Optional — if unset, pings are skipped.
+  BASE_URL: string;
+  UNSUBSCRIBE_SECRET: string;
+  // Where to send "new subscriber" admin pings. Optional — if unset, pings are skipped.
   ADMIN_NOTIFY_EMAIL?: string;
 }
 
@@ -63,17 +63,13 @@ function jsonResponse(req: Request, body: unknown, status = 200): Response {
   });
 }
 
-interface EmailUrls {
-  confirmUrl: string;
-  unsubscribeUrl: string;
-}
-
-function welcomeEmailHtml({ confirmUrl, unsubscribeUrl }: EmailUrls): string {
+function welcomeEmailHtml(unsubscribeUrl: string): string {
   // Light theme — designed to look correct in every client without fighting
   // their dark/light auto-theming. Inline styles only; <table> layout for
-  // Outlook compat.
+  // Outlook compat. Single opt-in: no confirmation step, just a welcome with
+  // a clear provenance line + prominent unsubscribe.
   return `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>Welcome to the Sur9e waitlist</title></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>You're subscribed to Sur9e release notes</title></head>
 <body style="margin:0;padding:0;background:#f5f4f1;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0a0a0b;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f4f1;">
     <tr><td align="center" style="padding:40px 16px;">
@@ -82,18 +78,10 @@ function welcomeEmailHtml({ confirmUrl, unsubscribeUrl }: EmailUrls): string {
           <img src="https://sur9e.com/assets/sur9e-wordmark-email-light.png" width="160" height="35" alt="Sur9e" style="display:block;border:0;outline:none;text-decoration:none;color:#0a0a0b;font-size:26px;font-weight:700;letter-spacing:-0.025em;line-height:1;">
           <div style="margin-top:10px;font-family:'IBM Plex Mono',Menlo,Consolas,monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#ff5a1f;">Know which jobs are worth your time.</div>
         </td></tr>
-        <tr><td style="padding:30px 32px 4px;">
-          <h1 style="margin:0 0 14px;font-size:24px;line-height:1.18;font-weight:700;letter-spacing:-0.025em;color:#0a0a0b;">You're on the list.</h1>
-          <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Thanks for joining. We'll send release notes occasionally. No spam, no gates.</p>
-          <p style="margin:0 0 26px;font-size:14px;line-height:1.6;color:#7a7a82;">One last step: confirm your email so we know it's you.</p>
-        </td></tr>
-        <tr><td align="center" style="padding:0 32px 30px;">
-          <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr>
-            <td bgcolor="#c9430f" style="border-radius:999px;background:#c9430f;">
-              <a href="${confirmUrl}" style="display:inline-block;padding:14px 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:999px;">Confirm your email &rarr;</a>
-            </td>
-          </tr></table>
-          <p style="margin:18px 0 0;font-size:11px;line-height:1.5;color:#9a9a9a;">Or paste this link into your browser:<br><a href="${confirmUrl}" style="color:#7a7a82;word-break:break-all;">${confirmUrl}</a></p>
+        <tr><td style="padding:30px 32px 8px;">
+          <h1 style="margin:0 0 14px;font-size:24px;line-height:1.18;font-weight:700;letter-spacing:-0.025em;color:#0a0a0b;">You're subscribed.</h1>
+          <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Thanks for subscribing to Sur9e release notes. We'll email occasionally when there's something worth your time. No spam, no gates.</p>
+          <p style="margin:0 0 4px;font-size:14px;line-height:1.6;color:#7a7a82;">Nothing else to do — you're on the list. We don't ask you to confirm.</p>
         </td></tr>
         <tr><td style="padding:18px 32px;border-top:1px solid rgba(0,0,0,0.06);">
           <p style="margin:0;font-family:'IBM Plex Mono',Menlo,Consolas,monospace;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7a82;">
@@ -103,7 +91,7 @@ function welcomeEmailHtml({ confirmUrl, unsubscribeUrl }: EmailUrls): string {
         </td></tr>
       </table>
       <p style="margin:18px 0 0;font-size:11px;line-height:1.6;color:#9a9a9a;">
-        You're getting this because you joined the waitlist at sur9e.com.<br>
+        You're getting this because you subscribed at sur9e.com.<br>
         <a href="${unsubscribeUrl}" style="color:#7a7a82;text-decoration:underline;">Unsubscribe</a> &middot; <a href="mailto:hello@sur9e.com" style="color:#9a9a9a;text-decoration:none;">hello@sur9e.com</a> &middot; &copy; 2026 Sur9e
       </p>
     </td></tr>
@@ -111,42 +99,29 @@ function welcomeEmailHtml({ confirmUrl, unsubscribeUrl }: EmailUrls): string {
 </body></html>`;
 }
 
-function welcomeEmailText({ confirmUrl, unsubscribeUrl }: EmailUrls): string {
+function welcomeEmailText(unsubscribeUrl: string): string {
   return [
-    "You're on the list.",
+    "You're subscribed.",
     '',
-    "Thanks for joining. We'll send release notes occasionally. No spam, no gates.",
+    "Thanks for subscribing to Sur9e release notes. We'll email occasionally when there's something worth your time. No spam, no gates.",
     '',
-    "One last step: confirm your email so we know it's you.",
-    '',
-    `Confirm your email: ${confirmUrl}`,
+    "Nothing else to do — you're on the list. We don't ask you to confirm.",
     '',
     '— Sur9e · Know which jobs are worth your time.',
     '',
+    'You subscribed at sur9e.com.',
     `Unsubscribe: ${unsubscribeUrl}`,
   ].join('\n');
 }
 
-function buildSignupUrls(
-  env: Env,
-  email: string,
-  confirmToken: string,
-  unsubscribeToken: string,
-): EmailUrls {
-  const base = env.CONFIRM_BASE_URL;
+async function buildUnsubscribeUrl(env: Env, email: string): Promise<string> {
+  const token = await hmacHex(env.UNSUBSCRIBE_SECRET, `unsub:${email}`);
   const e = encodeURIComponent(email);
-  return {
-    confirmUrl: `${base}/api/waitlist/confirm?e=${e}&t=${confirmToken}`,
-    unsubscribeUrl: `${base}/api/waitlist/unsubscribe?e=${e}&t=${unsubscribeToken}`,
-  };
+  return `${env.BASE_URL}/api/subscribe/unsubscribe?e=${e}&t=${token}`;
 }
 
-async function sendConfirmationEmail(env: Env, email: string): Promise<void> {
-  const [confirmToken, unsubscribeToken] = await Promise.all([
-    hmacHex(env.CONFIRM_SECRET, email),
-    hmacHex(env.CONFIRM_SECRET, `unsub:${email}`),
-  ]);
-  const urls = buildSignupUrls(env, email, confirmToken, unsubscribeToken);
+async function sendWelcomeEmail(env: Env, email: string): Promise<void> {
+  const unsubscribeUrl = await buildUnsubscribeUrl(env, email);
 
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -158,14 +133,14 @@ async function sendConfirmationEmail(env: Env, email: string): Promise<void> {
       from: 'Sur9e <noreply@send.sur9e.com>',
       reply_to: 'hello@sur9e.com',
       to: [email],
-      subject: 'Welcome to the Sur9e waitlist',
-      text: welcomeEmailText(urls),
-      html: welcomeEmailHtml(urls),
+      subject: "You're subscribed to Sur9e release notes",
+      text: welcomeEmailText(unsubscribeUrl),
+      html: welcomeEmailHtml(unsubscribeUrl),
       // RFC 8058 one-click unsubscribe — required by Gmail/Yahoo for bulk
       // and strongly recommended for transactional. The header URL must
       // accept POST with body `List-Unsubscribe=One-Click`.
       headers: {
-        'List-Unsubscribe': `<${urls.unsubscribeUrl}>`,
+        'List-Unsubscribe': `<${unsubscribeUrl}>`,
         'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
       },
     }),
@@ -185,7 +160,7 @@ async function sendSignupNotification(
 ): Promise<void> {
   if (!env.ADMIN_NOTIFY_EMAIL) return;
 
-  const label = action === 'new' ? 'New waitlist signup' : 'Re-enrollment (was unsubscribed)';
+  const label = action === 'new' ? 'New subscriber' : 'Re-subscribe (was inactive)';
   const text = [
     label,
     '',
@@ -193,7 +168,7 @@ async function sendSignupNotification(
     `Source: ${source}`,
     `Time:   ${new Date().toISOString()}`,
     '',
-    'Sent automatically by sur9e-waitlist Worker.',
+    'Sent automatically by sur9e-subscribe Worker.',
   ].join('\n');
 
   const res = await fetch('https://api.resend.com/emails', {
@@ -203,7 +178,7 @@ async function sendSignupNotification(
       'content-type': 'application/json',
     },
     body: JSON.stringify({
-      from: 'Sur9e Waitlist <noreply@send.sur9e.com>',
+      from: 'Sur9e Subscribers <noreply@send.sur9e.com>',
       to: [env.ADMIN_NOTIFY_EMAIL],
       subject: `${label}: ${email}`,
       text,
@@ -237,31 +212,39 @@ async function handleSignup(req: Request, env: Env, ctx: ExecutionContext): Prom
   const sourceRaw = typeof body.source === 'string' ? body.source : 'landing';
   const source = sourceRaw.length <= 32 ? sourceRaw : 'landing';
 
-  const sql = postgres(env.WAITLIST_DB.connectionString, {
+  const sql = postgres(env.SUBSCRIBE_DB.connectionString, {
     max: 5,
     fetch_types: false,
   });
 
-  // Three outcomes:
-  //   'new'        — first-ever signup, send confirmation
-  //   'reenroll'   — previously unsubscribed, opted back in, send confirmation
-  //   'duplicate'  — already on the list and active, don't re-send
+  // Single opt-in: submitting the form IS the consent, so a successful signup
+  // is active immediately (confirmed_at = NOW()). Three outcomes:
+  //   'new'        — first-ever signup; insert active, send welcome
+  //   'reenroll'   — an existing INACTIVE row (previously unsubscribed, OR a
+  //                  legacy double-opt-in row that never confirmed) opting in
+  //                  now; reactivate + stamp confirmed_at, send welcome
+  //   'duplicate'  — already active (confirmed and not unsubscribed); no re-send
+  //
+  // We never proactively email legacy unconfirmed rows — only when they
+  // themselves resubmit the form here (fresh consent).
   let action: 'new' | 'reenroll' | 'duplicate' = 'duplicate';
   try {
     const inserted = await sql<{ id: number }[]>`
-      INSERT INTO waitlist (email, source)
-      VALUES (${email}, ${source})
+      INSERT INTO subscribers (email, source, confirmed_at)
+      VALUES (${email}, ${source}, NOW())
       ON CONFLICT (email) DO NOTHING
       RETURNING id
     `;
     if (inserted.length > 0) {
       action = 'new';
     } else {
-      // Email already exists. Re-enroll only if previously unsubscribed.
+      // Email already exists. Activate it only if it is currently INACTIVE —
+      // i.e. previously unsubscribed, or never confirmed (legacy opt-in row).
       const reenrolled = await sql<{ id: number }[]>`
-        UPDATE waitlist
-        SET unsubscribed_at = NULL, source = ${source}
-        WHERE email = ${email} AND unsubscribed_at IS NOT NULL
+        UPDATE subscribers
+        SET unsubscribed_at = NULL, confirmed_at = NOW(), source = ${source}
+        WHERE email = ${email}
+          AND (unsubscribed_at IS NOT NULL OR confirmed_at IS NULL)
         RETURNING id
       `;
       if (reenrolled.length > 0) action = 'reenroll';
@@ -278,13 +261,13 @@ async function handleSignup(req: Request, env: Env, ctx: ExecutionContext): Prom
     return jsonResponse(req, { ok: true, duplicate: true });
   }
 
-  // Run both email sends in the background so the API response returns fast.
+  // Run both sends in the background so the API response returns fast.
   // ctx.waitUntil keeps the Worker alive until the work finishes; failures
   // are logged and don't affect the user-facing response.
   ctx.waitUntil(
     (async () => {
       const settled = await Promise.allSettled([
-        sendConfirmationEmail(env, email),
+        sendWelcomeEmail(env, email),
         sendSignupNotification(env, email, source, action as 'new' | 'reenroll'),
       ]);
       for (const r of settled) {
@@ -332,7 +315,27 @@ body {
   place-items: center;
   padding: 32px 24px;
 }
-main { width: 100%; max-width: 480px; text-align: center; }
+/* faint CSS starfield — ties these pages to the landing's dark sections (the
+   subscribe flow ends here). Static, no JS, renders even with scripting off. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%, rgba(255,160,120,0.38), transparent 60%),
+    radial-gradient(1px 1px at 78% 12%, rgba(255,255,255,0.24), transparent 60%),
+    radial-gradient(1.5px 1.5px at 63% 72%, rgba(255,160,120,0.30), transparent 60%),
+    radial-gradient(1px 1px at 31% 86%, rgba(255,255,255,0.20), transparent 60%),
+    radial-gradient(1px 1px at 92% 56%, rgba(255,160,120,0.26), transparent 60%),
+    radial-gradient(1px 1px at 46% 8%, rgba(255,255,255,0.18), transparent 60%),
+    radial-gradient(1px 1px at 8% 62%, rgba(255,255,255,0.16), transparent 60%),
+    radial-gradient(1.5px 1.5px at 88% 90%, rgba(255,160,120,0.22), transparent 60%),
+    radial-gradient(1px 1px at 22% 44%, rgba(255,255,255,0.14), transparent 60%),
+    radial-gradient(1px 1px at 70% 36%, rgba(255,255,255,0.14), transparent 60%);
+}
+main { position: relative; z-index: 1; width: 100%; max-width: 480px; text-align: center; }
 .wordmark { display: inline-block; width: 180px; height: auto; }
 .eyebrow { margin-top: 6px; font-family: 'IBM Plex Mono', Menlo, Consolas, monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #888; }
 .card {
@@ -381,71 +384,6 @@ p { margin: 0 0 22px; font-size: 15px; line-height: 1.65; color: #cccccc; }
   });
 }
 
-async function handleConfirm(req: Request, env: Env): Promise<Response> {
-  const url = new URL(req.url);
-  const email = (url.searchParams.get('e') || '').trim().toLowerCase();
-  const token = url.searchParams.get('t') || '';
-
-  if (!validEmail(email) || !token) {
-    return brandedPage({
-      title: 'Invalid link',
-      icon: '!',
-      iconColor: '#3a3a3d',
-      heading: 'Link looks broken',
-      body: "We couldn't verify that confirmation link. If you copied it from your email and it's still not working, try submitting your email again.",
-      cta: { text: 'Back to sur9e.com', href: 'https://sur9e.com' },
-      status: 400,
-    });
-  }
-
-  const expected = await hmacHex(env.CONFIRM_SECRET, email);
-  if (!constantTimeEqual(token, expected)) {
-    return brandedPage({
-      title: 'Invalid link',
-      icon: '!',
-      iconColor: '#3a3a3d',
-      heading: 'Link looks broken',
-      body: "We couldn't verify that confirmation link. If you copied it from your email and it's still not working, try submitting your email again.",
-      cta: { text: 'Back to sur9e.com', href: 'https://sur9e.com' },
-      status: 400,
-    });
-  }
-
-  const sql = postgres(env.WAITLIST_DB.connectionString, {
-    max: 5,
-    fetch_types: false,
-  });
-  try {
-    await sql`
-      UPDATE waitlist
-      SET confirmed_at = NOW()
-      WHERE email = ${email} AND confirmed_at IS NULL
-    `;
-  } catch (err) {
-    console.error('Confirm UPDATE failed', err);
-    await sql.end({ timeout: 5 });
-    return brandedPage({
-      title: 'Server error',
-      icon: '!',
-      iconColor: '#3a3a3d',
-      heading: 'Something went wrong',
-      body: 'We hit an error confirming your email. Please try the link again in a minute.',
-      cta: { text: 'Back to sur9e.com', href: 'https://sur9e.com' },
-      status: 500,
-    });
-  }
-  await sql.end({ timeout: 5 });
-
-  return brandedPage({
-    title: 'Confirmed',
-    icon: '&#10003;',
-    iconColor: 'linear-gradient(135deg,#c9430f,#ff6a2a)',
-    heading: "You're confirmed.",
-    body: "Welcome to the Sur9e release-notes list. We'll email occasionally. No spam, no gates.",
-    cta: { text: 'Back to sur9e.com', href: 'https://sur9e.com' },
-  });
-}
-
 async function handleUnsubscribe(req: Request, env: Env): Promise<Response> {
   const url = new URL(req.url);
   const email = (url.searchParams.get('e') || '').trim().toLowerCase();
@@ -467,10 +405,10 @@ async function handleUnsubscribe(req: Request, env: Env): Promise<Response> {
 
   if (!validEmail(email) || !token) return invalid();
 
-  const expected = await hmacHex(env.CONFIRM_SECRET, `unsub:${email}`);
+  const expected = await hmacHex(env.UNSUBSCRIBE_SECRET, `unsub:${email}`);
   if (!constantTimeEqual(token, expected)) return invalid();
 
-  const sql = postgres(env.WAITLIST_DB.connectionString, {
+  const sql = postgres(env.SUBSCRIBE_DB.connectionString, {
     max: 5,
     fetch_types: false,
   });
@@ -479,7 +417,7 @@ async function handleUnsubscribe(req: Request, env: Env): Promise<Response> {
     // checks this column so a re-signup doesn't auto-re-send unless they
     // explicitly resubmit the form (opt-in renewed).
     await sql`
-      UPDATE waitlist
+      UPDATE subscribers
       SET unsubscribed_at = NOW()
       WHERE email = ${email} AND unsubscribed_at IS NULL
     `;
@@ -511,7 +449,7 @@ async function handleUnsubscribe(req: Request, env: Env): Promise<Response> {
     icon: '&#8722;',
     iconColor: '#3a3a3d',
     heading: "You've been removed.",
-    body: "We've taken your email off the Sur9e waitlist. Changed your mind? You can rejoin anytime at sur9e.com.",
+    body: "We've taken your email off the Sur9e release-notes list. Changed your mind? You can resubscribe anytime at sur9e.com.",
     cta: { text: 'Back to sur9e.com', href: 'https://sur9e.com' },
   });
 }
@@ -524,14 +462,31 @@ export default {
       return new Response(null, { status: 204, headers: corsHeaders(req) });
     }
 
-    if (url.pathname === '/api/waitlist' && req.method === 'POST') {
+    // New subscribe endpoint
+    if (url.pathname === '/api/subscribe' && req.method === 'POST') {
       return handleSignup(req, env, ctx);
     }
 
-    if (url.pathname === '/api/waitlist/confirm' && req.method === 'GET') {
-      return handleConfirm(req, env);
+    if (
+      url.pathname === '/api/subscribe/unsubscribe' &&
+      (req.method === 'GET' || req.method === 'POST')
+    ) {
+      return handleUnsubscribe(req, env);
     }
 
+    // ── Legacy /api/waitlist shim ──────────────────────────────────────────
+    // The worker rename creates a new CF Worker, but it still owns the same
+    // sur9e.com/api/* route — so it must keep serving the old paths that live
+    // in already-sent emails. The unsubscribe alias is a compliance must
+    // (RFC 8058 one-click links can't 404). It works for GET + POST and reuses
+    // the same handler, which means UNSUBSCRIBE_SECRET must equal the OLD
+    // CONFIRM_SECRET value for those legacy tokens to verify.
+    // The signup alias covers any stale cached frontend still posting the old
+    // path during cutover. Old /api/waitlist/confirm links are intentionally
+    // gone (single opt-in) and will 404.
+    if (url.pathname === '/api/waitlist' && req.method === 'POST') {
+      return handleSignup(req, env, ctx);
+    }
     if (
       url.pathname === '/api/waitlist/unsubscribe' &&
       (req.method === 'GET' || req.method === 'POST')
