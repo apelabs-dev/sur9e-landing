@@ -87,15 +87,8 @@ function welcomeEmailHtml(unsubscribeUrl: string): string {
         </td></tr>
         <tr><td style="padding:30px 32px 8px;">
           <h1 style="margin:0 0 14px;font-size:24px;line-height:1.18;font-weight:700;letter-spacing:-0.025em;color:#0a0a0b;">You're subscribed.</h1>
-          <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Thanks for subscribing to Sur9e release notes. We'll email occasionally when there's something worth your time. No spam, no gates.</p>
-          <p style="margin:0 0 4px;font-size:14px;line-height:1.6;color:#7a7a82;">Nothing else to do — you're on the list. We don't ask you to confirm.</p>
-          <p style="margin:14px 0 0;font-size:13.5px;line-height:1.6;color:#7a7a82;">Get it at <a href="https://sur9e.com" style="color:#c9430f;text-decoration:none;">sur9e.com</a> — free, self-hosted, MIT.</p>
-        </td></tr>
-        <tr><td style="padding:18px 32px;border-top:1px solid rgba(0,0,0,0.06);">
-          <p style="margin:0;font-family:'IBM Plex Mono',Menlo,Consolas,monospace;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7a82;">
-            <span style="color:#1ea34c;">&#10003;</span> Free to start &nbsp;&middot;&nbsp;
-            <span style="color:#1ea34c;">&#10003;</span> No spam, ever
-          </p>
+          <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Thanks for subscribing to Sur9e release notes. We'll email occasionally when there's something worth your time. No spam, it's a promise.</p>
+          <p style="margin:14px 0 0;font-size:13.5px;line-height:1.6;color:#7a7a82;">Star us on <a href="https://github.com/arspesk/sur9e" style="color:#c9430f;text-decoration:none;">GitHub</a>.</p>
         </td></tr>
       </table>
       <p style="margin:18px 0 0;font-size:11px;line-height:1.6;color:#9a9a9a;">
@@ -111,11 +104,9 @@ function welcomeEmailText(unsubscribeUrl: string): string {
   return [
     "You're subscribed.",
     '',
-    "Thanks for subscribing to Sur9e release notes. We'll email occasionally when there's something worth your time. No spam, no gates.",
+    "Thanks for subscribing to Sur9e release notes. We'll email occasionally when there's something worth your time. No spam, it's a promise.",
     '',
-    "Nothing else to do — you're on the list. We don't ask you to confirm.",
-    '',
-    'Get it at sur9e.com — free, self-hosted, MIT.',
+    'Star us on GitHub: https://github.com/arspesk/sur9e',
     '',
     '— Sur9e · Know which jobs are worth your time.',
     '',
@@ -223,11 +214,6 @@ async function handleSignup(req: Request, env: Env, ctx: ExecutionContext): Prom
   const sourceRaw = typeof body.source === 'string' ? body.source : 'landing';
   const source = sourceRaw.length <= 32 ? sourceRaw : 'landing';
 
-  const sql = postgres(env.SUBSCRIBE_DB.connectionString, {
-    max: 5,
-    fetch_types: false,
-  });
-
   // Single opt-in: submitting the form IS the consent, so a successful signup
   // is active immediately (confirmed_at = NOW()). Three outcomes:
   //   'new'        — first-ever signup; insert active, send welcome
@@ -239,7 +225,11 @@ async function handleSignup(req: Request, env: Env, ctx: ExecutionContext): Prom
   // We never proactively email legacy unconfirmed rows — only when they
   // themselves resubmit the form here (fresh consent).
   let action: 'new' | 'reenroll' | 'duplicate' = 'duplicate';
+  // sql is constructed inside the try so a missing/broken Hyperdrive binding
+  // surfaces as a clean CORS+JSON 500 rather than an unhandled throw.
+  let sql: ReturnType<typeof postgres> | undefined;
   try {
+    sql = postgres(env.SUBSCRIBE_DB.connectionString, { max: 5, fetch_types: false });
     const inserted = await sql<{ id: number }[]>`
       INSERT INTO subscribers (email, source, confirmed_at)
       VALUES (${email}, ${source}, NOW())
@@ -262,11 +252,10 @@ async function handleSignup(req: Request, env: Env, ctx: ExecutionContext): Prom
     }
   } catch (err) {
     console.error('DB upsert failed', err);
-    await sql.end({ timeout: 5 });
     return jsonResponse(req, { error: 'Server error' }, 500);
+  } finally {
+    if (sql) await sql.end({ timeout: 5 });
   }
-
-  await sql.end({ timeout: 5 });
 
   if (action === 'duplicate') {
     return jsonResponse(req, { ok: true, duplicate: true });
@@ -419,11 +408,11 @@ async function handleUnsubscribe(req: Request, env: Env): Promise<Response> {
   const expected = await hmacHex(env.UNSUBSCRIBE_SECRET, `unsub:${email}`);
   if (!constantTimeEqual(token, expected)) return invalid();
 
-  const sql = postgres(env.SUBSCRIBE_DB.connectionString, {
-    max: 5,
-    fetch_types: false,
-  });
+  // sql is constructed inside the try so a missing/broken Hyperdrive binding
+  // surfaces as a handled error rather than an unhandled throw.
+  let sql: ReturnType<typeof postgres> | undefined;
   try {
+    sql = postgres(env.SUBSCRIBE_DB.connectionString, { max: 5, fetch_types: false });
     // Soft-delete: keep the row, mark when they unsubscribed. handleSignup
     // checks this column so a re-signup doesn't auto-re-send unless they
     // explicitly resubmit the form (opt-in renewed).
@@ -434,7 +423,6 @@ async function handleUnsubscribe(req: Request, env: Env): Promise<Response> {
     `;
   } catch (err) {
     console.error('Unsubscribe UPDATE failed', err);
-    await sql.end({ timeout: 5 });
     if (isOneClickPost) return new Response('Server error', { status: 500 });
     return brandedPage({
       title: 'Server error',
@@ -445,8 +433,9 @@ async function handleUnsubscribe(req: Request, env: Env): Promise<Response> {
       cta: { text: 'Back to sur9e.com', href: 'https://sur9e.com' },
       status: 500,
     });
+  } finally {
+    if (sql) await sql.end({ timeout: 5 });
   }
-  await sql.end({ timeout: 5 });
 
   if (isOneClickPost) {
     return new Response('Unsubscribed', {
