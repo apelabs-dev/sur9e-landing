@@ -15,6 +15,24 @@ const { title = defaultTitle } = Astro.props;
       media="(prefers-color-scheme: dark)"
     />
     <meta name="theme-color" content="#faf9f6" />
+    <!-- Preload the above-the-fold display weights (hero H1 = Semibold, funnel
+         numerals = Bold) so they paint in General Sans on first render. Without
+         this, font-display:swap re-lays-out the hero when the font arrives,
+         shifting the centered .hero-aura → Cumulative Layout Shift. -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/general-sans/GeneralSans-Semibold.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/general-sans/GeneralSans-Bold.woff2"
+      crossorigin
+    />
     <title translate="no">{title}</title>
     <meta
       name="description"
