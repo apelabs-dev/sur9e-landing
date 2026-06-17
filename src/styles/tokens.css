@@ -722,13 +722,15 @@ img {
 
 .features-head h2 .accent,
 .section-head h2 .accent {
-  color: var(--accent);
+  /* deep brand orange (#c9430f) so heading highlights match the eyebrows,
+     links, and code chips — one consistent, AA-safe orange on cream */
+  color: var(--accent-cta);
 }
 /* Generic body highlight — use on words/phrases inside <p>, <li>, etc. */
 .feature-copy p .accent,
 .compare-wrap p .accent,
 .section p .accent {
-  color: var(--accent);
+  color: var(--accent-cta);
   font-weight: 500;
 }
 
