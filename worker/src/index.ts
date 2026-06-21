@@ -75,26 +75,26 @@ function welcomeEmailHtml(unsubscribeUrl: string): string {
   // Outlook compat. Single opt-in: no confirmation step, just a welcome with
   // a clear provenance line + prominent unsubscribe.
   return `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>You're subscribed to Sur9e release notes</title></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>You're subscribed to sur9e release notes</title></head>
 <body style="margin:0;padding:0;background:#f5f4f1;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0a0a0b;">
-  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;opacity:0;color:transparent;">You're on the Sur9e release-notes list. Occasional updates, nothing else.&#8203;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;</div>
+  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;opacity:0;color:transparent;">You're on the sur9e release-notes list. Occasional updates, nothing else.&#8203;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;</div>
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f4f1;">
     <tr><td align="center" style="padding:40px 16px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:520px;background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:18px;">
         <tr><td style="padding:32px 32px 0;">
-          <img src="https://sur9e.com/assets/sur9e-wordmark-email-light.png" width="160" height="35" alt="Sur9e" style="display:block;border:0;outline:none;text-decoration:none;color:#0a0a0b;font-size:26px;font-weight:700;letter-spacing:-0.025em;line-height:1;">
+          <img src="https://sur9e.com/assets/sur9e-wordmark-email-light.png" width="160" height="35" alt="sur9e" style="display:block;border:0;outline:none;text-decoration:none;color:#0a0a0b;font-size:26px;font-weight:700;letter-spacing:-0.025em;line-height:1;">
           <div style="margin-top:10px;font-family:'IBM Plex Mono',Menlo,Consolas,monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#ff5a1f;">Know which jobs are worth your time.</div>
         </td></tr>
         <tr><td style="padding:30px 32px 28px;">
           <h1 style="margin:0 0 14px;font-size:24px;line-height:1.18;font-weight:700;letter-spacing:-0.025em;color:#0a0a0b;">You're subscribed.</h1>
-          <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Thanks for subscribing to Sur9e release notes. We'll email occasionally when there's something worth your time. No spam, it's a promise.</p>
+          <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Thanks for subscribing to sur9e release notes. We'll email occasionally when there's something worth your time. No spam, it's a promise.</p>
           <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Sur9e is the free, self-hosted job-hunt copilot that runs inside your AI coding agent. It scores roles against your real CV before you apply, all on your machine.</p>
           <p style="margin:14px 0 0;font-size:13.5px;line-height:1.6;color:#7a7a82;">Star us on <a href="https://github.com/arspesk/sur9e" style="color:#c9430f;text-decoration:none;">GitHub</a>.</p>
         </td></tr>
       </table>
       <p style="margin:18px 0 0;font-size:11px;line-height:1.6;color:#9a9a9a;">
         You're getting this because you subscribed at sur9e.com.<br>
-        <a href="${unsubscribeUrl}" style="color:#7a7a82;text-decoration:underline;">Unsubscribe</a> &middot; <a href="mailto:hello@sur9e.com" style="color:#9a9a9a;text-decoration:none;">hello@sur9e.com</a> &middot; &copy; 2026 Sur9e${POSTAL_ADDRESS ? `<br>${POSTAL_ADDRESS}` : ''}
+        <a href="${unsubscribeUrl}" style="color:#7a7a82;text-decoration:underline;">Unsubscribe</a> &middot; <a href="mailto:hello@sur9e.com" style="color:#9a9a9a;text-decoration:none;">hello@sur9e.com</a> &middot; &copy; 2026 sur9e${POSTAL_ADDRESS ? `<br>${POSTAL_ADDRESS}` : ''}
       </p>
     </td></tr>
   </table>
@@ -105,13 +105,13 @@ function welcomeEmailText(unsubscribeUrl: string): string {
   return [
     "You're subscribed.",
     '',
-    "Thanks for subscribing to Sur9e release notes. We'll email occasionally when there's something worth your time. No spam, it's a promise.",
+    "Thanks for subscribing to sur9e release notes. We'll email occasionally when there's something worth your time. No spam, it's a promise.",
     '',
     'Sur9e is the free, self-hosted job-hunt copilot that runs inside your AI coding agent. It scores roles against your real CV before you apply, all on your machine.',
     '',
     'Star us on GitHub: https://github.com/arspesk/sur9e',
     '',
-    '— Sur9e · Know which jobs are worth your time.',
+    '— sur9e · Know which jobs are worth your time.',
     '',
     'You subscribed at sur9e.com.',
     `Unsubscribe: ${unsubscribeUrl}`,
@@ -145,10 +145,10 @@ async function sendWelcomeEmail(req: Request, env: Env, email: string): Promise<
       'content-type': 'application/json',
     },
     body: JSON.stringify({
-      from: 'Sur9e <noreply@send.sur9e.com>',
+      from: 'sur9e <noreply@send.sur9e.com>',
       reply_to: 'hello@sur9e.com',
       to: [email],
-      subject: "You're subscribed to Sur9e release notes",
+      subject: "You're subscribed to sur9e release notes",
       text: welcomeEmailText(unsubscribeUrl),
       html: welcomeEmailHtml(unsubscribeUrl),
       // RFC 8058 one-click unsubscribe — required by Gmail/Yahoo for bulk
@@ -193,7 +193,7 @@ async function sendSignupNotification(
       'content-type': 'application/json',
     },
     body: JSON.stringify({
-      from: 'Sur9e Subscribers <noreply@send.sur9e.com>',
+      from: 'sur9e Subscribers <noreply@send.sur9e.com>',
       to: [env.ADMIN_NOTIFY_EMAIL],
       subject: `${label}: ${email}`,
       text,
@@ -311,7 +311,7 @@ function brandedPage(opts: BrandedPageOpts): Response {
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${opts.title} — Sur9e</title>
+<title>${opts.title} — sur9e</title>
 <link rel="icon" href="https://sur9e.com/favicon.svg">
 <style>
 :root { color-scheme: dark; }
@@ -364,7 +364,7 @@ p { margin: 0 0 22px; font-size: 15px; line-height: 1.65; color: #cccccc; }
 </head><body>
 <canvas class="stars" aria-hidden="true"></canvas>
 <main>
-  <svg class="wordmark" viewBox="0 0 1063 234" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sur9e">
+  <svg class="wordmark" viewBox="0 0 1063 234" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="sur9e">
     <path d="M683.049 233.502C672.897 232.452 656.98 229.783 648.652 228.091C641.808 226.72 641.217 226.392 640.77 223.729L640.323 220.824L655.641 216.541C677.198 210.481 702.786 197.391 721.727 188.504C771.574 164.992 786.489 145.113 786.489 131.865C786.489 127.418 783.373 122.25 778.658 118.617C776.301 116.839 769.734 113.206 764.179 110.537C758.623 107.867 752.391 104.555 750.376 103.263C742.21 97.7673 741.198 85.9751 748.189 77.0818C750.799 73.7698 759.635 67.4671 773.362 59.0657C786.913 50.8217 793.063 46.3029 799.793 39.6722L805.096 34.4189L797.265 31.5135L789.434 28.5228V25.4535V22.3841L801.891 16.8881C808.711 13.8974 819.903 8.80804 826.723 5.73867C834.212 2.26268 840.191 0 841.872 0H844.564V4.28269C844.482 6.54536 843.806 12.284 842.884 16.9668C842.043 21.6561 839.856 33.6909 838.169 43.8697L834.971 62.2138H831.855C828.91 62.2138 828.486 61.8924 825.965 57.6097C820.997 49.2083 821.673 49.3657 817.375 55.1043C811.991 62.4564 801.72 72.3138 791.532 79.9085C786.646 83.6272 782.355 87.1819 782.02 87.8246C780.756 89.8446 783.872 92.0286 796.165 97.7607C810.31 104.306 817.628 109.881 824.031 118.846C831.773 129.832 835.059 141.794 834.219 156.499C833.126 175.728 826.224 189.868 811.239 203.601C795.748 217.82 784.774 226.95 750.71 231.96C740.677 233.416 733.793 233.738 714.056 233.98C700.745 234.059 686.766 233.902 683.04 233.495L683.049 233.502Z" fill="#FF5A1F"/>
     <path d="M300.904 233.179C262.954 227.012 239.788 205.796 231.569 169.743L229.297 159.606L228.95 88.8582L228.687 18H257.538H286.482V76.8379C286.482 141.105 286.745 144.142 291.557 155.534C296.632 167.343 306.334 175.283 319.01 178.006C330.466 180.406 345.065 176.021 353.022 167.657C354.768 165.884 357.394 161.591 358.877 158.249C364.3 146.127 364.3 145.915 364.3 78.9332V18.0085H392.633H420.874L421.577 73.1902C422.45 148.332 421.754 161.812 415.984 179.685C407.062 207.068 386.515 225.146 356.698 231.83C347.606 233.917 310.621 234.757 300.912 233.188L300.904 233.179Z" fill="#f4f4f5"/>
     <path d="M77.1941 232.731C48.2601 228.809 28.1616 220.035 15.8266 205.789C6.11626 194.535 1.84434 182.351 0.583256 162.842L0 152.728L30.4867 152.937L60.9734 153.247L61.5567 157.999C62.4315 163.99 64.2759 167.803 68.4532 172.035C76.3192 180.088 92.8237 184.32 112.922 183.39C129.915 182.56 138.262 179.778 143.314 173.376C146.908 168.834 147.295 166.563 145.253 162.742C141.178 155.409 134.479 153.448 97.3872 148.705C45.7301 141.993 29.2256 136.73 15.8266 122.686C6.69951 113.082 3.2 103.068 3.2 86.141C3.2 51.6577 25.3399 28.7386 65.9232 21.2051C96.2207 15.5235 139.72 17.5933 162.83 25.8476C177.884 31.3196 192.055 42.4649 197.691 53.518C201.671 61.1605 204.193 73.1354 204.193 83.7695V92.8533H174.093C150.786 92.8533 143.898 92.5432 143.606 91.6131C140.981 80.979 137.971 76.2275 131.176 72.6158C114.278 63.532 79.8109 65.7024 69.4227 76.437C65.0562 81.0795 65.4424 85.5209 70.6838 89.1326C74.7587 91.9231 83.2079 93.6745 107.098 96.465C134.093 99.5656 151.472 102.457 161.474 105.339C189.241 113.183 202.065 124.747 207.204 146.527C209.923 157.982 209.435 178.429 206.235 189.063C199.338 211.672 180.989 225.197 148.847 231.39C134.085 234.18 93.7931 234.901 77.1862 232.731H77.1941Z" fill="#f4f4f5"/>
@@ -379,7 +379,7 @@ p { margin: 0 0 22px; font-size: 15px; line-height: 1.65; color: #cccccc; }
     <p>${opts.body}</p>
     ${ctaHtml}
   </section>
-  <p class="footer">&copy; 2026 Sur9e &middot; <a href="https://sur9e.com">sur9e.com</a></p>
+  <p class="footer">&copy; 2026 sur9e &middot; <a href="https://sur9e.com">sur9e.com</a></p>
 </main>
 <script>
 (function(){
@@ -482,7 +482,7 @@ async function handleUnsubscribe(req: Request, env: Env): Promise<Response> {
     icon: '&#10003;',
     iconColor: 'linear-gradient(135deg, #c9430f, #ff6a2a)',
     heading: "You've been removed.",
-    body: "We've taken your email off the Sur9e release-notes list. Changed your mind? You can resubscribe anytime at sur9e.com.",
+    body: "We've taken your email off the sur9e release-notes list. Changed your mind? You can resubscribe anytime at sur9e.com.",
     cta: { text: 'Back to sur9e.com', href: 'https://sur9e.com' },
   });
 }
