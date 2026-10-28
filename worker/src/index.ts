@@ -89,7 +89,7 @@ function welcomeEmailHtml(unsubscribeUrl: string): string {
           <h1 style="margin:0 0 14px;font-size:24px;line-height:1.18;font-weight:700;letter-spacing:-0.025em;color:#0a0a0b;">You're subscribed.</h1>
           <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Thanks for subscribing to sur9e release notes. We'll email occasionally when there's something worth your time. No spam, it's a promise.</p>
           <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4a4a52;">Sur9e is the free, self-hosted job-hunt copilot that runs inside your AI coding agent. It scores roles against your real CV before you apply, all on your machine.</p>
-          <p style="margin:14px 0 0;font-size:13.5px;line-height:1.6;color:#7a7a82;">Star us on <a href="https://github.com/arspesk/sur9e" style="color:#c9430f;text-decoration:none;">GitHub</a>.</p>
+          <p style="margin:14px 0 0;font-size:13.5px;line-height:1.6;color:#7a7a82;">Star us on <a href="https://github.com/apelabs-dev/sur9e" style="color:#c9430f;text-decoration:none;">GitHub</a>.</p>
         </td></tr>
       </table>
       <p style="margin:18px 0 0;font-size:11px;line-height:1.6;color:#9a9a9a;">
@@ -109,7 +109,7 @@ function welcomeEmailText(unsubscribeUrl: string): string {
     '',
     'Sur9e is the free, self-hosted job-hunt copilot that runs inside your AI coding agent. It scores roles against your real CV before you apply, all on your machine.',
     '',
-    'Star us on GitHub: https://github.com/arspesk/sur9e',
+    'Star us on GitHub: https://github.com/apelabs-dev/sur9e',
     '',
     '— sur9e · Know which jobs are worth your time.',
     '',

@@ -3,5 +3,5 @@
 # /install → the one-line installer in the sur9e repo. The install command is
 #   bash -c "$(curl -fsSL https://sur9e.com/install)"
 # and curl -fsSL follows this 302 to the raw script (single source of truth in
-# the repo, github.com/arspesk/sur9e).
-/install  https://raw.githubusercontent.com/arspesk/sur9e/main/install.sh  302
+# the repo, github.com/apelabs-dev/sur9e).
+/install  https://raw.githubusercontent.com/apelabs-dev/sur9e/main/install.sh  302
