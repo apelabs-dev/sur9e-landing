@@ -36,6 +36,4 @@ cd worker
 npx wrangler deploy
 ```
 
-See `CLAUDE.md` for ongoing Claude-assisted edit conventions.
-
-License: All rights reserved. Private repo.
+License: All rights reserved.

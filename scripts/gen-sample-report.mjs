@@ -2,10 +2,14 @@
 // (gitignored) product reports. For each: drop the Outreach section (third-party
 // names + LinkedIn URLs), redact the hiring-manager name, fix the 4c/4e
 // blockquote->h4 source glitch. Run: node scripts/gen-sample-report.mjs
+// (set SUR9E_REPORTS_DIR to override the default sibling ../sur9e/artifacts/reports)
 
 import { readFileSync, writeFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
-const SRC_DIR = '../sur9e/artifacts/reports';
+const SRC_DIR =
+  process.env.SUR9E_REPORTS_DIR ??
+  fileURLToPath(new URL('../../sur9e/artifacts/reports', import.meta.url));
 const OUT_DIR = new URL('../src/report-vendor/data/', import.meta.url);
 
 // product filename (stem) -> output filename (stem)
