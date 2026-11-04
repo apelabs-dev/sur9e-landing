@@ -1,10 +1,12 @@
 import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
+  site: 'https://sur9e.com',
   output: 'static',
   trailingSlash: 'ignore',
-  integrations: [react()],
+  integrations: [react(), sitemap()],
   build: {
     inlineStylesheets: 'auto',
   },
