@@ -1,0 +1,5 @@
+Contact: https://github.com/apelabs-dev/sur9e/security/advisories/new
+Expires: 2027-11-03T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://sur9e.com/.well-known/security.txt
+Policy: https://github.com/apelabs-dev/sur9e/security/policy

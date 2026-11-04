@@ -11,7 +11,7 @@ archetype: Solutions Engineer
 seniority: Mid
 comp: $90K-$120K (+ equity)
 work_mode: Remote
-company_logo: https://www.google.com/s2/favicons?domain=tiptap.dev&sz=128
+company_logo: /assets/favicons/tiptap.dev-128.png
 location: New York
 legitimacy: high_confidence
 tldr: ''

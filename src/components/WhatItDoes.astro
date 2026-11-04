@@ -17,7 +17,7 @@ const stages = [
     title: 'Fresh roles land on your desk.',
     detail:
       'Scheduled scans pull new listings from 8 ATS boards and public LinkedIn. On your machine, zero AI tokens.',
-    img: '/assets/discovery-radar-transparent.png',
+    img: '/assets/discovery-radar-transparent.webp',
   },
   {
     n: 2,
@@ -28,7 +28,7 @@ const stages = [
     title: 'Measured against your real profile, not keywords.',
     detail:
       'A cheap screen kills bad fits first. Survivors get the deep, scored evaluation, ranked against your real experience.',
-    img: '/assets/score-evaluate-gauge-transparent.png',
+    img: '/assets/score-evaluate-gauge-transparent.webp',
   },
   {
     n: 3,
@@ -39,7 +39,7 @@ const stages = [
     title: 'Every shot tailored. Never auto-sent.',
     detail:
       'Tailors your CV, drafts the cover letter, fills the form in your own browser. Then it stops. You hit Submit.',
-    img: '/assets/tailored-submit-transparent.png',
+    img: '/assets/tailored-submit-transparent.webp',
   },
   {
     n: 4,
@@ -50,7 +50,7 @@ const stages = [
     title: 'The part most people skip.',
     detail:
       'Outreach drafts, interview prep, follow-ups, negotiation briefs. Rejections are analyzed for patterns, not deleted in shame.',
-    img: '/assets/payoff-trophy-transparent.png',
+    img: '/assets/payoff-trophy-transparent.webp',
   },
 ];
 
@@ -259,7 +259,14 @@ const traits = [
           </button>
           <div class="cstar-card">
             <div class="cstar-art">
-              <img src={s.img} alt="" loading="lazy" width="114" height="114" />
+              <img
+                src={s.img}
+                alt=""
+                loading={s.n === 1 ? 'eager' : 'lazy'}
+                width="114"
+                height="114"
+                decoding="async"
+              />
             </div>
             <div class="cstar-body">
               <span class="cstar-badge">{s.key}</span>

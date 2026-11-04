@@ -8,7 +8,7 @@ work_mode: Remote
 comp: $120K-$140K (+ bonus)
 date: '2026-06-07'
 url: ""
-company_logo: https://www.google.com/s2/favicons?domain=cleo.com&sz=128
+company_logo: /assets/favicons/cleo.com-128.png
 score: 4.1
 legitimacy: high_confidence
 score_breakdown:

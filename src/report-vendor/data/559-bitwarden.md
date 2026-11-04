@@ -8,7 +8,7 @@ work_mode: Remote
 comp: $100K-$140K
 date: '2026-06-06'
 url: ""
-company_logo: https://www.google.com/s2/favicons?domain=bitwarden.com&sz=128
+company_logo: /assets/favicons/bitwarden.com-128.png
 score: 4.1
 legitimacy: high_confidence
 score_breakdown:
