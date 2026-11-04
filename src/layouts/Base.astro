@@ -1,6 +1,12 @@
 ---
 const defaultTitle = 'sur9e — open-source, self-hosted AI job search toolkit';
-const { title = defaultTitle } = Astro.props;
+const defaultDescription =
+  'Free, self-hosted AI job-hunt toolkit that runs inside your coding agent. Screens roles cheap, evaluates deep, tailors CVs, and never auto-submits.';
+const {
+  title = defaultTitle,
+  description = defaultDescription,
+  canonical = new URL(Astro.url.pathname, 'https://sur9e.com').href,
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -34,20 +40,22 @@ const { title = defaultTitle } = Astro.props;
       crossorigin
     />
     <title translate="no">{title}</title>
-    <meta
-      name="description"
-      content="Free, self-hosted AI job-hunt toolkit that runs inside your coding agent. Screens roles cheap, evaluates deep, tailors CVs, and never auto-submits."
+    <!-- Above-the-fold visual (How it works) is eager-loaded; preload it so the
+         browser starts the request during head parsing instead of at body parse. -->
+    <link
+      rel="preload"
+      as="image"
+      href="/assets/download-box-icon-ai-sparkle-transparent.webp"
+      fetchpriority="high"
     />
+    <meta name="description" content={description} />
     <meta
       property="og:title"
       content="sur9e — open-source, self-hosted AI job search toolkit"
     />
-    <meta
-      property="og:description"
-      content="Free, self-hosted AI job-hunt toolkit that runs inside your coding agent. Screens roles cheap, evaluates deep, tailors CVs, and never auto-submits."
-    />
+    <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://sur9e.com/" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:image" content="https://sur9e.com/og-v4.png" />
     <meta property="og:image:width" content="2400" />
     <meta property="og:image:height" content="1260" />
@@ -56,18 +64,18 @@ const { title = defaultTitle } = Astro.props;
       name="twitter:title"
       content="sur9e — open-source, self-hosted AI job search toolkit"
     />
-    <meta
-      name="twitter:description"
-      content="Free, self-hosted AI job-hunt toolkit that runs inside your coding agent. Screens roles cheap, evaluates deep, tailors CVs, and never auto-submits."
-    />
+    <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="https://sur9e.com/og-v4.png" />
-    <link rel="canonical" href="https://sur9e.com/" />
+    <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Body face is self-hosted (variable Inter, latin subset) so the critical
+         path has no cross-origin stylesheet and no third-party font request. -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/inter/inter-var.woff2"
+      crossorigin
     />
     <script
       type="application/ld+json"
@@ -101,5 +109,6 @@ const { title = defaultTitle } = Astro.props;
 </html>
 
 <style is:global>
+  @import '../styles/fonts.css';
   @import '../styles/tokens.css';
 </style>

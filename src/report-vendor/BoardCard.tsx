@@ -21,7 +21,6 @@ export function BoardCard({
       className="card"
       data-num={offer.num}
       data-selected={selected ? 'true' : 'false'}
-      aria-label={`${offer.company} — ${offer.role}. Open report.`}
       onClick={() => onOpen(offer.num)}
     >
       <div className="card-top">

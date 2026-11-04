@@ -26,7 +26,14 @@ export function CompanyAvatar({ company, logoUrl, className, href }: CompanyAvat
   const src = logoUrl && !broken ? logoUrl : null;
 
   const inner = src ? (
-    <img src={src} alt="" loading="lazy" decoding="async" onError={() => setBroken(true)} />
+    <img
+      src={src}
+      alt=""
+      width={32}
+      height={32}
+      decoding="async"
+      onError={() => setBroken(true)}
+    />
   ) : (
     initial
   );

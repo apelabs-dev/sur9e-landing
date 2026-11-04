@@ -1,0 +1,24 @@
+# sur9e
+
+> An open-source job-hunt copilot that runs inside your AI coding agent, so you know which roles are worth your time before you apply.
+
+sur9e evaluates job postings against your own profile, scores each offer on a match axis, and writes the reasoning to plain markdown files on disk instead of a hosted account. It is driven by the CLI and a local web UI, so the agent can run the whole loop: pull a posting, score it, write the report, update the tracker.
+
+## What it does
+
+- Evaluates individual job postings and produces a report per offer, written to `artifacts/reports/` as markdown.
+- Scores each offer (a 4.1 / 5.0 style match axis with a confidence level) rather than a keyword match.
+- Maintains a local tracker so the pipeline state lives with the reports.
+- Serves the report UI locally at `http://localhost:3000` — the reports are local files, not a hosted service.
+- Runs inside an AI coding agent (Claude Code, Codex, or a similar CLI agent) rather than as a SaaS dashboard.
+
+## Links
+
+- [Source code](https://github.com/apelabs-dev/sur9e)
+- [License](https://github.com/apelabs-dev/sur9e/blob/main/LICENSE)
+- [Security policy](https://github.com/apelabs-dev/sur9e/security/policy)
+
+## Notes for agents
+
+- The site is a single static page; there is no login, no paywall, and no tracking beyond analytics.
+- Reports shown on this site are sanitized examples of real output, not live user data.

@@ -1,0 +1,189 @@
+---
+import Footer from '../components/Footer.astro';
+import Base from '../layouts/Base.astro';
+
+const updated = '3 November 2026';
+---
+
+<Base
+  title="Privacy — sur9e"
+  description="What sur9e.com collects (almost nothing), what it does not, and how to get your data removed."
+>
+  <main id="main" class="pp">
+    <article class="pp-wrap">
+      <a class="pp-back" href="/">← sur9e</a>
+
+      <h1>Privacy</h1>
+      <p class="pp-lede">
+        This page covers <strong>this website</strong> (sur9e.com). The app itself
+        runs on your machine and is a separate story: it talks to no sur9e server,
+        because there isn't one.
+      </p>
+
+      <p class="pp-callout">
+        No analytics. No cookies. No tracking pixels. No ads. Fonts and images
+        are served from this domain, not from Google.
+      </p>
+
+      <h2>What we collect</h2>
+      <ul>
+        <li>
+          <strong>The email you type into the release-notes form.</strong> It is posted
+          to a small worker we run, stored so we can send you occasional release notes,
+          and used for nothing else. There is no account attached to it and no profile
+          built around it.
+        </li>
+        <li>
+          <strong>Email you send us.</strong> Messages to
+          <a href="mailto:hello@sur9e.com">hello@sur9e.com</a> arrive in a normal
+          inbox and stay there while we deal with them.
+        </li>
+        <li>
+          <strong>Standard request logs at our host.</strong> Cloudflare processes
+          what any web server processes to serve a page and stop abuse — IP address,
+          user agent, timestamp — under its own retention policy. We don't build anything
+          from it.
+        </li>
+      </ul>
+
+      <h2>What we don't do</h2>
+      <ul>
+        <li>No third-party scripts on any page.</li>
+        <li>
+          No cookies set by this site, no local storage tracking, no
+          fingerprinting.
+        </li>
+        <li>
+          No account, payment, or profile data — there is nothing to sign into.
+        </li>
+        <li>
+          We don't sell, rent, or share your data with advertisers or data
+          brokers.
+        </li>
+      </ul>
+
+      <h2>How to get out</h2>
+      <p>
+        Reply to any release-notes email, or write to
+        <a href="mailto:hello@sur9e.com">hello@sur9e.com</a>, and we'll delete
+        the address. The same address works for asking what we hold about you.
+      </p>
+
+      <h2>Your rights</h2>
+      <p>
+        If you're in the EEA or UK (GDPR) or California (CCPA/CPRA), you can ask
+        to access, correct, or delete the personal data we hold about you, and
+        we won't treat you differently for asking. In practice that data is an
+        email address you gave us, or a message you sent — nothing more.
+      </p>
+
+      <h2>Children</h2>
+      <p>
+        This site isn't directed at children under 13, and we don't knowingly
+        collect their data.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        If this ever changes in a way that matters, this page changes first and
+        the date below moves with it.
+      </p>
+
+      <p class="pp-updated">Last updated: {updated}</p>
+
+      <h2>Contact</h2>
+      <p>
+        <a href="mailto:hello@sur9e.com">hello@sur9e.com</a>
+      </p>
+    </article>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .pp {
+    min-height: 100vh;
+    background: var(--paper, #faf9f6);
+    color: var(--ink, #14100d);
+    padding: 88px 24px 96px;
+  }
+
+  .pp-wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .pp-back {
+    display: inline-block;
+    margin-bottom: 32px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: inherit;
+    text-decoration: none;
+    opacity: 0.6;
+  }
+
+  .pp-back:hover {
+    opacity: 1;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(34px, 6vw, 48px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 18px;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    margin: 40px 0 10px;
+  }
+
+  .pp-lede {
+    font-size: 18px;
+    margin: 0 0 24px;
+    opacity: 0.9;
+  }
+
+  .pp-callout {
+    border-left: 3px solid currentColor;
+    padding: 4px 0 4px 16px;
+    margin: 0 0 8px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+    opacity: 0.75;
+  }
+
+  ul {
+    margin: 0 0 8px;
+    padding-left: 20px;
+  }
+
+  li {
+    margin-bottom: 10px;
+  }
+
+  a {
+    color: inherit;
+    text-underline-offset: 3px;
+  }
+
+  .pp-updated {
+    margin-top: 28px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.55;
+  }
+</style>

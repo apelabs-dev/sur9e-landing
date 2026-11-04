@@ -11,7 +11,7 @@ archetype: Forward Deployed Engineer
 seniority: Senior
 comp: $190K-$285K (+ equity + bonus)
 work_mode: Remote
-company_logo: https://www.google.com/s2/favicons?domain=stripe.com&sz=128
+company_logo: /assets/favicons/stripe.com-128.png
 location: United States
 legitimacy: high_confidence
 tldr: ''

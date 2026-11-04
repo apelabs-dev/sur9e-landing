@@ -11,7 +11,7 @@ archetype: AI Solutions Engineer
 seniority: Mid
 comp: $130K-$180K (+ equity)
 work_mode: Hybrid
-company_logo: https://www.google.com/s2/favicons?domain=siftstack.com&sz=128
+company_logo: /assets/favicons/siftstack.com-128.png
 location: Marina Del Rey
 legitimacy: high_confidence
 tldr: ''
